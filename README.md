@@ -7,4 +7,4 @@ Its syntax is based on Hagah, a derivative of Smalltalk with strong types. ++Swi
 implemented for the Swift ecosystem, so as Swift continues to move across platforms and
 architectures, it will carry the seeds for ++Swift apps as well.
 
-More details to follow, but it's time to build stuff!
+More details to follow, but now it's time to build stuff!
