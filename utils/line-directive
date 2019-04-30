@@ -45,13 +45,13 @@ e.g., if you have foo.swift.gyb, bar.swift.gyb, and baz.swift, instead of
 
   gyb foo.swift.gyb -o foo.swift
   gyb bar.swift.gyb -o bar.swift
-  swiftc foo.swift bar.swift baz.swift
+  ppswiftc foo.swift bar.swift baz.swift
 
 You do this:
 
   gyb foo.swift.gyb -o foo.swift
   gyb bar.swift.gyb -o bar.swift
-  line-directive foo.swift bar.swift -- swiftc foo.swift bar.swift baz.swift
+  line-directive foo.swift bar.swift -- ppswiftc foo.swift bar.swift baz.swift
 '''
 
 line_pattern = re.compile(
@@ -682,7 +682,7 @@ def run():
 
         # The first argument of command_args is the process to open.
         # subprocess.Popen doesn't normalize arguments. This means that trying
-        # to open a non-normalized file (e.g. C:/swift/./bin/swiftc.exe) on
+        # to open a non-normalized file (e.g. C:/swift/./bin/ppswiftc.exe) on
         # Windows results in file/directory not found errors, as Popen
         # delegates to the Win32 CreateProcess API. Unix systems handle
         # non-normalized paths, so don't have this problem.

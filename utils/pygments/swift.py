@@ -337,7 +337,7 @@ class SILLexer(RegexLexer):
 class SwiftConsoleLexer(RegexLexer):
     name = 'SwiftConsole'
     aliases = ['swift-console']
-    filenames = ['*.swiftc']
+    filenames = ['*.ppswiftc']
 
     flags = re.MULTILINE | re.DOTALL
 

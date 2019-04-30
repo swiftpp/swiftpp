@@ -103,7 +103,7 @@ _ninja_complete()
   return 0
 }
 
-complete -F _swift_complete swiftc
+complete -F _swift_complete ppswiftc
 complete -F _swift_complete swift
 complete -F _swift_complete sil-opt
 complete -F _swift_complete sil-func-extractor

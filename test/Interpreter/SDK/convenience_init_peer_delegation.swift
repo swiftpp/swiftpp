@@ -1,7 +1,7 @@
 // RUN: %empty-directory(%t)
 // RUN: %target-clang -c %S/Inputs/convenience_init_peer_delegation.m -o %t/convenience_init_peer_delegation.objc.o -fmodules -fobjc-arc
 // RUN: %target-build-swift -c -o %t/convenience_init_peer_delegation.swift.o -import-objc-header %S/Inputs/convenience_init_peer_delegation.h %s
-// RUN: %target-swiftc_driver %t/convenience_init_peer_delegation.objc.o %t/convenience_init_peer_delegation.swift.o -o %t/main
+// RUN: %target-ppswiftc_driver %t/convenience_init_peer_delegation.objc.o %t/convenience_init_peer_delegation.swift.o -o %t/main
 // RUN: %target-codesign %t/main
 // RUN: %target-run %t/main | %FileCheck %s
 

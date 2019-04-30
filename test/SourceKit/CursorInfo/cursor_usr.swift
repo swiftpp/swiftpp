@@ -8,7 +8,7 @@ func foo(x: FooStruct1) -> S1 {}
 
 // REQUIRES: objc_interop
 // RUN: %empty-directory(%t)
-// RUN: %swiftc_driver -emit-module -o %t/FooSwiftModule.swiftmodule %S/Inputs/FooSwiftModule.swift
+// RUN: %ppswiftc_driver -emit-module -o %t/FooSwiftModule.swiftmodule %S/Inputs/FooSwiftModule.swift
 
 // Sanity check that we have identical responses when things work.
 // RUN: %sourcekitd-test -req=cursor -pos=5:8 %s -- -I %t -F %S/../Inputs/libIDE-mock-sdk %mcp_opt %s > %t.from_offset.txt

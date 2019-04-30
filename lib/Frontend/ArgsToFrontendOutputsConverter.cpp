@@ -168,7 +168,7 @@ OutputFilesComputer::computeOutputFile(StringRef outputArg,
   // Return an empty string to signify no output.
   // The frontend does not currently produce a diagnostic
   // if a -o argument is present for such an action
-  // for instance swiftc -frontend -o foo -interpret foo.swift
+  // for instance ppswiftc -frontend -o foo -interpret foo.swift
   if (!FrontendOptions::doesActionProduceOutput(RequestedAction))
     return std::string();
 

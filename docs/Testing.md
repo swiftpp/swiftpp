@@ -106,7 +106,7 @@ out with ``lit.py -h``. We document some of the more useful ones below:
 * ``--param gmalloc`` will run all tests under Guard Malloc (macOS only). See
   ``man libgmalloc`` for more information.
 * ``--param swift-version=<MAJOR>`` overrides the default Swift language
-  version used by swift/swiftc and swift-ide-test.
+  version used by swift/ppswiftc and swift-ide-test.
 * ``--param interpret`` is an experimental option for running execution tests
   using Swift's interpreter rather than compiling them first. Note that this
   does not affect all substitutions.
@@ -276,7 +276,7 @@ code for the target that is not the build machine:
 * ``%target-jit-run``: run a Swift program on the target machine using a JIT
   compiler.
 
-* ``%target-swiftc_driver``: run ``swiftc`` for the target.
+* ``%target-ppswiftc_driver``: run ``ppswiftc`` for the target.
 
 * ``%target-sil-opt``: run ``sil-opt`` for the target.
 
@@ -347,9 +347,9 @@ When you can't use ``%target-*`` substitutions, you can use:
   set to a temporary directory used by the test suite, and using the
   ``SWIFT_TEST_OPTIONS`` environment variable if available.
 
-* ``%swiftc_driver``: like ``%target-swiftc_driver`` for the build machine.
+* ``%ppswiftc_driver``: like ``%target-ppswiftc_driver`` for the build machine.
 
-* ``%swiftc_driver_plain``: like ``%swiftc_driver``, but does not set the
+* ``%ppswiftc_driver_plain``: like ``%ppswiftc_driver``, but does not set the
   ``-module-cache-path`` to a temporary directory used by the test suite,
   and does not respect the ``SWIFT_TEST_OPTIONS`` environment variable.
 

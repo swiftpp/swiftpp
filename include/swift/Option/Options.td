@@ -36,7 +36,7 @@ def SwiftFormatOption : OptionFlag;
 def NoDriverOption : OptionFlag;
 
 // Some options should not be available depending on whether this is the
-// interactive driver 'swift', or the batch compiler 'swiftc'.
+// interactive driver 'ppswift', or the batch compiler 'ppswiftc'.
 def NoInteractiveOption : OptionFlag;
 def NoBatchOption : OptionFlag;
 
@@ -149,7 +149,7 @@ InternalDebugOpt,
 HelpText<"Include within-file dependencies.">;
 
 def driver_mode : Joined<["--"], "driver-mode=">, Flags<[HelpHidden]>,
-  HelpText<"Set the driver mode to either 'swift' or 'swiftc'">;
+  HelpText<"Set the driver mode to either 'ppswift' or 'ppswiftc'">;
 
 def help : Flag<["-", "--"], "help">,
   Flags<[FrontendOption, AutolinkExtractOption, ModuleWrapOption, SwiftFormatOption]>,

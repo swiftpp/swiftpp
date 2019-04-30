@@ -10,11 +10,11 @@
 // COMPILE: 0: input
 // COMPILE: 1: compile, {0}, object
 
-// RUN: %swiftc_driver -driver-print-actions %t/empty 2>&1 | %FileCheck -check-prefix=LINK-%target-object-format %s
-// RUN: %swiftc_driver -driver-print-actions %t/empty.swiftmodule 2>&1 | %FileCheck -check-prefix=LINK-SWIFTMODULES %s
-// RUN: %swiftc_driver -driver-print-actions %t/empty.o 2>&1 | %FileCheck -check-prefix=LINK-%target-object-format %s
-// RUN: not %swiftc_driver -driver-print-actions %t/empty.h 2>&1 | %FileCheck -check-prefix=ERROR %s
-// RUN: %swiftc_driver -driver-print-actions %t/empty.swift 2>&1 | %FileCheck -check-prefix=COMPILE %s
+// RUN: %ppswiftc_driver -driver-print-actions %t/empty 2>&1 | %FileCheck -check-prefix=LINK-%target-object-format %s
+// RUN: %ppswiftc_driver -driver-print-actions %t/empty.swiftmodule 2>&1 | %FileCheck -check-prefix=LINK-SWIFTMODULES %s
+// RUN: %ppswiftc_driver -driver-print-actions %t/empty.o 2>&1 | %FileCheck -check-prefix=LINK-%target-object-format %s
+// RUN: not %ppswiftc_driver -driver-print-actions %t/empty.h 2>&1 | %FileCheck -check-prefix=ERROR %s
+// RUN: %ppswiftc_driver -driver-print-actions %t/empty.swift 2>&1 | %FileCheck -check-prefix=COMPILE %s
 
 // LINK-macho: 0: input
 // LINK-macho: 1: link, {0}, image
@@ -29,17 +29,17 @@
 // LINK-SWIFTMODULES: 0: input, "{{.*}}.swiftmodule", swiftmodule
 // LINK-SWIFTMODULES: 1: link, {0}, image
 
-// RUN: not %swiftc_driver -driver-print-actions -emit-module %t/empty 2>&1 | %FileCheck -check-prefix=ERROR %s
-// RUN: %swiftc_driver -driver-print-actions -emit-module %t/empty.swiftmodule 2>&1 | %FileCheck -check-prefix=MODULE %s
-// RUN: not %swiftc_driver -driver-print-actions -emit-module %t/empty.o 2>&1 | %FileCheck -check-prefix=ERROR %s
-// RUN: not %swiftc_driver -driver-print-actions -emit-module %t/empty.h 2>&1 | %FileCheck -check-prefix=ERROR %s
-// RUN: %swiftc_driver -driver-print-actions %t/empty.swift 2>&1 | %FileCheck -check-prefix=COMPILE %s
+// RUN: not %ppswiftc_driver -driver-print-actions -emit-module %t/empty 2>&1 | %FileCheck -check-prefix=ERROR %s
+// RUN: %ppswiftc_driver -driver-print-actions -emit-module %t/empty.swiftmodule 2>&1 | %FileCheck -check-prefix=MODULE %s
+// RUN: not %ppswiftc_driver -driver-print-actions -emit-module %t/empty.o 2>&1 | %FileCheck -check-prefix=ERROR %s
+// RUN: not %ppswiftc_driver -driver-print-actions -emit-module %t/empty.h 2>&1 | %FileCheck -check-prefix=ERROR %s
+// RUN: %ppswiftc_driver -driver-print-actions %t/empty.swift 2>&1 | %FileCheck -check-prefix=COMPILE %s
 
 // MODULE: 0: input
 // MODULE: 1: merge-module, {0}, swiftmodule
 
-// RUN: not %swiftc_driver -driver-print-actions -typecheck %t/empty 2>&1 | %FileCheck -check-prefix=ERROR %s
-// RUN: not %swiftc_driver -driver-print-actions -typecheck %t/empty.swiftmodule 2>&1 | %FileCheck -check-prefix=ERROR %s
-// RUN: not %swiftc_driver -driver-print-actions -typecheck %t/empty.o 2>&1 | %FileCheck -check-prefix=ERROR %s
-// RUN: not %swiftc_driver -driver-print-actions -typecheck %t/empty.h 2>&1 | %FileCheck -check-prefix=ERROR %s
-// RUN: %swiftc_driver -driver-print-actions %t/empty.swift 2>&1 | %FileCheck -check-prefix=COMPILE %s
+// RUN: not %ppswiftc_driver -driver-print-actions -typecheck %t/empty 2>&1 | %FileCheck -check-prefix=ERROR %s
+// RUN: not %ppswiftc_driver -driver-print-actions -typecheck %t/empty.swiftmodule 2>&1 | %FileCheck -check-prefix=ERROR %s
+// RUN: not %ppswiftc_driver -driver-print-actions -typecheck %t/empty.o 2>&1 | %FileCheck -check-prefix=ERROR %s
+// RUN: not %ppswiftc_driver -driver-print-actions -typecheck %t/empty.h 2>&1 | %FileCheck -check-prefix=ERROR %s
+// RUN: %ppswiftc_driver -driver-print-actions %t/empty.swift 2>&1 | %FileCheck -check-prefix=COMPILE %s

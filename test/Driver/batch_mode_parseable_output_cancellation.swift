@@ -2,7 +2,7 @@
 // RUN: touch %t/file-01.swift
 // RUN: echo 'public func main() { help_an_error_happened() }' >%t/main.swift
 //
-// RUN: not %swiftc_driver -enable-batch-mode -parseable-output -serialize-diagnostics -c -emit-module -module-name main -j 1 %t/file-01.swift %t/main.swift 2>&1 | %FileCheck %s -check-prefix CHECK -check-prefix CHECK-%target-os
+// RUN: not %ppswiftc_driver -enable-batch-mode -parseable-output -serialize-diagnostics -c -emit-module -module-name main -j 1 %t/file-01.swift %t/main.swift 2>&1 | %FileCheck %s -check-prefix CHECK -check-prefix CHECK-%target-os
 //
 //      CHECK:   "kind": "signalled",
 // CHECK-NEXT:   "name": "compile",

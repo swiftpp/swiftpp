@@ -8,11 +8,11 @@ import subprocess
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('cmake_path', help='The cmake binary to use')
-    p.add_argument('swift_src_dir', help='The swift source directory')
+    p.add_argument('swift_src_dir', help='The ++swift source directory')
     p.add_argument('clang', help='The path to the clang binary to use')
     p.add_argument('swift_root_dir',
-                   help='A path to a swift root produced by installing '
-                        'Swift and Foundation together. We infer swiftc '
+                   help='A path to a ++swift root produced by installing '
+                        '++Swift and Foundation together. We infer ppswiftc '
                         'from here')
     p.add_argument('destdir', help='The directory to perform the actual '
                                    'build in')
@@ -27,7 +27,7 @@ def main():
     os.chdir(args.destdir)
     configureInvocation = [
         args.cmake_path, '-GNinja',
-        '-DSWIFT_EXEC={}/bin/swiftc'.format(args.swift_root_dir),
+        '-DPPSWIFT_EXEC={}/bin/ppswiftc'.format(args.swift_root_dir),
         '-DCLANG_EXEC={}'.format(args.clang),
         '-DSWIFT_LIBRARY_PATH={}/lib/swift'.format(args.swift_root_dir),
         '{}/benchmark'.format(args.swift_src_dir)

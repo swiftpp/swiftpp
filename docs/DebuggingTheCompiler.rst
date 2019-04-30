@@ -31,15 +31,15 @@ Here is how to dump the IR after the main phases of the Swift compiler
 
 #. **Parser**. To print the AST after parsing::
 
-    swiftc -dump-ast -O file.swift
+    ppswiftc -dump-ast -O file.swift
 
 #. **SILGen**. To print the SIL immediately after SILGen::
 
-    swiftc -emit-silgen -O file.swift
+    ppswiftc -emit-silgen -O file.swift
 
 #. **Mandatory SIL passes**. To print the SIL after the mandatory passes::
 
-    swiftc -emit-sil -Onone file.swift
+    ppswiftc -emit-sil -Onone file.swift
 
   Well, this is not quite true, because the compiler is running some passes
   for -Onone after the mandatory passes, too. But for most purposes you will
@@ -48,19 +48,19 @@ Here is how to dump the IR after the main phases of the Swift compiler
 #. **Performance SIL passes**. To print the SIL after the complete SIL
    optimization pipeline::
 
-    swiftc -emit-sil -O file.swift
+    ppswiftc -emit-sil -O file.swift
 
 #. **IRGen**. To print the LLVM IR after IR generation::
 
-    swiftc -emit-ir -Xfrontend -disable-llvm-optzns -O file.swift
+    ppswiftc -emit-ir -Xfrontend -disable-llvm-optzns -O file.swift
 
 4. **LLVM passes**. To print the LLVM IR after LLVM passes::
 
-    swiftc -emit-ir -O file.swift
+    ppswiftc -emit-ir -O file.swift
 
 5. **Code generation**. To print the final generated code::
 
-    swiftc -S -O file.swift
+    ppswiftc -S -O file.swift
 
 Compilation stops at the phase where you print the output. So if you want to
 print the SIL *and* the LLVM IR, you have to run the compiler twice.
@@ -203,7 +203,7 @@ Debugging and Profiling on SIL level
 The compiler provides a way to debug and profile on SIL level. To enable SIL
 debugging add the front-end option -gsil together with -g. Example::
 
-    swiftc -g -Xfrontend -gsil -O test.swift -o a.out
+    ppswiftc -g -Xfrontend -gsil -O test.swift -o a.out
 
 This writes the SIL after optimizations into a file and generates debug info
 for it. In the debugger and profiler you can then see the SIL code instead of

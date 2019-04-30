@@ -427,7 +427,7 @@ getGlibcModuleMapPath(StringRef resourceDir, llvm::Triple triple,
 
   // Only specify the module map if that file actually exists.
   // It may not--for example in the case that
-  // `swiftc -target x86_64-unknown-linux-gnu -emit-ir` is invoked using
+  // `ppswiftc -target x86_64-unknown-linux-gnu -emit-ir` is invoked using
   // a Swift compiler not built for Linux targets.
   if (llvm::sys::fs::exists(scratch)) {
     return StringRef(scratch.data(), scratch.size());
@@ -473,7 +473,7 @@ getNormalInvocationArguments(std::vector<std::string> &invocationArgStrs,
       // Enable block support.
       "-fblocks",
 
-      languageVersion.preprocessorDefinition("__swift__", {10000, 100, 1}),
+      languageVersion.preprocessorDefinition("__ppswift__", {10000, 100, 1}),
 
       "-fretain-comments-from-system-headers",
 
@@ -488,7 +488,7 @@ getNormalInvocationArguments(std::vector<std::string> &invocationArgStrs,
   // Enable modules.
   invocationArgStrs.insert(invocationArgStrs.end(), {
       "-fmodules",
-      "-Xclang", "-fmodule-feature", "-Xclang", "swift"
+      "-Xclang", "-fmodule-feature", "-Xclang", "ppswift"
   });
   // Don't enforce strict rules when inside the debugger to work around search
   // path problems caused by a module existing in both the build/install

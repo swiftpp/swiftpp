@@ -351,11 +351,11 @@ function(_compile_swift_files
   endif()
 
   set(line_directive_tool "${SWIFT_SOURCE_DIR}/utils/line-directive")
-  set(swift_compiler_tool "${SWIFT_NATIVE_SWIFT_TOOLS_PATH}/swiftc")
+  set(swift_compiler_tool "${SWIFT_NATIVE_SWIFT_TOOLS_PATH}/ppswiftc")
   set(swift_compiler_tool_dep)
   if(SWIFT_INCLUDE_TOOLS)
     # Depend on the binary itself, in addition to the symlink.
-    set(swift_compiler_tool_dep "swift")
+    set(swift_compiler_tool_dep "ppswift")
   endif()
 
   # If there are more than one output files, we assume that they are specified

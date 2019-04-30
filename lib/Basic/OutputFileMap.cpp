@@ -217,7 +217,7 @@ OutputFileMap::parse(std::unique_ptr<llvm::MemoryBuffer> Buffer,
       file_types::ID Kind =
           file_types::lookupTypeForName(KindNode->getValue(KindStorage));
 
-      // Ignore unknown types, so that an older swiftc can be used with a newer
+      // Ignore unknown types, so that an older ppswiftc can be used with a newer
       // build system.
       if (Kind == file_types::TY_INVALID)
         continue;

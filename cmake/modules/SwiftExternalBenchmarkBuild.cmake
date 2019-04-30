@@ -88,7 +88,7 @@ function (add_external_benchmark_suite)
     DEPENDS swift ${all_stdlib_dependencies}
     EXTRA_TARGETS ${bench_targets} ${library_targets}
     CMAKE_ARGS
-      -DSWIFT_EXEC=${SWIFT_BINARY_DIR}/bin/swiftc
+      -DSWIFT_EXEC=${SWIFT_BINARY_DIR}/bin/ppswiftc
       -DSWIFT_LIBRARY_PATH=${SWIFT_BINARY_DIR}/lib/swift
       -DCMAKE_C_COMPILER=${CC}
       -DCMAKE_CXX_COMPILER=${CXX}

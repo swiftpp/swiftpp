@@ -84,7 +84,7 @@ bb4:
 }
 
 // Verify that findAccessedStorage handles cyclic phis.
-// <rdar://47059671> swiftc crashes
+// <rdar://47059671> ppswiftc crashes
 class AClass {
   var aStoredProp: Builtin.Int32
 }

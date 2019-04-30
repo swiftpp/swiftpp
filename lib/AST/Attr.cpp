@@ -478,7 +478,7 @@ bool DeclAttribute::printImpl(ASTPrinter &Printer, const PrintOptions &Options,
     Printer << "(";
     auto Attr = cast<AvailableAttr>(this);
     if (Attr->isLanguageVersionSpecific())
-      Printer << "swift";
+      Printer << "ppswift";
     else if (Attr->isPackageDescriptionVersionSpecific())
       Printer << "_PackageDescription";
     else

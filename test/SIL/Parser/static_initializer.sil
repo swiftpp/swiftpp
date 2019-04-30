@@ -3,7 +3,7 @@
 // Generated from
 // var x : Int32 = 2
 // public func f() -> Int32 { return x }
-// with swiftc -O -parse-as-library -emit-sil
+// with ppswiftc -O -parse-as-library -emit-sil
 
 import Builtin
 import Swift

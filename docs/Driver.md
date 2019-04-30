@@ -17,7 +17,7 @@ this is probably still useful to you, but you should also check out
 [DriverInternals.rst](DriverInternals.rst) and maybe
 [DependencyAnalysis.rst](DependencyAnalysis.rst) as well. If you're just using
 Xcode or SwiftPM and want to find out what mysterious command-line options you
-could be passing, `swiftc --help` is a better choice.
+could be passing, `ppswiftc --help` is a better choice.
 
 If you're invoking `swift -frontend` directly, and you aren't working on the
 compiler itself...well, this document should convince you to not do that.
@@ -34,7 +34,7 @@ Some terms:
   compilation unit, and every file in the same compilation unit are assumed to
   be part of the same module. Doing anything else is unsupported.
 
-- The _driver_ is the program that's run when you invoke `swift` or `swiftc`.
+- The _driver_ is the program that's run when you invoke `swift` or `ppswiftc`.
   This doesn't actually compile anything itself; instead it invokes other tools
   to produce the desired output.
 
@@ -63,7 +63,7 @@ stages of subprocesses:
 3. Linking
 
 Dependencies between the subprocesses are managed by the driver. Outputs are
-controlled by `-o` and other various compiler flags; see `swiftc --help` for
+controlled by `-o` and other various compiler flags; see `ppswiftc --help` for
 more information.
 
 
@@ -279,7 +279,7 @@ past that, so:
 
 3. Do one of the following:
 
-   - Invoke `swiftc -emit-executable` or `swiftc -emit-library`. Pass all the
+   - Invoke `ppswiftc -emit-executable` or `ppswiftc -emit-library`. Pass all the
      Swift files, even if you're building incrementally (`-incremental`). Pass
      `-j <N>` and/or `-num-threads <N>` if you have cores to spare. Pass
      `-emit-module-path <path>` if you're building a library that you need to
@@ -290,11 +290,11 @@ past that, so:
      at improving on this.) On the plus side, this mode doesn't strictly need
      an output file map if you give up incremental builds.
 
-   - Invoke `swiftc -c`, then pass the resulting object files to your linker.
+   - Invoke `ppswiftc -c`, then pass the resulting object files to your linker.
      All the same options from above apply, but you'll have to manually deal
      with the work the compiler would have done automatically for you.
 
-   - Invoke `swiftc -c` with `-###`. Then run all of the outputted commands
+   - Invoke `ppswiftc -c` with `-###`. Then run all of the outputted commands
      that include `-primary-file`, then run the remaining commands in order
      (they may have dependencies). If none of the commands have `-primary-file`
      in them, they're not parallelizable, sorry.

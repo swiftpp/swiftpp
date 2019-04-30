@@ -24,7 +24,7 @@ from argparse import ONE_OR_MORE, OPTIONAL, SUPPRESS, ZERO_OR_MORE
 from .actions import Action, Nargs
 from .parser import ArgumentParser
 from .types import (BoolType, ClangVersionType, CompilerVersion, PathType,
-                    RegexType, ShellSplitType, SwiftVersionType)
+                    RegexType, ShellSplitType, PPSwiftVersionType)
 
 
 __all__ = [
@@ -45,7 +45,7 @@ __all__ = [
     'PathType',
     'RegexType',
     'ClangVersionType',
-    'SwiftVersionType',
+    'PPSwiftVersionType',
     'ShellSplitType',
 
     'SUPPRESS',

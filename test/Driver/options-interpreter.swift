@@ -1,7 +1,7 @@
 // RUN: not %swift_driver -deprecated-integrated-repl -emit-module 2>&1 | %FileCheck -check-prefix=IMMEDIATE_NO_MODULE %s
 // RUN: not %swift_driver -emit-module 2>&1 | %FileCheck -check-prefix=IMMEDIATE_NO_MODULE %s
 // REQUIRES: swift_interpreter
-// IMMEDIATE_NO_MODULE: error: option '-emit-module' is not supported by 'swift'; did you mean to use 'swiftc'?
+// IMMEDIATE_NO_MODULE: error: option '-emit-module' is not supported by 'ppswift'; did you mean to use 'ppswiftc'?
 
 // RUN: %swift_driver -### %s | %FileCheck -check-prefix INTERPRET %s
 // INTERPRET: -interpret

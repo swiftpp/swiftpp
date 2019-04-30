@@ -388,7 +388,7 @@ def create_argument_parser():
            help='enable Leak Sanitizer for swift tools')
     option('--enable-sanitize-coverage', toggle_true,
            help='enable sanitizer coverage for swift tools. Necessary for '
-                'fuzzing swiftc')
+                'fuzzing ppswiftc')
 
     option('--compiler-vendor', store,
            choices=['none', 'apple'],
@@ -405,14 +405,14 @@ def create_argument_parser():
            help='User-visible version of the embedded Clang and LLVM '
                 'compilers')
     option('--swift-compiler-version', store,
-           type=argparse.SwiftVersionType(),
+           type=argparse.PPSwiftVersionType(),
            metavar='MAJOR.MINOR',
-           help='string that indicates a compiler version for Swift')
+           help='string that indicates a compiler version for ++Swift')
     option('--swift-user-visible-version', store,
-           type=argparse.SwiftVersionType(),
+           type=argparse.PPSwiftVersionType(),
            default=defaults.SWIFT_USER_VISIBLE_VERSION,
            metavar='MAJOR.MINOR',
-           help='User-visible version of the embedded Swift compiler')
+           help='User-visible version of the embedded ++Swift compiler')
 
     option('--darwin-deployment-version-osx', store,
            default=defaults.DARWIN_DEPLOYMENT_VERSION_OSX,
@@ -468,7 +468,7 @@ def create_argument_parser():
                 'compiling llvm')
 
     option('--swift-tools-max-parallel-lto-link-jobs', store_int,
-           default=default_max_lto_link_job_counts['swift'],
+           default=default_max_lto_link_job_counts['ppswift'],
            metavar='COUNT',
            help='the maximum number of parallel link jobs to use when '
                 'compiling swift tools.')
@@ -548,7 +548,7 @@ def create_argument_parser():
            help='build SourceKitLSP')
     option(['--toolchain-benchmarks'],
            toggle_true('build_toolchainbenchmarks'),
-           help='build Swift Benchmarks using swiftpm against the just built '
+           help='build ++Swift Benchmarks using swiftpm against the just built '
                 'toolchain')
 
     option('--xctest', toggle_true('build_xctest'),
@@ -595,7 +595,7 @@ def create_argument_parser():
         option(['-d', '--debug'], store('build_variant'),
                const='Debug',
                help='build the Debug variant of everything (LLVM, Clang, '
-                    'Swift host tools, target Swift standard libraries, LLDB) '
+                    '++Swift host tools, target Swift standard libraries, LLDB) '
                     '(default is %(default)s)')
 
         option(['-r', '--release-debuginfo'], store('build_variant'),
@@ -615,9 +615,9 @@ def create_argument_parser():
            const='Debug',
            help='build the Debug variant of LLVM')
 
-    option('--debug-swift', store('swift_build_variant'),
+    option('--debug-ppswift', store('swift_build_variant'),
            const='Debug',
-           help='build the Debug variant of Swift host tools')
+           help='build the Debug variant of ++Swift host tools')
 
     option('--debug-swift-stdlib', store('swift_stdlib_build_variant'),
            const='Debug',
@@ -1098,7 +1098,7 @@ To run normal tests and validation tests, add '-T':
 To build LLVM+Clang with optimization without debug information, and a
 debuggable Swift compiler:
 
-  [~/src/s]$ ./swift/utils/build-script -R --debug-swift
+  [~/src/s]$ ./swift/utils/build-script -R --debug-ppswift
 
 To build a debuggable Swift standard library:
 
@@ -1150,7 +1150,7 @@ Debug Swift):
   $ cat > ~/.swift-build-presets
   [preset: ds]
   release
-  debug-swift
+  debug-ppswift
   debug-swift-stdlib
   test
   build-subdir=ds
@@ -1159,7 +1159,7 @@ To use it, specify the '--preset=' argument:
 
   [~/src/s]$ ./swift/utils/build-script --preset=ds
   ./swift/utils/build-script: using preset 'ds', which expands to
-  ./swift/utils/build-script --release --debug-swift --debug-swift-stdlib \
+  ./swift/utils/build-script --release --debug-ppswift --debug-swift-stdlib \
      --test
   --build-subdir=ds --
   ...

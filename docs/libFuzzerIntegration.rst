@@ -19,13 +19,13 @@ the ``main`` symbol, such that the fuzzer entry point can be used:
 
 .. code-block:: bash
 
-    % swiftc -sanitize=fuzzer myfile.swift
+    % ppswiftc -sanitize=fuzzer myfile.swift
 
 ``libFuzzer`` can be also combined with other sanitizers:
 
 .. code-block:: bash
 
-    % swiftc -sanitize=fuzzer,address myfile.swift
+    % ppswiftc -sanitize=fuzzer,address myfile.swift
 
 Finally, we launch the fuzzing process:
 

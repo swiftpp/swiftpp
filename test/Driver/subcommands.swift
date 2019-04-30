@@ -1,5 +1,5 @@
 // REQUIRES: shell
-// Check that 'swift' and 'swift repl' invoke the REPL.
+// Check that 'ppswift' and 'ppswift repl' invoke the REPL.
 
 // RUN: rm -rf %t.dir
 // RUN: mkdir -p %t.dir/usr/bin

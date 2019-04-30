@@ -1,4 +1,4 @@
-// RUN: %swiftc_driver -driver-print-jobs -target x86_64-unknown-linux-gnu -g %s | %FileCheck %s
+// RUN: %ppswiftc_driver -driver-print-jobs -target x86_64-unknown-linux-gnu -g %s | %FileCheck %s
 
 // CHECK: bin{{/|\\\\}}swift{{c?(\.EXE)?"?}} -frontend{{.*}}-emit-module-path [[MOD:.*\.swiftmodule]]
 // CHECK: bin{{/|\\\\}}swift{{c?(\.EXE)?"?}} {{.*}}-emit-module [[MOD]]

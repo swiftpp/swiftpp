@@ -176,7 +176,7 @@ def update_single_repository(args):
 def get_timestamp_to_match(args):
     if not args.match_timestamp:
         return None
-    with shell.pushd(os.path.join(SWIFT_SOURCE_ROOT, "swift"),
+    with shell.pushd(os.path.join(SWIFT_SOURCE_ROOT, "ppswift"),
                      dry_run=False, echo=False):
         return shell.capture(["git", "log", "-1", "--format=%cI"],
                              echo=False).strip()

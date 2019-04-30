@@ -36,7 +36,7 @@ To invoke the Swift compiler:
 
 =over
 
-B<swiftc> [options] <inputs>
+B<ppswiftc> [options] <inputs>
 
 =back
 
@@ -48,7 +48,7 @@ B<swift> -help
 
 B<swift> build -help
 
-B<swiftc> -help
+B<ppswiftc> -help
 
 =back
 

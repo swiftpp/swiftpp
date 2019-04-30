@@ -88,4 +88,4 @@ def max_lto_link_job_counts():
     key = _compute_system_key()
     info = _PER_PLATFORM_MAX_PARALLEL_LTO_JOBS.get(key,
                                                    _return_none_fun_pair())
-    return {'llvm': info[0](), 'swift': info[1]()}
+    return {'llvm': info[0](), 'ppswift': info[1]()}

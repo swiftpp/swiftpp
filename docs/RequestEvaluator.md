@@ -26,7 +26,7 @@ The complete dependency graph formed by processing a source file can be visualiz
 The frontend option `-debug-cycles` will provide debugging output for any cycle detected while processing the given source files. For example, running the [`circular_inheritance.swift` test](https://github.com/apple/swift/blob/master/test/decl/class/circular_inheritance.swift) from the Swift repository using this flag, e.g.,
 
 ```
-$ swiftc -frontend -typecheck -debug-cycles test/decl/class/circular_inheritance.swift
+$ ppswiftc -frontend -typecheck -debug-cycles test/decl/class/circular_inheritance.swift
 ```
 
 provides a debugging dump that illustrates the one of the dependency cycles via a textual tree dump:

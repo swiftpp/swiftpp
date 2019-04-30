@@ -27,7 +27,7 @@ namespace driver {
 /// Generates the list of arguments that would be passed to the compiler
 /// frontend from the given driver arguments.
 ///
-/// \param ArgList The driver arguments (i.e. normal arguments for \c swiftc).
+/// \param ArgList The driver arguments (i.e. normal arguments for \c ppswiftc).
 /// \param Diags The DiagnosticEngine used to report any errors parsing the
 /// arguments.
 /// \param Action Called with the list of frontend arguments if there were no

@@ -18,6 +18,6 @@ import ClangModule
 // RUN: llvm-readobj -h %t/*/ClangModule-*.pcm | %FileCheck %s
 // CHECK: Format: {{(Mach-O|ELF|COFF)}}
 
-// 3. Test that swift-ide-check will not share swiftc's module cache.
+// 3. Test that swift-ide-check will not share ppswiftc's module cache.
 
 // RUN: %swift-ide-test_plain -print-usrs -target %target-triple -module-cache-path %t  -I %S/Inputs -source-filename %s

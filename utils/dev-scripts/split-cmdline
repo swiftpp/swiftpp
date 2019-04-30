@@ -16,7 +16,7 @@
 # Reads the command line from stdin an outputs the split line to stdout.
 # Example:
 #
-# $ swiftc -c hello.swift -### | split-cmdline
+# $ ppswiftc -c hello.swift -### | split-cmdline
 # /path-to-swift/bin/swift \
 #   -frontend \
 #   -c \

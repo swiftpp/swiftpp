@@ -49,7 +49,7 @@ protected:
   ToolChain(const Driver &D, const llvm::Triple &T) : D(D), Triple(T) {}
 
   /// A special name used to identify the Swift executable itself.
-  constexpr static const char *const SWIFT_EXECUTABLE_NAME = "swift";
+  constexpr static const char *const SWIFT_EXECUTABLE_NAME = "ppswift";
 
   /// Packs together the supplementary information about the job being created.
   class JobContext {

@@ -51,18 +51,18 @@ compiler is doing when it's run -- beyond the obvious "compiling" -- and what
 major factors influence how much time it spends.
 
 When you compile or run a Swift program, either with Xcode or on the command
-line, you typically invoke `swift` or `swiftc` (the latter is a symbolic link to
+line, you typically invoke `swift` or `ppswiftc` (the latter is a symbolic link to
 the former), which is a program that can behave in very different ways depending
 on its arguments.
 
 It may compile or execute code directly, but it will usually instead turn around
-and run one or more copies of `swift` or `swiftc` as subprocesses. In typical
-batch compilation, the first copy of `swiftc` runs as a so-called **driver**
+and run one or more copies of `swift` or `ppswiftc` as subprocesses. In typical
+batch compilation, the first copy of `ppswiftc` runs as a so-called **driver**
 process, and it then executes a number of so-called **frontend** subprocesses,
 in a process tree. It's essential, when interpreting Swift compilation, to have
 a clear picture of which processes are run and what they're doing:
 
-  - **Driver**: the top-level `swiftc` process in a tree of
+  - **Driver**: the top-level `ppswiftc` process in a tree of
     subprocesses. Responsible for deciding which files need compiling or
     recompiling and running child processes &mdash; so-called **jobs** &mdash;
     to perform compilation and linking steps. For most of its execution, it is
@@ -95,7 +95,7 @@ terms of laziness strategies and approximations.
 There are many different options for controlling the driver and frontend jobs,
 but the two dimensions that cause the most significant variation in behaviour
 are often referred to as _modes_. These modes make the biggest difference, and
-it's important when looking at compilation to be clear on which mode `swiftc` is
+it's important when looking at compilation to be clear on which mode `ppswiftc` is
 running in, and often to perform separate analysis for each mode. The
 significant modes are:
 
@@ -152,18 +152,18 @@ getting perfectly clear:
 
 For example: if your module has 100 files in it:
 
-  - Running `swiftc *.swift` will compile in **single-file mode**, and will thus
+  - Running `ppswiftc *.swift` will compile in **single-file mode**, and will thus
     run 100 frontend subprocesses, each of which will parse all 100 inputs (for
     a total of 10,000 parses), and then each subprocess will (in parallel) 
     compile the definitions in its single primary file.
 
-  - Running `swiftc -enable-batch-mode *.swift` will compile in **batch** mode,
+  - Running `ppswiftc -enable-batch-mode *.swift` will compile in **batch** mode,
     and on a system with 4 CPUs will run 4 frontend subprocesses, each of which
     will parse all 100 inputs (for a total of 400 parses), and then each subprocess
     will (in parallel) compile the definitions of 25 primary files (one quarter
     of the module in each process).
 
-  - Running `swiftc -wmo *.swift` will compile in **whole-module** mode,
+  - Running `ppswiftc -wmo *.swift` will compile in **whole-module** mode,
     and will thus run _one_ frontend subprocess, which then reads all 100 files
     _once_ (for a total of 100 parses) and compiles the definitions in all of them,
     in order (serially).
@@ -370,7 +370,7 @@ see
 more documentation.
 
 The main way we will use `Instruments.app` is in "Counter" mode, to record and
-analyze a single run of swiftc. We will also use it in simple push-button
+analyze a single run of ppswiftc. We will also use it in simple push-button
 interactive mode, as a normal application. While it's possible to run
 Instruments in batch mode on the command-line, the batch interface is less
 reliable than running it as an interactive application, and frequently causes
@@ -476,9 +476,9 @@ total execution cost, and is often enough to pick out a regression when
 bisecting (see below):
 
 ```
-$ perf stat swiftc t.swift
+$ perf stat ppswiftc t.swift
 
- Performance counter stats for 'swiftc t.swift':
+ Performance counter stats for 'ppswiftc t.swift':
 
        2140.543052      task-clock (msec)         #    0.966 CPUs utilized
                 17      context-switches          #    0.008 K/sec
@@ -513,7 +513,7 @@ you might need to play with the `--call-graph` and `-e` parameters to get a
 clear picture:
 
 ```
-$ perf record -e cycles -c 10000 --call-graph=lbr swiftc t.swift
+$ perf record -e cycles -c 10000 --call-graph=lbr ppswiftc t.swift
 [ perf record: Woken up 5 times to write data ]
 [ perf record: Captured and wrote 1.676 MB perf.data (9731 samples) ]
 ```
@@ -707,7 +707,7 @@ make a directory in which to output the stats, then compile with the
 
 ```
 $ mkdir /tmp/stats
-$ swiftc -c test.swift -stats-output-dir /tmp/stats
+$ ppswiftc -c test.swift -stats-output-dir /tmp/stats
 $ ls /tmp/stats
 stats-1518219149045080-swift-frontend-test-test.swift-x86_64_apple_macosx10.13-o-Onone-531621672.json
 $ cat /tmp/stats/*.json
@@ -743,7 +743,7 @@ extra argument to a compilation already using `-stats-output-dir`:
 
 ```
 $ mkdir /tmp/stats
-$ swiftc -c test.swift -stats-output-dir /tmp/stats -trace-stats-events
+$ ppswiftc -c test.swift -stats-output-dir /tmp/stats -trace-stats-events
 $ ls /tmp/stats
 stats-1518219460129565-swift-frontend-test-test.swift-x86_64_apple_macosx10.13-o-Onone-1576107381.json
 trace-1518219460129597-swift-frontend-test-test.swift-x86_64_apple_macosx10.13-o-Onone-1471252712.csv
@@ -789,12 +789,12 @@ aggregation and analysis tasks.
 
 Here is an example of how to use `-stats-output-dir` together with
 `utils/process-stats-dir.py` to analyze the difference in compilation
-performance between two compilers, say `${OLD}/swiftc` and `${NEW}/swiftc`:
+performance between two compilers, say `${OLD}/ppswiftc` and `${NEW}/ppswiftc`:
 
 ```
 $ mkdir stats-old stats-new
-$ ${OLD}/swiftc -stats-output-dir stats-old test.swift
-$ ${OLD}/swiftc -stats-output-dir stats-new test.swift
+$ ${OLD}/ppswiftc -stats-output-dir stats-old test.swift
+$ ${OLD}/ppswiftc -stats-output-dir stats-new test.swift
 $ utils/process-stats-dir.py --compare-stats-dirs stats-old stats-new
 old     new     delta_pct       name
 1402939 1430732 1.98    AST.NumASTBytesAllocated
@@ -914,7 +914,7 @@ utils/update-checkout --scheme master --match-timestamp
 git checkout ${CURR}
 if utils/build-script -r
 then
-    V=$(count_instructions ../build/Ninja-ReleaseAssert/swift-linux-x86_64/bin/swiftc -c test.swift)
+    V=$(count_instructions ../build/Ninja-ReleaseAssert/swift-linux-x86_64/bin/ppswiftc -c test.swift)
     if [ ${V} -gt ${THRESHOLD} ]
     then
         # Bad
@@ -1228,13 +1228,13 @@ code-generation tool. The process is straightforward:
      ```
 
   2. Run the file under the `utils/scale-test` script. You will at least need to
-     pass a `--swiftc-binary` and `.gyb` template filename; by default, it will
+     pass a `--ppswiftc-binary` and `.gyb` template filename; by default, it will
      test on values of `N` ranging from `10` to `100` in steps of `10`, and fit
      scaling curves to _all_ counters that it measures, printing any that scale
      worse than `O(n^1.2)`. For example, the following will give an initial
      survey of the script above:
      ```
-     $ utils/scale-test --swiftc-binary=/.../usr/bin/swiftc test.swift.gyb
+     $ utils/scale-test --ppswiftc-binary=/.../usr/bin/ppswiftc test.swift.gyb
      O(n^0.0) : BasicCalleeAnalysis.computeMethodCallees
      O(n^0.0) : Clang module importer.NumTotalImportedEntities
      O(n^0.0) : Constraint solver largest system.LargestNumDisjunctionTerms

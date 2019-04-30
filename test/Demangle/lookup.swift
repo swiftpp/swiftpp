@@ -18,7 +18,7 @@
 // RUN: %target-swift-ide-test -source-filename=%s -print-ast-typechecked -find-mangled=$s14swift_ide_test16PrivateTypealias33_5CB4BCC03C4B9CB2AEEDDFF10FE7BD1ELLa
 // RUN: %target-swift-ide-test -source-filename=%s -print-ast-typechecked -find-mangled=$s14swift_ide_test5OuterC16PrivateTypealias33_5CB4BCC03C4B9CB2AEEDDFF10FE7BD1ELLa
 
-// RUN: %target-swiftc_driver -emit-module -o %t %s %S/Inputs/lookup_other.swift -module-name Lookup
+// RUN: %target-ppswiftc_driver -emit-module -o %t %s %S/Inputs/lookup_other.swift -module-name Lookup
 // RUN: echo 'import Lookup' > %t/test.swift
 
 // RUN: %target-swift-ide-test -source-filename=%t/test.swift -print-ast-typechecked -I %t -find-mangled=_TV6Lookup12PublicStruct

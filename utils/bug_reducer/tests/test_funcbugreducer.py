@@ -63,10 +63,10 @@ class FuncBugReducerTestCase(unittest.TestCase):
         (root, ext) = os.path.splitext(filename)
         return os.path.join(self.tmp_dir, os.path.basename(root) + '.sib')
 
-    def run_swiftc_command(self, name):
+    def run_ppswiftc_command(self, name):
         input_file_path = self._get_test_file_path(name)
         sib_path = self._get_sib_file_path(input_file_path)
-        args = [self.tools.swiftc,
+        args = [self.tools.ppswiftc,
                 '-module-cache-path', self.module_cache,
                 '-sdk', self.sdk,
                 '-Onone', '-parse-as-library',
@@ -95,7 +95,7 @@ class FuncBugReducerTestCase(unittest.TestCase):
 
     def test_basic(self):
         name = 'testbasic'
-        result_code = self.run_swiftc_command(name)
+        result_code = self.run_ppswiftc_command(name)
         assert result_code == 0, "Failed initial compilation"
         args = [
             self.reducer,

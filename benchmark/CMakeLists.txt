@@ -212,7 +212,7 @@ if(NOT SWIFT_OPTIMIZATION_LEVELS)
 endif()
 
 set(SWIFT_BENCHMARK_EXTRA_FLAGS "" CACHE STRING
-    "Extra options to pass to swiftc when building the benchmarks")
+    "Extra options to pass to ppswiftc when building the benchmarks")
 
 if (SWIFT_BENCHMARK_BUILT_STANDALONE)
   # This option's value must match the value of the same option used when

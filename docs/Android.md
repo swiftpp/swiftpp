@@ -108,7 +108,7 @@ source file, targeting Android:
 
 ```
 $ NDK_PATH="path/to/android-ndk16"
-$ build/Ninja-ReleaseAssert/swift-linux-x86_64/bin/swiftc \                      # The Swift compiler built in the previous step.
+$ build/Ninja-ReleaseAssert/swift-linux-x86_64/bin/ppswiftc \                      # The Swift compiler built in the previous step.
                                                                                  # The location of the tools used to build Android binaries
     -tools-directory ${NDK_PATH}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/arm-linux-androideabi/bin
     -target armv7-none-linux-androideabi \                                       # Targeting android-armv7.

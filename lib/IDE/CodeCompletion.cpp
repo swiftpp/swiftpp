@@ -5012,11 +5012,11 @@ static void addPlatformConditions(CodeCompletionResultSink &Sink) {
   addWithName("targetEnvironment", [](CodeCompletionResultBuilder &Builder) {
     Builder.addTextChunk("simulator");
   });
-  addWithName("swift", [](CodeCompletionResultBuilder &Builder) {
+  addWithName("ppswift", [](CodeCompletionResultBuilder &Builder) {
     Builder.addTextChunk(">=");
     Builder.addSimpleNamedParameter("version");
   });
-  addWithName("swift", [](CodeCompletionResultBuilder &Builder) {
+  addWithName("ppswift", [](CodeCompletionResultBuilder &Builder) {
     Builder.addTextChunk("<");
     Builder.addSimpleNamedParameter("version");
   });

@@ -109,7 +109,7 @@ Example::
           "path": "/build/foo.dia"
         },
      ],
-     "command_executable": "swift",
+     "command_executable": "ppswift",
      "command_arguments" : ["-frontend", "-c", "-primary-file", "/src/foo.swift", "/src/bar.swift", "-emit-module-path", "/build/foo.swiftmodule", "-emit-diagnostics-path", "/build/foo.dia"]
    }
 
@@ -201,7 +201,7 @@ Example::
           "path": "/build/foo.dia"
         },
      ],
-     "command_executable": "swift",
+     "command_executable": "ppswift",
      "command_arguments": ["-frontend", "-c", "-primary-file", "/src/foo.swift", "/src/bar.swift", "-emit-module-path", "/build/foo.swiftmodule", "-emit-diagnostics-path", "/build/foo.dia"]
    }
 

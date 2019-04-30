@@ -10,7 +10,7 @@
 // RUN: touch %t/file-01.swift %t/file-02.swift %t/file-03.swift %t/file-04.swift %t/file-05.swift
 // RUN: touch %t/file-06.swift %t/file-07.swift %t/file-08.swift %t/file-09.swift
 //
-// RUN: %swiftc_driver -enable-batch-mode -driver-batch-seed 1 -driver-print-jobs -driver-skip-execution -j 3 -emit-module -module-name foo %t/file-01.swift %t/file-02.swift %t/file-03.swift %t/file-04.swift %t/file-05.swift %t/file-06.swift %t/file-07.swift %t/file-08.swift %t/file-09.swift >%t/out.txt
+// RUN: %ppswiftc_driver -enable-batch-mode -driver-batch-seed 1 -driver-print-jobs -driver-skip-execution -j 3 -emit-module -module-name foo %t/file-01.swift %t/file-02.swift %t/file-03.swift %t/file-04.swift %t/file-05.swift %t/file-06.swift %t/file-07.swift %t/file-08.swift %t/file-09.swift >%t/out.txt
 // RUN: %FileCheck %s <%t/out.txt
 //
 // Each batch should get 3 primaries; check that each has 3 modules _in the same numeric order_.
