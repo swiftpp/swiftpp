@@ -1,7 +1,7 @@
 // RUN: %empty-directory(%t)
-// RUN: %target-ppswiftc_driver -O -wmo -save-optimization-record %s -module-name optrecordmod -o %t/opt-record 2>&1 | %FileCheck -allow-empty %s
+// RUN: %target-swiftppc_driver -O -wmo -save-optimization-record %s -module-name optrecordmod -o %t/opt-record 2>&1 | %FileCheck -allow-empty %s
 // RUN: %FileCheck -check-prefix=YAML %s < %t/optrecordmod.opt.yaml
-// RUN: %target-ppswiftc_driver -O -wmo -save-optimization-record-path %t/specified.opt.yaml %s -module-name optrecordmod -o %t/opt-record 2>&1 | %FileCheck -allow-empty %s
+// RUN: %target-swiftppc_driver -O -wmo -save-optimization-record-path %t/specified.opt.yaml %s -module-name optrecordmod -o %t/opt-record 2>&1 | %FileCheck -allow-empty %s
 // RUN: %FileCheck -check-prefix=YAML %s < %t/specified.opt.yaml
 
 // CHECK-NOT: remark

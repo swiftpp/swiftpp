@@ -18,13 +18,13 @@
 // RUN: not %{python} %utils/process-stats-dir.py --compare-to-csv-baseline %t/frontend.csv %t
 
 // RUN: %empty-directory(%t)
-// RUN: %target-ppswiftc_driver -c -o %t/out.o -stats-output-dir %t %s
+// RUN: %target-swiftppc_driver -c -o %t/out.o -stats-output-dir %t %s
 // RUN: %{python} %utils/process-stats-dir.py --set-csv-baseline %t/driver.csv %t
 // RUN: %FileCheck -input-file %t/driver.csv %s
 // RUN: %{python} %utils/process-stats-dir.py --compare-to-csv-baseline %t/driver.csv %t
 
-// RUN: %target-ppswiftc_driver -c -o %t/out.o -stats-output-dir %t/this/is/not/a/directory %s 2>&1 | %FileCheck -check-prefix=CHECK-NODIR %s
-// RUN: %target-ppswiftc_driver -c -o %t/out.o -stats-output-dir %t %s 2>&1 | %FileCheck -allow-empty -check-prefix=CHECK-SILENT %s
+// RUN: %target-swiftppc_driver -c -o %t/out.o -stats-output-dir %t/this/is/not/a/directory %s 2>&1 | %FileCheck -check-prefix=CHECK-NODIR %s
+// RUN: %target-swiftppc_driver -c -o %t/out.o -stats-output-dir %t %s 2>&1 | %FileCheck -allow-empty -check-prefix=CHECK-SILENT %s
 
 // CHECK: {{"AST.NumSourceLines"	[1-9][0-9]*$}}
 // CHECK: {{"IRModule.NumIRFunctions"	[1-9][0-9]*$}}

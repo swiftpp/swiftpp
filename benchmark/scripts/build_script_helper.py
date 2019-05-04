@@ -20,9 +20,9 @@ def perform_build(args, swiftbuild_path, config, binary_name, opt_flag):
         '--package-path', args.package_path,
         '--build-path', inner_build_dir,
         '--configuration', config,
-        '-Xppswiftc', '-Xllvm',
-        '-Xppswiftc', '-align-module-to-page-size',
-        '-Xppswiftc', opt_flag,
+        '-Xswiftppc', '-Xllvm',
+        '-Xswiftppc', '-align-module-to-page-size',
+        '-Xswiftppc', opt_flag,
     ]
     if args.verbose:
         swiftbuild_args.append('--verbose')

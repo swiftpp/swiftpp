@@ -47,10 +47,10 @@ runtime error if the tool does not exist"""
         return self._get_tool('sil-nm')
 
     @property
-    def ppswiftc(self):
-        """Return the path to ppswiftc in the specified swift build directory. Throws a
+    def swiftppc(self):
+        """Return the path to swiftppc in the specified swift build directory. Throws a
 runtime error if the tool does not exist"""
-        return self._get_tool('ppswiftc')
+        return self._get_tool('swiftppc')
 
     @property
     def sil_opt(self):

@@ -179,7 +179,7 @@ ArgsToFrontendInputsConverter::createInputFilesConsumingPrimaries(
 bool ArgsToFrontendInputsConverter::diagnoseUnusedPrimaryFiles(
     std::set<StringRef> primaryFiles) {
   for (auto &file : primaryFiles) {
-    // Catch "ppswiftc -frontend -c -filelist foo -primary-file
+    // Catch "swiftppc -frontend -c -filelist foo -primary-file
     // some-file-not-in-foo".
     assert(FilelistPathArg && "Unused primary with no filelist");
     Diags.diagnose(SourceLoc(), diag::error_primary_file_not_found, file,

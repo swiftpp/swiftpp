@@ -27,7 +27,7 @@ __all__ = [
     'PathType',
     'RegexType',
     'ClangVersionType',
-    'PPSwiftVersionType',
+    'SwiftPPVersionType',
     'ShellSplitType',
 ]
 
@@ -177,7 +177,7 @@ class ClangVersionType(RegexType):
         return CompilerVersion(components)
 
 
-class PPSwiftVersionType(RegexType):
+class SwiftPPVersionType(RegexType):
     """Argument type used to validate Swift version strings.
     """
 
@@ -186,12 +186,12 @@ class PPSwiftVersionType(RegexType):
     VERSION_REGEX = r'^(\d+)\.(\d+)(\.(\d+))?$'
 
     def __init__(self):
-        super(PPSwiftVersionType, self).__init__(
-            PPSwiftVersionType.VERSION_REGEX,
-            PPSwiftVersionType.ERROR_MESSAGE)
+        super(SwiftPPVersionType, self).__init__(
+            SwiftPPVersionType.VERSION_REGEX,
+            SwiftPPVersionType.ERROR_MESSAGE)
 
     def __call__(self, value):
-        matches = super(PPSwiftVersionType, self).__call__(value)
+        matches = super(SwiftPPVersionType, self).__call__(value)
         components = filter(lambda x: x is not None, matches.group(1, 2, 4))
 
         return CompilerVersion(components)

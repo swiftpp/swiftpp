@@ -82,9 +82,9 @@ static bool shouldRunAsSubcommand(StringRef ExecName,
   assert(!Args.empty());
 
   // If we are not run as 'swift', don't do anything special. This doesn't work
-  // with symlinks with alternate names, but we can't detect 'ppswift' vs 'ppswiftc'
+  // with symlinks with alternate names, but we can't detect 'swiftpp' vs 'swiftppc'
   // if we try and resolve using the actual executable path.
-  if (ExecName != "ppswift")
+  if (ExecName != "swiftpp")
     return false;
 
   // If there are no program arguments, always invoke as normal.

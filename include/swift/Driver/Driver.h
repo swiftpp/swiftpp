@@ -147,7 +147,7 @@ public:
   /// allowable OutputInfo::Mode values.
   enum class DriverKind {
     Interactive,     // swift
-    Batch,           // ppswiftc
+    Batch,           // swiftppc
     AutolinkExtract, // swift-autolink-extract
     SwiftFormat      // swift-format
   };

@@ -2,7 +2,7 @@
 // RUN: cd %t
 // RUN: %target-build-swift %S/Inputs/tsan-uninstrumented.swift -target %sanitizers-target-triple -module-name TSanUninstrumented -emit-module -emit-module-path %t/TSanUninstrumented.swiftmodule -parse-as-library
 // RUN: %target-build-swift %S/Inputs/tsan-uninstrumented.swift -target %sanitizers-target-triple -c -module-name TSanUninstrumented -parse-as-library -o %t/TSanUninstrumented.o
-// RUN: %target-ppswiftc_driver %s %t/TSanUninstrumented.o -target %sanitizers-target-triple -I%t -L%t -g -sanitize=thread -o %t/tsan-binary
+// RUN: %target-swiftppc_driver %s %t/TSanUninstrumented.o -target %sanitizers-target-triple -I%t -L%t -g -sanitize=thread -o %t/tsan-binary
 // RUN: not env %env-TSAN_OPTIONS=abort_on_error=0 %target-run %t/tsan-binary 2>&1 | %FileCheck %s
 // RUN: not env %env-TSAN_OPTIONS=abort_on_error=0:ignore_interceptors_accesses=0 %target-run %t/tsan-binary 2>&1 | %FileCheck %s --check-prefix CHECK-INTERCEPTORS-ACCESSES
 // REQUIRES: executable_test

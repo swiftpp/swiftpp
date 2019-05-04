@@ -64,7 +64,7 @@ def compute_build_subdir(args):
             swift_build_dir_label == cmark_build_dir_label):
         # Swift build type differs.
         build_subdir += "-" + llvm_build_dir_label
-        build_subdir += "+ppswift-" + swift_build_dir_label
+        build_subdir += "+swiftpp-" + swift_build_dir_label
     elif (llvm_build_dir_label == swift_build_dir_label and
             llvm_build_dir_label != swift_stdlib_build_dir_label and
             swift_build_dir_label == cmark_build_dir_label):

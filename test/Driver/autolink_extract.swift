@@ -1,4 +1,4 @@
-// RUN: %target-ppswiftc_driver -### %s | %FileCheck %s
+// RUN: %target-swiftppc_driver -### %s | %FileCheck %s
 
 // REQUIRES: autolink-extract
 

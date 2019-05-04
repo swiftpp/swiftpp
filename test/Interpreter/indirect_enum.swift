@@ -1,4 +1,4 @@
-// RUN: %target-ppswiftc_driver %s -target %sanitizers-target-triple -g -sanitize=address -o %t_asan-binary
+// RUN: %target-swiftppc_driver %s -target %sanitizers-target-triple -g -sanitize=address -o %t_asan-binary
 // RUN: %target-codesign %t_asan-binary
 // RUN: env ASAN_OPTIONS=detect_leaks=0 %target-run %t_asan-binary
 

@@ -4,10 +4,10 @@
 //
 // Make sure the proper warning is emitted:
 //
-// RUN: %ppswiftc_driver -enable-batch-mode -num-threads 2 %t/main.swift -import-objc-header %t/bridgingHeader.h -### 2>&1 | %FileCheck %s
+// RUN: %swiftppc_driver -enable-batch-mode -num-threads 2 %t/main.swift -import-objc-header %t/bridgingHeader.h -### 2>&1 | %FileCheck %s
 //
 // CHECK: ignoring -num-threads argument; cannot multithread batch mode
 //
 // Make sure that it actually works. (The link step fails if -num-threads is not ignored.)
 //
-// RUN: %ppswiftc_driver -enable-batch-mode -num-threads 2 -c %t/main.swift -import-objc-header %t/bridgingHeader.h -o %t/main.o
+// RUN: %swiftppc_driver -enable-batch-mode -num-threads 2 -c %t/main.swift -import-objc-header %t/bridgingHeader.h -o %t/main.o

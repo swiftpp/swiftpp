@@ -1,4 +1,4 @@
-// RUN: %target-ppswiftc_driver -c %s -o %t
+// RUN: %target-swiftppc_driver -c %s -o %t
 // RUN: rm -f %t.a
 // RUN: llvm-ar cr %t.a %t
 // RUN: %target-swift-autolink-extract %t.a -o - | %FileCheck --check-prefix CHECK-%target-object-format %s

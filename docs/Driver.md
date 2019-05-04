@@ -17,9 +17,9 @@ this is probably still useful to you, but you should also check out
 [DriverInternals.rst](DriverInternals.rst) and maybe
 [DependencyAnalysis.rst](DependencyAnalysis.rst) as well. If you're just using
 Xcode or SwiftPM and want to find out what mysterious command-line options you
-could be passing, `ppswiftc --help` is a better choice.
+could be passing, `swiftppc --help` is a better choice.
 
-If you're invoking `swift -frontend` directly, and you aren't working on the
+If you're invoking `swiftpp -frontend` directly, and you aren't working on the
 compiler itself...well, this document should convince you to not do that.
 
 Some terms:
@@ -34,18 +34,18 @@ Some terms:
   compilation unit, and every file in the same compilation unit are assumed to
   be part of the same module. Doing anything else is unsupported.
 
-- The _driver_ is the program that's run when you invoke `swift` or `ppswiftc`.
+- The _driver_ is the program that's run when you invoke `swiftpp` or `swiftppc`.
   This doesn't actually compile anything itself; instead it invokes other tools
   to produce the desired output.
 
 - The _frontend_ is the program that actually compiles code (and in interpreter
-  mode, executes it via a JIT). It's hidden behind `swift -frontend`.
+  mode, executes it via a JIT). It's hidden behind `swiftpp -frontend`.
 
   The frontend is an implementation detail. No aspects of its command-line
   interface are considered stable. Even its existence isn't guaranteed.
 
 - The _REPL_ is a mode of the debugger (LLDB) that is launched by the driver
-  when you invoke `swift` with no inputs. It doesn't actually come up again in
+  when you invoke `swiftpp` with no inputs. It doesn't actually come up again in
   this document, but it's probably worth mentioning for completeness.
 
 
@@ -63,7 +63,7 @@ stages of subprocesses:
 3. Linking
 
 Dependencies between the subprocesses are managed by the driver. Outputs are
-controlled by `-o` and other various compiler flags; see `ppswiftc --help` for
+controlled by `-o` and other various compiler flags; see `swiftppc --help` for
 more information.
 
 
@@ -266,7 +266,7 @@ here; just using the driver as intended should work fine.
 ## So, how should I work Swift into my build system? ##
 
 Step 0 is to see if you can use the Swift package manager instead. If so, it's
-mostly just `swift build`. But if you're reading this document you're probably
+mostly just `swiftpp build`. But if you're reading this document you're probably
 past that, so:
 
 1. Generate an output file map that contains all the per-file outputs you care
@@ -279,7 +279,7 @@ past that, so:
 
 3. Do one of the following:
 
-   - Invoke `ppswiftc -emit-executable` or `ppswiftc -emit-library`. Pass all the
+   - Invoke `swiftppc -emit-executable` or `swiftppc -emit-library`. Pass all the
      Swift files, even if you're building incrementally (`-incremental`). Pass
      `-j <N>` and/or `-num-threads <N>` if you have cores to spare. Pass
      `-emit-module-path <path>` if you're building a library that you need to
@@ -290,11 +290,11 @@ past that, so:
      at improving on this.) On the plus side, this mode doesn't strictly need
      an output file map if you give up incremental builds.
 
-   - Invoke `ppswiftc -c`, then pass the resulting object files to your linker.
+   - Invoke `swiftppc -c`, then pass the resulting object files to your linker.
      All the same options from above apply, but you'll have to manually deal
      with the work the compiler would have done automatically for you.
 
-   - Invoke `ppswiftc -c` with `-###`. Then run all of the outputted commands
+   - Invoke `swiftppc -c` with `-###`. Then run all of the outputted commands
      that include `-primary-file`, then run the remaining commands in order
      (they may have dependencies). If none of the commands have `-primary-file`
      in them, they're not parallelizable, sorry.

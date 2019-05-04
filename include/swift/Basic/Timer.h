@@ -49,7 +49,7 @@ namespace swift {
   public:
     explicit SharedTimer(StringRef name) {
       if (CompilationTimersEnabled == State::Enabled)
-        Timer.emplace(name, name, "ppswift", "++Swift compilation");
+        Timer.emplace(name, name, "swiftpp", "Swift++ compilation");
       else
         CompilationTimersEnabled = State::Skipped;
     }

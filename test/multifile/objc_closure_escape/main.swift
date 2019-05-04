@@ -1,7 +1,7 @@
 // RUN: %empty-directory(%t)
-// RUN: %target-ppswiftc_driver -emit-objc-header %S/../Inputs/objc-escape/DangerousEscaper.swift -emit-objc-header-path %t/DangerousEscaper.h
+// RUN: %target-swiftppc_driver -emit-objc-header %S/../Inputs/objc-escape/DangerousEscaper.swift -emit-objc-header-path %t/DangerousEscaper.h
 // RUN: %target-clang -c %S/../Inputs/objc-escape/Escaper.m -fobjc-arc -I %t -o %t/Escaper.o
-// RUN: %target-ppswiftc_driver -import-objc-header %S/../Inputs/objc-escape/Escaper.h %S/../Inputs/objc-escape/DangerousEscaper.swift %s %t/Escaper.o -o %t/TestObjcProto
+// RUN: %target-swiftppc_driver -import-objc-header %S/../Inputs/objc-escape/Escaper.h %S/../Inputs/objc-escape/DangerousEscaper.swift %s %t/Escaper.o -o %t/TestObjcProto
 // RUN: %target-codesign %t/TestObjcProto
 // RUN: %target-run %t/TestObjcProto 2>&1 | %FileCheck %s
 

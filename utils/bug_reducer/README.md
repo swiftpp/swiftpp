@@ -29,7 +29,7 @@ hopefully help fix them/add tests).
 2. Reduction at a function level is complete, we should look into block/instruction
    reduction techniques to reduce SIL further.
 3. Then we need to implement miscompile detection support. This implies
-   implementing support for codegening code from this tool using ppswiftc. This
+   implementing support for codegening code from this tool using swiftppc. This
    implies splitting modules into optimized and unoptimized parts. Luckily,
    sil-func-extractor can perform this task modulo one task*.
 

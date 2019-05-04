@@ -45,7 +45,7 @@ TEST_SUBSETS = [
     'only_stress',
 ]
 
-SWIFT_SOURCE_DIR = os.path.join(SWIFT_SOURCE_ROOT, 'ppswift')
+SWIFT_SOURCE_DIR = os.path.join(SWIFT_SOURCE_ROOT, 'swiftpp')
 TEST_SOURCE_DIR = os.path.join(SWIFT_SOURCE_DIR, 'test')
 VALIDATION_TEST_SOURCE_DIR = os.path.join(SWIFT_SOURCE_DIR, 'validation-test')
 

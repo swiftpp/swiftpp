@@ -1,5 +1,5 @@
 // RUN: %empty-directory(%t)
-// RUN: %target-ppswiftc_driver -o %t/main -module-name main -stats-output-dir %t %s -trace-stats-events
+// RUN: %target-swiftppc_driver -o %t/main -module-name main -stats-output-dir %t %s -trace-stats-events
 // RUN: %FileCheck -input-file %t/*.csv %s
 
 // CHECK-DAG: {{[0-9]+,[0-9]+,"exit","typecheck-expr","Sema.NumTypesDeserialized",[0-9]+,[0-9]+,"Call","\[.*stats_dir_tracer.swift.*\]"}}

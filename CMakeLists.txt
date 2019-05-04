@@ -80,11 +80,11 @@ else()
 endif()
 
 option(SWIFT_BUILD_PERF_TESTSUITE
-    "Create in-tree targets for building ++swift performance benchmarks."
+    "Create in-tree targets for building Swift++ performance benchmarks."
     FALSE)
 
 option(SWIFT_BUILD_EXTERNAL_PERF_TESTSUITE
-    "Create out-of-tree targets for building ++swift performance benchmarks."
+    "Create out-of-tree targets for building Swift++ performance benchmarks."
     FALSE)
 
 option(SWIFT_INCLUDE_TESTS "Create targets for building/running tests." TRUE)
@@ -101,25 +101,25 @@ option(SWIFT_INCLUDE_DOCS
 
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set(CMAKE_BUILD_TYPE "Debug" CACHE STRING
-      "Build type for ++Swift [Debug, RelWithDebInfo, Release, MinSizeRel]"
+      "Build type for Swift++ [Debug, RelWithDebInfo, Release, MinSizeRel]"
       FORCE)
   message(STATUS "No build type was specified, will default to ${CMAKE_BUILD_TYPE}")
 endif()
 
 set(SWIFT_ANALYZE_CODE_COVERAGE FALSE CACHE STRING
-    "Build ++Swift with code coverage instrumenting enabled [FALSE, NOT-MERGED, MERGED]")
+    "Build Swift++ with code coverage instrumenting enabled [FALSE, NOT-MERGED, MERGED]")
 set_property(CACHE SWIFT_ANALYZE_CODE_COVERAGE PROPERTY
     STRINGS FALSE "NOT-MERGED" "MERGED")
 
 # SWIFT_VERSION is deliberately /not/ cached so that an existing build directory
-# can be reused when a new version of ++Swift comes out (assuming the user hasn't
+# can be reused when a new version of Swift++ comes out (assuming the user hasn't
 # manually set it as part of their own CMake configuration).
 set(SWIFT_VERSION "5.0")
 
 set(SWIFT_VENDOR "" CACHE STRING
-    "The vendor name of the ++Swift compiler")
+    "The vendor name of the Swift++ compiler")
 set(SWIFT_COMPILER_VERSION "" CACHE STRING
-    "The internal version of the ++Swift compiler")
+    "The internal version of the Swift++ compiler")
 set(CLANG_COMPILER_VERSION "" CACHE STRING
     "The internal version of the Clang compiler")
 
@@ -132,7 +132,7 @@ set(SWIFT_ENABLE_LLD_LINKER TRUE CACHE BOOL
 set(SWIFT_ENABLE_GOLD_LINKER TRUE CACHE BOOL
     "Enable using the gold linker when available")
 
-set(SWIFT_TOOLS_ENABLE_LTO OFF CACHE STRING "Build ++Swift tools with LTO. One
+set(SWIFT_TOOLS_ENABLE_LTO OFF CACHE STRING "Build Swift++ tools with LTO. One
     must specify the form of LTO by setting this to one of: 'full', 'thin'. This
     option only affects the tools that run on the host (the compiler), and has
     no effect on the target libraries (the standard library and the runtime).")
@@ -145,7 +145,7 @@ option(SWIFT_FORCE_OPTIMIZED_TYPECHECKER "Override the optimization setting of
   the type checker so that it always compiles with optimization. This eases
   debugging after type checking occurs by speeding up type checking" FALSE)
 
-# Allow building ++Swift with Clang's Profile Guided Optimization
+# Allow building Swift++ with Clang's Profile Guided Optimization
 if(SWIFT_PROFDATA_FILE AND EXISTS ${SWIFT_PROFDATA_FILE})
   if(NOT CMAKE_C_COMPILER_ID MATCHES Clang)
     message(FATAL_ERROR "SWIFT_PROFDATA_FILE can only be specified when compiling with clang")
@@ -194,7 +194,7 @@ set(SWIFT_NATIVE_CLANG_TOOLS_PATH "" CACHE STRING
     "Path to the directory that contains Clang tools that are executable on the build machine")
 
 set(SWIFT_NATIVE_SWIFT_TOOLS_PATH "" CACHE STRING
-   "Path to the directory that contains ++Swift tools that are executable on the build machine")
+   "Path to the directory that contains Swift++ tools that are executable on the build machine")
 
 option(SWIFT_ENABLE_PARSEABLE_MODULE_INTERFACES
        "Generate .swiftinterface files alongside .swiftmodule files"
@@ -277,7 +277,7 @@ option(SWIFT_AST_VERIFIER
     TRUE)
 
 option(SWIFT_SIL_VERIFY_ALL
-    "Run SIL verification after each transform when building ++Swift files in the build process"
+    "Run SIL verification after each transform when building Swift++ files in the build process"
     FALSE)
 
 option(SWIFT_EMIT_SORTED_SIL_OUTPUT
@@ -402,7 +402,7 @@ if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
 endif()
 
 if(SWIFT_BUILT_STANDALONE)
-  project(PPSwift C CXX ASM)
+  project(SwiftPP C CXX ASM)
 endif()
 
 if(MSVC OR "${CMAKE_SIMULATE_ID}" STREQUAL MSVC)

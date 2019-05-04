@@ -2,8 +2,8 @@
 // frontend flag. This tests the general functionality; we test the macosx
 // specific toolchain logic in compiler-flags-macosx.swift.
 
-// RUN: %target-ppswiftc_driver %s -emit-ir -debug-info-store-invocation -g -o - | %FileCheck %s
-// RUN: %target-ppswiftc_driver %s -emit-ir -debug-info-store-invocation -sdk "/Weird Location/SDK" -g -o - | %FileCheck --check-prefix CHECK-EXPLICIT %s
+// RUN: %target-swiftppc_driver %s -emit-ir -debug-info-store-invocation -g -o - | %FileCheck %s
+// RUN: %target-swiftppc_driver %s -emit-ir -debug-info-store-invocation -sdk "/Weird Location/SDK" -g -o - | %FileCheck --check-prefix CHECK-EXPLICIT %s
 // CHECK:          !DICompileUnit({{.*}}producer: "{{(Apple )?Swift version [^"]+}}"
 // CHECK-SAME:                    flags: "
 // CHECK-NOT:                     "

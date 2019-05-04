@@ -1,6 +1,6 @@
-;===--- ppswift-mode.el ----------------------------------------------------===;
+;===--- swiftpp-mode.el ----------------------------------------------------===;
 ;
-; This source file is part of the ++Swift.org open source project
+; This source file is part of the Swift++.org open source project
 ;
 ; Copyright (c) 2014 - 2017 Apple Inc. and the Swift project authors
 ; Licensed under Apache License v2.0 with Runtime Library Exception
@@ -26,16 +26,16 @@
     `(make-variable-buffer-local (defvar ,var ,val ,docstring))))
 
 ;; Create mode-specific variables
-(defcustom ppswift-basic-offset 2
-  "Default indentation width for ++Swift source"
+(defcustom swiftpp-basic-offset 2
+  "Default indentation width for Swift++ source"
   :type 'integer)
 
 
 ;; Create mode-specific tables.
-(defvar ppswift-mode-syntax-table nil
-  "Syntax table used while in ++SWIFT mode.")
+(defvar swiftpp-mode-syntax-table nil
+  "Syntax table used while in Swift++ mode.")
 
-(defvar ppswift-font-lock-keywords
+(defvar swiftpp-font-lock-keywords
   (list
    ;; Comments
    '("^#!.*" . font-lock-comment-face)
@@ -85,18 +85,18 @@
    ;; Unnamed variables
    '("$[0-9]+" . font-lock-variable-name-face)
    )
-  "Syntax highlighting for ++SWIFT"
+  "Syntax highlighting for Swift++"
   )
 
 ;; ---------------------- Syntax table ---------------------------
 
-(if (not ppswift-mode-syntax-table)
+(if (not swiftpp-mode-syntax-table)
     (progn
-      (setq ppswift-mode-syntax-table (make-syntax-table))
+      (setq swiftpp-mode-syntax-table (make-syntax-table))
       (mapc (function (lambda (n)
                         (modify-syntax-entry (aref n 0)
                                              (aref n 1)
-                                             ppswift-mode-syntax-table)))
+                                             swiftpp-mode-syntax-table)))
             '(
               ;; whitespace (` ')
               [?\f  " "]
@@ -130,25 +130,25 @@
 
 ;; --------------------- Abbrev table -----------------------------
 
-(defvar ppswift-mode-abbrev-table nil
-  "Abbrev table used while in ++SWIFT mode.")
-(define-abbrev-table 'ppswift-mode-abbrev-table ())
+(defvar swiftpp-mode-abbrev-table nil
+  "Abbrev table used while in Swift++ mode.")
+(define-abbrev-table 'swiftpp-mode-abbrev-table ())
 
-(defvar ppswift-mode-map
+(defvar swiftpp-mode-map
   (let ((keymap (make-sparse-keymap)))
     keymap)
-  "Keymap for `ppswift-mode'.")
+  "Keymap for `swiftpp-mode'.")
 
 
 ;;;###autoload
-(define-derived-mode ppswift-mode prog-mode "++Swift"
-  "Major mode for editing ++SWIFT source files.
-  \\{ppswift-mode-map}
-  Runs ppswift-mode-hook on startup."
-  :group 'ppswift
+(define-derived-mode swiftpp-mode prog-mode "Swift++"
+  "Major mode for editing Swift++ source files.
+  \\{swiftpp-mode-map}
+  Runs swiftpp-mode-hook on startup."
+  :group 'swiftpp
 
   (require 'electric)
-  (set (make-local-variable 'indent-line-function) 'ppswift-indent-line)
+  (set (make-local-variable 'indent-line-function) 'swiftpp-indent-line)
   (set (make-local-variable 'parse-sexp-ignore-comments) t)
   (set (make-local-variable 'comment-use-syntax) nil) ;; don't use the syntax table; use our regexp
   (set (make-local-variable 'comment-start-skip) "\\(?:/\\)\\(?:/[:/]?\\|[*]+\\)[ \t]*")
@@ -172,9 +172,9 @@
        '((?\{ . after) (?\} . before)))
 
   (set (make-local-variable 'font-lock-defaults)
-       '(ppswift-font-lock-keywords) ))
+       '(swiftpp-font-lock-keywords) ))
 
-(defconst ppswift-doc-comment-detail-re
+(defconst swiftpp-doc-comment-detail-re
   (let* ((just-space "[ \t\n]*")
         (not-just-space "[ \t]*[^ \t\n].*")
         (eol "\\(?:$\\)")
@@ -185,9 +185,9 @@
             "\\(" continue just-space eol
             "\\(?:" continue ".*" eol "\\)*"
             "\\)"))
-  "regexp that finds the non-summary part of a ++swift doc comment as subexpression 2")
+  "regexp that finds the non-summary part of a Swift++ doc comment as subexpression 2")
 
-(defun ppswift-hide-doc-comment-detail ()
+(defun swiftpp-hide-doc-comment-detail ()
   "Hide everything but the summary part of doc comments.
 
 Use `M-x hs-show-all' to show them again."
@@ -196,68 +196,68 @@ Use `M-x hs-show-all' to show them again."
   (save-excursion
     (save-match-data
       (goto-char (point-min))
-      (while (search-forward-regexp ppswift-doc-comment-detail-re (point-max) :noerror)
+      (while (search-forward-regexp swiftpp-doc-comment-detail-re (point-max) :noerror)
         (hs-hide-comment-region (match-beginning 2) (match-end 2))
         (goto-char (match-end 2))))))
 
-(defvar ppswift-mode-generic-parameter-list-syntax-table
-  (let ((s (copy-syntax-table ppswift-mode-syntax-table)))
+(defvar swiftpp-mode-generic-parameter-list-syntax-table
+  (let ((s (copy-syntax-table swiftpp-mode-syntax-table)))
     (modify-syntax-entry ?\< "(>" s)
     (modify-syntax-entry ?\> ")<" s)
     s))
 
-(defun ppswift-skip-comments-and-space ()
+(defun swiftpp-skip-comments-and-space ()
   "Skip comments and whitespace, returning t"
   (while (forward-comment 1))
   t)
 
-(defconst ppswift-identifier-re "\\_<[[:alpha:]_].*?\\_>")
+(defconst swiftpp-identifier-re "\\_<[[:alpha:]_].*?\\_>")
 
-(defun ppswift-skip-optionality ()
+(defun swiftpp-skip-optionality ()
   "Hop over any comments, whitespace, and strings
 of `!' or `?', returning t unconditionally."
-  (ppswift-skip-comments-and-space)
+  (swiftpp-skip-comments-and-space)
   (while (not (zerop (skip-chars-forward "!?")))
-    (ppswift-skip-comments-and-space)))
+    (swiftpp-skip-comments-and-space)))
 
-(defun ppswift-skip-generic-parameter-list ()
+(defun swiftpp-skip-generic-parameter-list ()
   "Hop over any comments, whitespace, and, if present, a generic
 parameter list, returning t if the parameter list was found and
 nil otherwise."
-  (ppswift-skip-comments-and-space)
+  (swiftpp-skip-comments-and-space)
   (when (looking-at "<")
-    (with-syntax-table ppswift-mode-generic-parameter-list-syntax-table
+    (with-syntax-table swiftpp-mode-generic-parameter-list-syntax-table
       (ignore-errors (forward-sexp) t))))
 
-(defun ppswift-skip-re (pattern)
+(defun swiftpp-skip-re (pattern)
   "Hop over any comments and whitespace; then if PATTERN matches
 the next characters skip over them, returning t if so and nil
 otherwise."
-  (ppswift-skip-comments-and-space)
+  (swiftpp-skip-comments-and-space)
   (save-match-data
     (when (looking-at pattern)
       (goto-char (match-end 0))
       t)))
 
-(defun ppswift-skip-identifier ()
+(defun swiftpp-skip-identifier ()
   "Hop over any comments, whitespace, and an identifier if one is
 present, returning t if so and nil otherwise."
-  (ppswift-skip-re ppswift-identifier-re))
+  (swiftpp-skip-re swiftpp-identifier-re))
 
-(defun ppswift-skip-simple-type-name ()
+(defun swiftpp-skip-simple-type-name ()
   "Hop over a chain of the form identifier
 generic-parameter-list? ( `.' identifier generic-parameter-list?
 )*, returning t if the initial identifier was found and nil otherwise."
-  (when (ppswift-skip-identifier)
-    (ppswift-skip-generic-parameter-list)
-    (when (ppswift-skip-re "\\.")
-      (ppswift-skip-simple-type-name))
+  (when (swiftpp-skip-identifier)
+    (swiftpp-skip-generic-parameter-list)
+    (when (swiftpp-skip-re "\\.")
+      (swiftpp-skip-simple-type-name))
     t))
 
-(defun ppswift-skip-type-name ()
+(defun swiftpp-skip-type-name ()
     "Hop over any comments, whitespace, and the name of a type if
 one is present, returning t if so and nil otherwise"
-  (ppswift-skip-comments-and-space)
+  (swiftpp-skip-comments-and-space)
   (let ((found nil))
     ;; repeatedly
     (while
@@ -268,39 +268,39 @@ one is present, returning t if so and nil otherwise"
            (forward-sexp)
            (setq found t))
 
-          ((ppswift-skip-simple-type-name)
+          ((swiftpp-skip-simple-type-name)
            (setq found t)))
 
           ;; followed by "->"
-         (prog2 (ppswift-skip-re "\\?+")
-             (ppswift-skip-re "throws\\|rethrows\\|->")
-           (ppswift-skip-re "->") ;; accounts for the throws/rethrows cases on the previous line
-           (ppswift-skip-comments-and-space))))
+         (prog2 (swiftpp-skip-re "\\?+")
+             (swiftpp-skip-re "throws\\|rethrows\\|->")
+           (swiftpp-skip-re "->") ;; accounts for the throws/rethrows cases on the previous line
+           (swiftpp-skip-comments-and-space))))
     found))
 
-(defun ppswift-skip-constraint ()
+(defun swiftpp-skip-constraint ()
     "Hop over a single type constraint if one is present,
 returning t if so and nil otherwise"
-  (ppswift-skip-comments-and-space)
-  (and (ppswift-skip-type-name)
-       (ppswift-skip-re ":\\|==")
-       (ppswift-skip-type-name)))
+  (swiftpp-skip-comments-and-space)
+  (and (swiftpp-skip-type-name)
+       (swiftpp-skip-re ":\\|==")
+       (swiftpp-skip-type-name)))
 
-(defun ppswift-skip-where-clause ()
+(defun swiftpp-skip-where-clause ()
     "Hop over a where clause if one is present, returning t if so
 and nil otherwise"
-  (when (ppswift-skip-re "\\<where\\>")
-    (while (and (ppswift-skip-constraint) (ppswift-skip-re ",")))
+  (when (swiftpp-skip-re "\\<where\\>")
+    (while (and (swiftpp-skip-constraint) (swiftpp-skip-re ",")))
     t))
 
-(defun ppswift-in-string-or-comment ()
+(defun swiftpp-in-string-or-comment ()
   "Return non-nil if point is in a string or comment."
   (or (nth 3 (syntax-ppss)) (nth 4 (syntax-ppss))))
 
-(defconst ppswift-body-keyword-re
+(defconst swiftpp-body-keyword-re
   "\\_<\\(var\\|func\\|init\\|deinit\\|subscript\\)\\_>")
 
-(defun ppswift-hide-bodies ()
+(defun swiftpp-hide-bodies ()
   "Hide the bodies of methods, functions, and computed properties.
 
 Use `M-x hs-show-all' to show them again."
@@ -309,19 +309,19 @@ Use `M-x hs-show-all' to show them again."
   (save-excursion
     (save-match-data
       (goto-char (point-min))
-      (while (search-forward-regexp ppswift-body-keyword-re (point-max) :noerror)
+      (while (search-forward-regexp swiftpp-body-keyword-re (point-max) :noerror)
         (when
             (and
-             (not (ppswift-in-string-or-comment))
+             (not (swiftpp-in-string-or-comment))
              (let ((keyword (match-string 0)))
                ;; parse up to the opening brace
                (cond
                 ((equal keyword "deinit") t)
 
                 ((equal keyword "var")
-                 (and (ppswift-skip-identifier)
-                      (ppswift-skip-re ":")
-                      (ppswift-skip-type-name)))
+                 (and (swiftpp-skip-identifier)
+                      (swiftpp-skip-re ":")
+                      (swiftpp-skip-type-name)))
 
                 ;; otherwise, there's a parameter list
                 (t
@@ -331,17 +331,17 @@ Use `M-x hs-show-all' to show them again."
                   ;; advance to the beginning of the function
                   ;; parameter list
                   (progn
-                    (ppswift-skip-generic-parameter-list)
-                    (ppswift-skip-comments-and-space)
+                    (swiftpp-skip-generic-parameter-list)
+                    (swiftpp-skip-comments-and-space)
                     (equal (char-after) ?\())
                   ;; parse the parameter list and any return type
                   (prog1
-                    (ppswift-skip-type-name)
-                    (ppswift-skip-where-clause))))))
-             (ppswift-skip-re "{"))
+                    (swiftpp-skip-type-name)
+                    (swiftpp-skip-where-clause))))))
+             (swiftpp-skip-re "{"))
           (hs-hide-block :reposition-at-end))))))
 
-(defun ppswift-indent-line ()
+(defun swiftpp-indent-line ()
   (interactive)
   (let (indent-level target-column)
     (save-excursion
@@ -353,7 +353,7 @@ Use `M-x hs-show-all' to show them again."
       (skip-syntax-forward " ")
       (setq target-column
             (if (or (equal (char-after) ?\#) (looking-at "//:")) 0
-              (* ppswift-basic-offset
+              (* swiftpp-basic-offset
                  (- indent-level
                     (cond ((= (char-syntax (or (char-after) ?\X)) ?\))
                            1)
@@ -368,11 +368,11 @@ Use `M-x hs-show-all' to show them again."
   )
 
 ;; Compilation error parsing
-(push 'ppswift0 compilation-error-regexp-alist)
-(push 'ppswift1 compilation-error-regexp-alist)
-(push 'ppppswift-fatal compilation-error-regexp-alist)
+(push 'swiftpp0 compilation-error-regexp-alist)
+(push 'swiftpp1 compilation-error-regexp-alist)
+(push 'swiftpp-fatal compilation-error-regexp-alist)
 
-(push `(ppswift0
+(push `(swiftpp0
         ,(concat
      "^"
        "[ \t]+" "\\(?:(@\\)?"
@@ -394,7 +394,7 @@ Use `M-x hs-show-all' to show them again."
      1 2 3 0)
       compilation-error-regexp-alist-alist)
 
-(push `(ppswift1
+(push `(swiftpp1
         ,(concat
      "^"
        "[0-9]+[.][ \t]+While .* at \\[?"
@@ -415,7 +415,7 @@ Use `M-x hs-show-all' to show them again."
      1 2 3 2)
       compilation-error-regexp-alist-alist)
 
-(push `(ppswift-fatal
+(push `(swiftpp-fatal
         ,(concat
      "^\\(?:assertion failed\\|fatal error\\): \\(?:.*: \\)?file "
      ;; Filename \1
@@ -437,77 +437,77 @@ Use `M-x hs-show-all' to show them again."
 (require 'flymake)
 
 ;; This name doesn't end in "function" to avoid being unconditionally marked as risky.
-(defvar-local ppswift-find-executable-fn 'executable-find
+(defvar-local swiftpp-find-executable-fn 'executable-find
   "Function to find a command executable.
 The function is called with one argument, the name of the executable to find.
-Might be useful if you want to use a ppswiftc that you built instead
+Might be useful if you want to use a swiftppc that you built instead
 of the one in your PATH.")
-(put 'ppswift-find-executable-fn 'safe-local-variable 'functionp)
+(put 'swiftpp-find-executable-fn 'safe-local-variable 'functionp)
 
-(defvar-local ppswift-syntax-check-fn 'ppswift-syntax-check-directory
-"Function to create the ++swift command-line that syntax-checks the current buffer.
-The function is called with two arguments, the ppswiftc executable, and
+(defvar-local swiftpp-syntax-check-fn 'swiftpp-syntax-check-directory
+"Function to create the Swift++ command-line that syntax-checks the current buffer.
+The function is called with two arguments, the swiftppc executable, and
 the name of a temporary file that will contain the contents of the
 current buffer.
-Set to 'ppswift-syntax-check-single-file to ignore other files in the current directory.")
-(put 'ppswift-syntax-check-fn 'safe-local-variable 'functionp)
+Set to 'swiftpp-syntax-check-single-file to ignore other files in the current directory.")
+(put 'swiftpp-syntax-check-fn 'safe-local-variable 'functionp)
 
-(defvar-local ppswift-syntax-check-args '("-typecheck")
-  "List of arguments to be passed to ppswiftc for syntax checking.
+(defvar-local swiftpp-syntax-check-args '("-typecheck")
+  "List of arguments to be passed to swiftppc for syntax checking.
 Elements of this list that are strings are inserted literally
 into the command line.  Elements that are S-expressions are
 evaluated.  The resulting list is cached in a file-local
-variable, `ppswift-syntax-check-evaluated-args', so if you change
+variable, `swiftpp-syntax-check-evaluated-args', so if you change
 this variable you should set that one to nil.")
-(put 'ppswift-syntax-check-args 'safe-local-variable 'listp)
+(put 'swiftpp-syntax-check-args 'safe-local-variable 'listp)
 
-(defvar-local ppswift-syntax-check-evaluated-args
-  "File-local cache of ++swift arguments used for syntax checking
-variable, `ppswift-syntax-check-args', so if you change
+(defvar-local swiftpp-syntax-check-evaluated-args
+  "File-local cache of Swift++ arguments used for syntax checking
+variable, `swiftpp-syntax-check-args', so if you change
 that variable you should set this one to nil.")
 
-(defun ppswift-syntax-check-single-file (ppswiftc temp-file)
+(defun swiftpp-syntax-check-single-file (swiftppc temp-file)
   "Return a flymake command-line list for syntax-checking the current buffer in isolation"
-  `(,ppswiftc ("-typecheck" ,temp-file)))
+  `(,swiftppc ("-typecheck" ,temp-file)))
 
-(defun ppswift-syntax-check-directory (ppswiftc temp-file)
+(defun swiftpp-syntax-check-directory (swiftppc temp-file)
   "Return a flymake command-line list for syntax-checking the
-current buffer along with the other ++swift files in the same
+current buffer along with the other Swift++ files in the same
 directory."
   (let* ((sources nil))
     (dolist (x (directory-files (file-name-directory (buffer-file-name))))
-      (when (and (string-equal "ppswift" (file-name-extension x))
+      (when (and (string-equal "swiftpp" (file-name-extension x))
                  (not (file-equal-p x (buffer-file-name))))
         (setq sources (cons x sources))))
-    `(,ppswiftc ("-typecheck" ,temp-file ,@sources))))
+    `(,swiftppc ("-typecheck" ,temp-file ,@sources))))
 
-(defun flymake-ppswift-init ()
+(defun flymake-swiftpp-init ()
   (let* ((temp-file
           (flymake-init-create-temp-buffer-copy
            (lambda (x y)
              (make-temp-file
               (concat (file-name-nondirectory x) "-" y)
               (not :DIR_FLAG)
-              ;; grab *all* the extensions; handles .ppswift.gyb files, for example
+              ;; grab *all* the extensions; handles .swiftpp.gyb files, for example
               ;; whereas using file-name-extension would only get ".gyb"
               (replace-regexp-in-string "^\\(?:.*/\\)?[^.]*" "" (buffer-file-name)))))))
-    (funcall ppswift-syntax-check-fn
-             (funcall ppswift-find-executable-fn "ppswiftc")
+    (funcall swiftpp-syntax-check-fn
+             (funcall swiftpp-find-executable-fn "swiftppc")
              temp-file)))
 
-(add-to-list 'flymake-allowed-file-name-masks '(".+\\.ppswift$" flymake-ppswift-init))
+(add-to-list 'flymake-allowed-file-name-masks '(".+\\.swiftpp$" flymake-swiftpp-init))
 
 (setq flymake-err-line-patterns
       (append
        (flymake-reformat-err-line-patterns-from-compile-el
         (mapcar (lambda (x) (assoc x compilation-error-regexp-alist-alist))
-                '(ppswift0 ppswift1 ppswift-fatal)))
+                '(swiftpp0 swiftpp1 swiftpp-fatal)))
        flymake-err-line-patterns))
 
-(defgroup ppswift nil
-  "Major mode for editing ++swift source files."
-  :prefix "ppswift-")
+(defgroup swiftpp nil
+  "Major mode for editing Swift++ source files."
+  :prefix "swiftpp-")
 
-(provide 'ppswift-mode)
+(provide 'swiftpp-mode)
 
-;; end of ppswift-mode.el
+;; end of swiftpp-mode.el

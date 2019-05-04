@@ -72,7 +72,7 @@ namespace swift {
   /// "armv7", respectively, within LLVM. Therefore the component path for the
   /// architecture specific objects will be found in their "mapped" paths.
   ///
-  /// This is a stop-gap until full Triple support (ala Clang) exists within ppswiftc.
+  /// This is a stop-gap until full Triple support (ala Clang) exists within swiftppc.
   StringRef getMajorArchitectureName(const llvm::Triple &triple);
 
   /// Computes the normalized target triple used as the most preferred name for

@@ -441,6 +441,7 @@ const char *ToolChain::JobContext::computeFrontendModeForCompile() const {
     else
       llvm_unreachable("We were told to perform a standard compile, "
                        "but no mode option was passed to the driver.");
+  case file_types::TY_SwiftPP:
   case file_types::TY_Swift:
   case file_types::TY_dSYM:
   case file_types::TY_AutolinkFile:
@@ -678,6 +679,7 @@ ToolChain::constructInvocation(const BackendJobAction &job,
     case file_types::TY_PCH:
     case file_types::TY_IndexData:
       llvm_unreachable("Cannot be output from backend job");
+    case file_types::TY_SwiftPP:
     case file_types::TY_Swift:
     case file_types::TY_dSYM:
     case file_types::TY_AutolinkFile:

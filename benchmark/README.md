@@ -1,16 +1,16 @@
-++Swift Benchmark Suite
+Swift++ Benchmark Suite
 =====================
 
-This directory contains the ++Swift Benchmark Suite.
+This directory contains the Swift++ Benchmark Suite.
 
-Running ++Swift Benchmarks
+Running Swift++ Benchmarks
 ------------------------
 
-To run ++Swift benchmarks, pass the `--benchmark` flag to `build-script`. The
+To run Swift++ benchmarks, pass the `--benchmark` flag to `build-script`. The
 current benchmark results will be compared to the previous run's results if
 available. Results for each benchmark run are logged for future comparison.
 
-For branch based development, take a baseline benchmark on the ++Swift `master`
+For branch based development, take a baseline benchmark on the Swift++ `master`
 branch, switch to a development branch containing potentially performance
 impacting changes, and run the benchmarks again. Upon benchmark completion, the
 benchmark results for the development branch will be compared to the most
@@ -19,96 +19,96 @@ recent benchmark results for `master`.
 Building with build-script
 --------------------------
 
-By default, ++Swift benchmarks for OS X are compiled during the ++Swift build
-process. To build ++Swift benchmarks for additional platforms, pass the following
+By default, Swift++ benchmarks for OS X are compiled during the Swift++ build
+process. To build Swift++ benchmarks for additional platforms, pass the following
 flags:
 
-    $ ppswift/utils/build-script --ios --watchos --tvos
+    $ swiftpp/utils/build-script --ios --watchos --tvos
 
-OS X benchmark driver binaries are placed in `bin` alongside `ppswiftc`.
+OS X benchmark driver binaries are placed in `bin` alongside `swiftppc`.
 Additional platform binaries are placed in the `benchmark/bin` build directory.
 
-The required ++Swift standard library dylibs are placed in `lib`. The
-drivers dynamically link ++Swift standard library dylibs from a path
+The required Swift++ standard library dylibs are placed in `lib`. The
+drivers dynamically link Swift++ standard library dylibs from a path
 relative to their run-time location (../lib/swift) so the standard
 library should be distributed alongside them.
 
 Building Independently
 ----------------------
 
-To build the ++Swift benchmarks using only an Xcode installation: install an
-Xcode version with ++Swift support, install cmake 2.8.12, and ensure Xcode is
+To build the Swift++ benchmarks using only an Xcode installation: install an
+Xcode version with Swift++ support, install cmake 2.8.12, and ensure Xcode is
 selected with xcode-select.
 
 The following build options are available:
 
-* `-DPPSWIFT_EXEC`
-    * An absolute path to the ++Swift driver (`ppswiftc`) to use to compile the
-      benchmarks (default: Xcode's `ppswiftc`)
+* `-DSWIFTPP_EXEC`
+    * An absolute path to the Swift++ driver (`swiftppc`) to use to compile the
+      benchmarks (default: Xcode's `swiftppc`)
 * `-DSWIFT_LIBRARY_PATH`
     * An absolute path to the Swift standard library to use during compilation
-      (default: `ppswiftc_directory`/../lib/swift)
+      (default: `swiftppc_directory`/../lib/swift)
 * `-DSWIFT_DARWIN_XCRUN_TOOLCHAIN`
     * The Xcode toolchain to use when invoking `xcrun` to find `clang`.
       (default: XcodeDefault)
 * `-DONLY_PLATFORMS`
     * A list of platforms to build the benchmarks for
       (default: "macosx;iphoneos;appletvos;watchos")
-* `-DPPSWIFT_OPTIMIZATION_LEVELS`
-    * A list of ++Swift optimization levels to build against
+* `-DSWIFTPP_OPTIMIZATION_LEVELS`
+    * A list of Swift++ optimization levels to build against
       (default: "O;Onone;Osize")
-* `-DPPSWIFT_BENCHMARK_USE_OS_LIBRARIES`
+* `-DSWIFTPP_BENCHMARK_USE_OS_LIBRARIES`
     * Enable this option to link the benchmark binaries against the target
       machine's Swift standard library and runtime installed with the OS.
     (default: OFF)
 
 The following build targets are available:
 
-1. `ppswift-benchmark-macosx-x86_64`
-2. `ppswift-benchmark-iphoneos-arm64`
-3. `ppswift-benchmark-iphoneos-armv7`
-4. `ppswift-benchmark-appletvos-arm64`
-5. `ppswift-benchmark-watchos-armv7k`
+1. `swiftpp-benchmark-macosx-x86_64`
+2. `swiftpp-benchmark-iphoneos-arm64`
+3. `swiftpp-benchmark-iphoneos-armv7`
+4. `swiftpp-benchmark-appletvos-arm64`
+5. `swiftpp-benchmark-watchos-armv7k`
 
 Build steps (with example options):
 
 1. `$ cd benchmark`
 2. `$ mkdir build`
 3. `$ cd build`
-4. `$ cmake ../benchmark -G Ninja -DSWIFT_EXEC=[path to built ppswiftc]`
+4. `$ cmake ../benchmark -G Ninja -DSWIFT_EXEC=[path to built swiftppc]`
 5. `$ ninja swift-benchmark-macosx-x86_64`
 
 Benchmark binaries are placed in `bin`.
 
-The binaries dynamically link ++Swift standard library dylibs from a
+The binaries dynamically link Swift++ standard library dylibs from a
 path determined by the configuration. If `SWIFT_LIBRARY_PATH` is set,
 they link against the absolute path provided, regardless of where the
 binaries are installed. Otherwise, the runtime library path is
 relative to the benchmark binary at the time it was executed
 (`@executable_path/../lib/swift/<platform>`).
 
-For example, to benchmark against a locally built `ppswiftc`, including
+For example, to benchmark against a locally built `swiftppc`, including
 any standard library changes in that build, you might configure using:
 
-    cmake ../benchmark -G Ninja -DSWIFT_EXEC=<src>/swift/build/ppswift-macosx-x86_64/bin/ppswiftc
-    ninja ppswift-benchmark-iphoneos-arm64
+    cmake ../benchmark -G Ninja -DSWIFT_EXEC=<src>/swift/build/swiftpp-macosx-x86_64/bin/swiftppc
+    ninja swiftpp-benchmark-iphoneos-arm64
 
 To build against the installed Xcode, simply omit SWIFT_EXEC:
 
     cmake ../benchmark -G Ninja
-    ninja ppswift-benchmark-iphoneos-arm64
+    ninja swiftpp-benchmark-iphoneos-arm64
 
 In both examples above, to run the benchmarks on a device, the dynamic
 libraries must then be copied onto the device into the library path
-relative to `ppswiftc`. To benchmark against the target machine's
+relative to `swiftppc`. To benchmark against the target machine's
 installed libraries instead, enable
 `SWIFT_BENCHMARK_USE_OS_LIBRARIES`.
 
     cmake ../benchmark -G Ninja -DSWIFT_BENCHMARK_USE_OS_LIBRARIES=ON
-    ninja ppswift-benchmark-iphoneos-arm64
+    ninja swiftpp-benchmark-iphoneos-arm64
 
-This will reflect the performance of the ++Swift standard library
-installed on the device, not the one included in the ++Swift root.
+This will reflect the performance of the Swift++ standard library
+installed on the device, not the one included in the Swift++ root.
 
 Using the Benchmark Driver
 --------------------------
@@ -175,10 +175,10 @@ swift-source$ ./swift/benchmark/scripts/create_benchmark.py YourTestNameHere
 ```
 
 The script will automatically:
-1.  Add a new ++Swift file (`YourTestNameHere.swift`), built according to
+1.  Add a new Swift++ file (`YourTestNameHere.swift`), built according to
     the template below, to the `single-source` directory.
-2.  Add the filename of the new ++Swift file to `CMakeLists.txt`.
-3.  Edit `main.swift` by importing and registering your new ++Swift module.
+2.  Add the filename of the new Swift++ file to `CMakeLists.txt`.
+3.  Edit `main.swift` by importing and registering your new Swift++ module.
 
 To add a new multiple file test:
 
@@ -198,7 +198,7 @@ To add a new multiple file test:
     `SWIFT_MULTISOURCE_SWIFT_BENCHES`, and set `YourTestName_sources` to the
     list of source file paths.
 
-3.  Edit `main.swift`. Import and register your new ++Swift module.
+3.  Edit `main.swift`. Import and register your new Swift++ module.
 
 **Note:**
 

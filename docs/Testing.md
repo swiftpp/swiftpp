@@ -106,7 +106,7 @@ out with ``lit.py -h``. We document some of the more useful ones below:
 * ``--param gmalloc`` will run all tests under Guard Malloc (macOS only). See
   ``man libgmalloc`` for more information.
 * ``--param swift-version=<MAJOR>`` overrides the default Swift language
-  version used by swift/ppswiftc and swift-ide-test.
+  version used by swift/swiftppc and swift-ide-test.
 * ``--param interpret`` is an experimental option for running execution tests
   using Swift's interpreter rather than compiling them first. Note that this
   does not affect all substitutions.
@@ -276,7 +276,7 @@ code for the target that is not the build machine:
 * ``%target-jit-run``: run a Swift program on the target machine using a JIT
   compiler.
 
-* ``%target-ppswiftc_driver``: run ``ppswiftc`` for the target.
+* ``%target-swiftppc_driver``: run ``swiftppc`` for the target.
 
 * ``%target-sil-opt``: run ``sil-opt`` for the target.
 
@@ -341,15 +341,15 @@ Swift code for two different platforms that are known to be incompatible).
 
 When you can't use ``%target-*`` substitutions, you can use:
 
-* ``%swift_driver_plain``: run ``swift`` for the build machine.
+* ``%swift_driver_plain``: run ``swiftpp`` for the build machine.
 
 * ``%swift_driver``: like ``%swift_driver_plain`` with ``-module-cache-path``
   set to a temporary directory used by the test suite, and using the
   ``SWIFT_TEST_OPTIONS`` environment variable if available.
 
-* ``%ppswiftc_driver``: like ``%target-ppswiftc_driver`` for the build machine.
+* ``%swiftppc_driver``: like ``%target-swiftppc_driver`` for the build machine.
 
-* ``%ppswiftc_driver_plain``: like ``%ppswiftc_driver``, but does not set the
+* ``%swiftppc_driver_plain``: like ``%swiftppc_driver``, but does not set the
   ``-module-cache-path`` to a temporary directory used by the test suite,
   and does not respect the ``SWIFT_TEST_OPTIONS`` environment variable.
 

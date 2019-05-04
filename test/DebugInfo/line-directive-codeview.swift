@@ -13,7 +13,7 @@ func myFunc() {
 }
 
 // REQUIRES: OS=Windows
-// RUN: %ppswiftc_driver %s -S -g -debug-info-format=codeview -target x86_64-unknown-windows-msvc -o - | %FileCheck --check-prefix CV-CHECK %s
+// RUN: %swiftppc_driver %s -S -g -debug-info-format=codeview -target x86_64-unknown-windows-msvc -o - | %FileCheck --check-prefix CV-CHECK %s
 // CV-CHECK: .cv_file [[MAIN:[0-9]+]] "{{.*}}line-directive-codeview.swift"
 // CV-CHECK: .cv_loc {{[0-9]+}} [[MAIN]] 1 {{0?}}
 // CV-CHECK: .def $s4main6myFuncyyF;

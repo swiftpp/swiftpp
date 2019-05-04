@@ -229,7 +229,7 @@ enum E7: String {
 
 // REQUIRES: objc_interop
 // RUN: %empty-directory(%t.tmp)
-// RUN: %ppswiftc_driver -emit-module -o %t.tmp/FooSwiftModule.swiftmodule %S/Inputs/FooSwiftModule.swift
+// RUN: %swiftppc_driver -emit-module -o %t.tmp/FooSwiftModule.swiftmodule %S/Inputs/FooSwiftModule.swift
 // RUN: %sourcekitd-test -req=cursor -pos=9:8 %s -- -F %S/../Inputs/libIDE-mock-sdk %mcp_opt %s | %FileCheck -check-prefix=CHECK1 %s
 // CHECK1:      source.lang.swift.ref.var.global (4:5-4:9)
 // CHECK1-NEXT: glob

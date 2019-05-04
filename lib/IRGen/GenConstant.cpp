@@ -139,7 +139,7 @@ namespace {
 /// Fill in the missing values for padding.
 void insertPadding(SmallVectorImpl<llvm::Constant *> &Elements,
                    llvm::StructType *sTy) {
-  // fill in any gaps, which are the explicit padding that ppswiftc inserts.
+  // fill in any gaps, which are the explicit padding that swiftppc inserts.
   for (unsigned i = 0, e = Elements.size(); i != e; i++) {
     auto &elt = Elements[i];
     if (elt == nullptr) {

@@ -36,6 +36,7 @@
 // unused, and should always be the empty string.
 
 // Input types
+TYPE("swiftpp",             SwiftPP,                   "swiftpp",         "")
 TYPE("swift",               Swift,                     "swift",           "")
 TYPE("sil",                 SIL,                       "sil",             "")
 TYPE("sib",                 SIB,                       "sib",             "")

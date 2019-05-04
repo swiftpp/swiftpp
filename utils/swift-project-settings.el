@@ -1,6 +1,6 @@
-;===--- ppswift-project-settings.el - ++Swift project's format conventions ---===;
+;===--- swiftpp-project-settings.el - Swift++ project's format conventions ---===;
 ;
-; This source file is part of the ++Swift.org open source project
+; This source file is part of the Swift++.org open source project
 ;
 ; Copyright (c) 2014 - 2017 Apple Inc. and the Swift project authors
 ; Licensed under Apache License v2.0 with Runtime Library Exception
@@ -12,27 +12,27 @@
 ;
 ;  Emacs-lisp support for automatically formatting things according to this
 ;  project's conventions.  To prevent this file from being automatically
-;  loaded, add (provide 'ppswift-project-settings) to your .emacs
+;  loaded, add (provide 'swiftpp-project-settings) to your .emacs
 ;
 ;===----------------------------------------------------------------------===;
 
 
-;; Associate .ppswift files with ppswift-mode
+;; Associate .swiftpp files with swiftpp-mode
 (setq auto-mode-alist
-   (append '(("\\.ppswift$" . ppswift-mode) ("\\.gyb$" python-mode t)) auto-mode-alist))
+   (append '(("\\.swiftpp$" . swiftpp-mode) ("\\.gyb$" python-mode t)) auto-mode-alist))
 
-;; Make sure we know where to find ppswift-mode
-(autoload 'ppswift-mode (concat (file-name-directory load-file-name) "ppswift-mode")
-  "Major mode for editing ++SWIFT source files.
-  \\{ppswift-mode-map}
-  Runs ppswift-mode-hook on startup."
+;; Make sure we know where to find swiftpp-mode
+(autoload 'swiftpp-mode (concat (file-name-directory load-file-name) "swiftpp-mode")
+  "Major mode for editing Swift++ source files.
+  \\{swiftpp-mode-map}
+  Runs swiftpp-mode-hook on startup."
   :interactive
   )
 
 (require 'cc-styles)
 
-;; This style is appropriate for indenting ++Swift's C++ source
-(c-add-style "ppswift"
+;; This style is appropriate for indenting Swift++'s C++ source
+(c-add-style "swiftpp"
              '((c-basic-offset . 2)
                (c-offsets-alist
                 (namespace-open . 0)
@@ -111,24 +111,24 @@
 
 ;; When this file is loaded in response to visiting a file in the
 ;; project, it won't have had its major mode set up according to the
-;; project settings yet.  For example, ++Swift files may come up in
-;; Fundamental mode, and C++ files won't use the ++swift style, unless
+;; project settings yet.  For example, Swift++ files may come up in
+;; Fundamental mode, and C++ files won't use the Swift++ style, unless
 ;; we do something.  This hack causes the file to be re-mode-ed.
 (unless (eq major-mode 'dired-mode) (set-auto-mode))
 
-(defun ppswift-project-comment-end ()
+(defun swiftpp-project-comment-end ()
   "If comment-end is non-empty returns it, stripped of leading whitespace.  Returns nil otherwise"
   (replace-regexp-in-string
    "\\` +" ""
    (if (and comment-end (> (length comment-end) 0)) comment-end v1)))
 
-(define-skeleton ppswift-header
-  "Insert the ++Swift header at the top of a file
+(define-skeleton swiftpp-header
+  "Insert the Swift++ header at the top of a file
 
 Note: this skeleton presently assumes that comment-start creates
 a comment until end-of-line.  Handling paired comment syntax is
 possible, but more work, and someone needs to decide what such an
-++Swift header should look like.
+Swift++ header should look like.
 "
   ;; prompt
   "Short description (RET for none): "
@@ -137,7 +137,7 @@ possible, but more work, and someone needs to decide what such an
   ;; nobody is crazy enough to define a language where whitespace
   ;; determines whether something is a comment, but c++ mode and
   ;; friends have a space at the end of comment-start, which messes up
-  ;; the ++Swift header format.
+  ;; the Swift++ header format.
   ;;
   ;; When there's no comment syntax defined, we use "//"; precedent is
   ;; in the project's README file.
@@ -152,7 +152,7 @@ possible, but more work, and someone needs to decide what such an
   ;; v3 is t if there was a short description
   '(setq v3 (> (length str) 0))
 
-  '(setq v4 (or (ppswift-project-comment-end) v1))
+  '(setq v4 (or (swiftpp-project-comment-end) v1))
 
   ;; Generate dashes to fill out the rest of the top line
   (make-string (max (- 65 (+ (if v3 (+ 3 (length str)) 0) (length v2))) 3) ?-)
@@ -163,10 +163,10 @@ possible, but more work, and someone needs to decide what such an
    "//$" v4
    (replace-regexp-in-string "^//" v1
 "//
-// This source file is part of the ++Swift open source project
+// This source file is part of the Swift++ open source project
 //
 // Copyright (c) 2014 - 2019 Apple Inc. and the Swift project authors
-// Copyright (c) 2019 Alfonso Guerra and the ++Swift project authors
+// Copyright (c) 2019 Alfonso Guerra and the Swift++ project authors
 // Licensed under Apache License v2.0 with Runtime Library Exception
 //
 // See https://swift.org/LICENSE.txt for license information
@@ -192,8 +192,8 @@ possible, but more work, and someone needs to decide what such an
 ")
     )))
 
-(define-skeleton ppswift-divider
-  "Insert a ++Swift //===--- ... ---===// divider
+(define-skeleton swiftpp-divider
+  "Insert a Swift++ //===--- ... ---===// divider
 "
   ;; prompt
   "Text (RET for none): "
@@ -202,13 +202,13 @@ possible, but more work, and someone needs to decide what such an
   ;; nobody is crazy enough to define a language where whitespace
   ;; determines whether something is a comment, but c++ mode and
   ;; friends have a space at the end of comment-start, which messes up
-  ;; the ++Swift header format.
+  ;; the Swift++ header format.
   ;;
   ;; When there's no comment syntax defined, we use "//"; precedent is
   ;; in the project's README file.
   '(setq v1 (replace-regexp-in-string " +\\'" "" (or comment-start "//")))
 
-  '(setq v2 (or (ppswift-project-comment-end) v1))
+  '(setq v2 (or (swiftpp-project-comment-end) v1))
 
   v1 "===--- "
   str & " " | -1
@@ -223,26 +223,26 @@ possible, but more work, and someone needs to decide what such an
   "===" v2
 )
 
-(defvar ppswift-project-auto-insert-alist
-  ;; Currently we match any file and insert the ++Swift header.  We can
+(defvar swiftpp-project-auto-insert-alist
+  ;; Currently we match any file and insert the Swift++ header.  We can
   ;; make the regexp more specific or filter based on mode if this
   ;; doesn't work out.
-  '((("" . "++Swift header") . ppswift-header))
-  "auto-insert-alist entries that are just for the ++Swift project"
+  '((("" . "Swift++ header") . swiftpp-header))
+  "auto-insert-alist entries that are just for the Swift++ project"
   )
 
-(defadvice auto-insert (around ppswift-project-auto-insert activate)
-  "Modify auto-insert so that ppswift-project-auto-insert-alist
-takes precedence for files in the ++Swift project"
-  ;; Assume that files with c-file-style set to "ppswift" are
-  ;; part of the ++Swift project.  Because it's set in
+(defadvice auto-insert (around swiftpp-project-auto-insert activate)
+  "Modify auto-insert so that swiftpp-project-auto-insert-alist
+takes precedence for files in the Swift++ project"
+  ;; Assume that files with c-file-style set to "swiftpp" are
+  ;; part of the Swift++ project.  Because it's set in
   ;; .dir-locals.el, this will apply to all files, not just
   ;; those using cc-mode
-  (if (and (boundp 'c-file-style) (equal c-file-style "ppswift"))
+  (if (and (boundp 'c-file-style) (equal c-file-style "swiftpp"))
       (let ((auto-insert-alist
-             (append ppswift-project-auto-insert-alist auto-insert-alist))
+             (append swiftpp-project-auto-insert-alist auto-insert-alist))
             ;; The default is to ask when creating a new file.  Inside
-            ;; this project, we always want the ++Swift header, so only
+            ;; this project, we always want the Swift++ header, so only
             ;; prompt if the user has set auto-insert to /always/
             ;; prompt.
             (auto-insert-query (if (eq auto-insert-query 'function) nil auto-insert-query)))
@@ -250,69 +250,69 @@ takes precedence for files in the ++Swift project"
     ad-do-it))
 
 (require 'compile) ;; for compilation-error-regexp-alist et al.
-(push 'ppswift-stdlibunittest-possibly-expected-assertion compilation-error-regexp-alist)
-(push `(ppswift-stdlibunittest-possibly-expected-assertion "^\\(\\(?:stdout\\|stderr\\)>>> *\\)?.*\\(?:failed\\(?: at\\|.*file\\)\\|.*: file\\) \\([^,]*\\), line \\([0-9]+\\)$"
+(push 'swiftpp-stdlibunittest-possibly-expected-assertion compilation-error-regexp-alist)
+(push `(swiftpp-stdlibunittest-possibly-expected-assertion "^\\(\\(?:stdout\\|stderr\\)>>> *\\)?.*\\(?:failed\\(?: at\\|.*file\\)\\|.*: file\\) \\([^,]*\\), line \\([0-9]+\\)$"
               2 3 ,(not :column) 0)
       compilation-error-regexp-alist-alist)
 
-(push 'ppswift-stdlibunittest-stackframe compilation-error-regexp-alist)
-(push `(ppswift-stdlibunittest-stackframe "^\\(?:\\(?:stdout\\|stderr\\)>>> *\\)?#[0-9]+: \\(.+\\):\\([0-9]+\\)\\(?: +.*\\)?$"
+(push 'swiftpp-stdlibunittest-stackframe compilation-error-regexp-alist)
+(push `(swiftpp-stdlibunittest-stackframe "^\\(?:\\(?:stdout\\|stderr\\)>>> *\\)?#[0-9]+: \\(.+\\):\\([0-9]+\\)\\(?: +.*\\)?$"
               1 2 ,(not :column) ,(not :just-a-warning))
       compilation-error-regexp-alist-alist)
 
-(push 'ppswift-stdlibunittest-failure compilation-error-regexp-alist)
-(push `(ppswift-stdlibunittest-failure "^\\(?:\\(?:stdout\\|stderr\\)>>> *\\)?check failed at \\(.*?\\), line \\([0-9]+\\)$"
+(push 'swiftpp-stdlibunittest-failure compilation-error-regexp-alist)
+(push `(swiftpp-stdlibunittest-failure "^\\(?:\\(?:stdout\\|stderr\\)>>> *\\)?check failed at \\(.*?\\), line \\([0-9]+\\)$"
               1 2 ,(not :column) ,(not :just-a-warning))
       compilation-error-regexp-alist-alist)
 
-(defvar ppswift-project-directory
+(defvar swiftpp-project-directory
   (file-name-directory (directory-file-name (file-name-directory load-file-name)))
-  "Directory where the ++swift project containing this file is located.
-Defaults to the parent directory of `ppswift-project-settings.el'.
+  "Directory where the Swift++ project containing this file is located.
+Defaults to the parent directory of `swiftpp-project-settings.el'.
 The setting for file-local values of this variable comes from
 .dir-locals.el in the project's root directory")
-(put 'ppswift-project-directory 'safe-local-variable 'stringp)
+(put 'swiftpp-project-directory 'safe-local-variable 'stringp)
 
-(defun ppswift-project-default-build-directory (project-directory)
+(defun swiftpp-project-default-build-directory (project-directory)
   "Returns the default build directory given a project directory name, `DIR/../build'"
   (concat (file-name-directory (directory-file-name project-directory)) "build/"))
 
 ;; This name doesn't end in "function" to avoid being unconditionally marked as risky.
-(defcustom ppswift-project-build-directory-fn 'ppswift-project-default-build-directory
-  "A function that, given a ++swift project directory name,
+(defcustom swiftpp-project-build-directory-fn 'swiftpp-project-default-build-directory
+  "A function that, given a Swift++ project directory name,
 computes the directory where your build leaves build products.
-Flymake support may search here for a ++swift compiler to use, for example.
-Defaults to `(concat ppswift-project-directory \"../build\")'."
+Flymake support may search here for a Swift++ compiler to use, for example.
+Defaults to `(concat swiftpp-project-directory \"../build\")'."
   :type 'function
 )
 
-(defun ppswift-project-executable-find (command)
+(defun swiftpp-project-executable-find (command)
   "Find the newest executable with the given name in the utils/ directory or in any build directory, falling back to the exec-path as a last resort.
 Given an absolute path, returns it verbatim.  This is a pretty
-good heuristic for locating things to use when working on ++swift
-itself, and is used as the value of ppswift-find-executable-fn"
+good heuristic for locating things to use when working on Swift++
+itself, and is used as the value of swiftpp-find-executable-fn"
   (if (file-name-absolute-p command) command
-    (let* ((utility (concat ppswift-project-directory "utils/" command))
+    (let* ((utility (concat swiftpp-project-directory "utils/" command))
            (newest (and (file-executable-p utility) utility)))
       (dolist (x (file-expand-wildcards
-               (concat (funcall ppswift-project-build-directory-fn ppswift-project-directory)
-                       "*/ppswift-*/bin/" command)))
+               (concat (funcall swiftpp-project-build-directory-fn swiftpp-project-directory)
+                       "*/swiftpp-*/bin/" command)))
         (when (and (file-executable-p x) (or (null newest) (file-newer-than-file-p x newest)))
           (setq newest x)))
       (or newest (executable-find command)))))
 
-(defvar ppswift-project-sdk-path
+(defvar swiftpp-project-sdk-path
   (substring (shell-command-to-string "xcrun --show-sdk-path") 0 -1)
-  "The path to the ++swift SDK to use for syntax checking, etc.")
+  "The path to the Swift++ SDK to use for syntax checking, etc.")
 
-(defvar ppswift-project--gyb-temp-file-directory nil)
-(defun ppswift-project-gyb-temp-file-directory ()
+(defvar swiftpp-project--gyb-temp-file-directory nil)
+(defun swiftpp-project-gyb-temp-file-directory ()
   "A directory used for gyb-processed files"
-  (or ppswift-project--gyb-temp-file-directory
-      (setq ppswift-project--gyb-temp-file-directory
-            (make-temp-file "ppswift-project-gyb" :DIRECTORY))))
+  (or swiftpp-project--gyb-temp-file-directory
+      (setq swiftpp-project--gyb-temp-file-directory
+            (make-temp-file "swiftpp-project-gyb" :DIRECTORY))))
 
-(defun ppswift-project-gyb-output-file-name (input-file-name)
+(defun swiftpp-project-gyb-output-file-name (input-file-name)
   "Given the name of a .gyb file, return the name of the temporary file we'll use for its expanded result."
   (file-name-sans-extension
    (expand-file-name
@@ -321,117 +321,117 @@ itself, and is used as the value of ppswift-find-executable-fn"
             "!" "!!"
             (if (file-name-absolute-p input-file-name) input-file-name
               (expand-file-name input-file-name))))
-    (ppswift-project-gyb-temp-file-directory))))
+    (swiftpp-project-gyb-temp-file-directory))))
 
-(defun ppswift-project-gybbed-file (input-file-name)
+(defun swiftpp-project-gybbed-file (input-file-name)
   "Given the name of a .gyb file, process it with gyb and return an output file name.
 Given any other file name, just return that name."
   (if (not (string-equal (file-name-extension input-file-name) "gyb"))
       input-file-name
-    (let ((result (ppswift-project-gyb-output-file-name input-file-name)))
+    (let ((result (swiftpp-project-gyb-output-file-name input-file-name)))
       (prog1 result
         (unless (file-newer-than-file-p result input-file-name)
           (with-temp-buffer
-            (let* ((gyb (ppswift-project-executable-find "gyb"))
+            (let* ((gyb (swiftpp-project-executable-find "gyb"))
                    (status (call-process gyb nil t nil "-DCMAKE_SIZEOF_VOID_P=8" input-file-name)))
               (unless (eq status 0)
                 (error "%s exited with status %s" gyb status)))
             ;; Use write-region instead of write-file to avoid spewing messages.
             (write-region nil nil result nil 566)))))))
 
-(defconst ppswift-project-stdlib-compile-order
+(defconst swiftpp-project-stdlib-compile-order
   "Algorithm ArrayBody ArrayBuffer ArrayBufferProtocol ArrayCast Arrays ArrayType Assert AssertCommon BidirectionalCollection Bool BridgeObjectiveC BridgeStorage Builtin BuiltinMath Character CocoaArray Collection CollectionAlgorithms Comparable CompilerProtocols ClosedRange ContiguousArrayBuffer CString CTypes DebuggerSupport DropWhile Dump EmptyCollection Equatable ErrorType Existential Filter FixedPoint FlatMap Flatten FloatingPoint FloatingPointParsing FloatingPointTypes Hashable HashedCollections AnyHashable HashedCollectionsAnyHashableExtensions Hashing HeapBuffer ImplicitlyUnwrappedOptional Index Indices InputStream IntegerArithmetic IntegerParsing Integers Join LazyCollection LazySequence LifetimeManager ManagedBuffer Map MemoryLayout Mirrors Misc MutableCollection NewtypeWrapper ObjCMirrors ObjectIdentifier Optional OptionSet OutputStream Pointer Policy PrefixWhile Print RandomAccessCollection Range RangeReplaceableCollection ReflectionLegacy Repeat REPL Reverse Runtime SipHash Sequence SequenceAlgorithms SequenceWrapper SetAlgebra ShadowProtocols Shims Slice Sort StaticString Stride StringCharacterView String StringBridge StringBuffer StringComparable StringCore StringHashable StringInterpolation StringLegacy StringRangeReplaceableCollection StringIndexConversions StringUnicodeScalarView StringUTF16 StringUTF8 SwiftNativeNSArray UnavailableStringAPIs Unicode UnicodeScalar UnicodeTrie Unmanaged UnsafeBitMap UnsafeBufferPointer UnsafeRawBufferPointer UnsafePointer UnsafeRawPointer WriteBackMutableSlice Availability CollectionOfOne ExistentialCollection Mirror CommandLine SliceBuffer Tuple UnfoldSequence VarArgs Zip"
 
-"Unfortunately, the order in which we send files to the ++Swift compiler actually matters.  We search this list to determine where each source file should go."
+"Unfortunately, the order in which we send files to the Swift++ compiler actually matters.  We search this list to determine where each source file should go."
 )
 
-(defun ppswift-project-stdlib-compile-order (filename)
+(defun swiftpp-project-stdlib-compile-order (filename)
   "Return an integer representing where in the required
 compilation order the given file should appear."
   (save-match-data
     (if (string-match
          (concat "\\<" (regexp-quote (replace-regexp-in-string "^\\(?:.*[/!]\\)?\\([^.]*\\).*" "\\1" filename)) "\\>")
-         ppswift-project-stdlib-compile-order)
+         swiftpp-project-stdlib-compile-order)
         (match-beginning 0) 0)))
 
-(defconst ppswift-project-common-ppswiftc-args
-  (list "-typecheck" "-sdk" ppswift-project-sdk-path
-        "-F" (concat (file-name-as-directory ppswift-project-sdk-path) "../../../Developer/Library/Frameworks")
+(defconst swiftpp-project-common-swiftppc-args
+  (list "-typecheck" "-sdk" swiftpp-project-sdk-path
+        "-F" (concat (file-name-as-directory swiftpp-project-sdk-path) "../../../Developer/Library/Frameworks")
         "-D" "INTERNAL_CHECKS_ENABLED"
         "-no-link-objc-runtime")
-  "The common arguments we'll pass to ppswiftc for syntax-checking
-everything in the ++Swift project" )
+  "The common arguments we'll pass to swiftppc for syntax-checking
+everything in the Swift++ project" )
 
-(defconst ppswift-project-single-frontend-ppswiftc-args
-  (append ppswift-project-common-ppswiftc-args
+(defconst swiftpp-project-single-frontend-swiftppc-args
+  (append swiftpp-project-common-swiftppc-args
            (list "-force-single-frontend-invocation" "-parse-as-library"))
-  "The arguments we'll pass to ppswiftc for syntax-checking
+  "The arguments we'll pass to swiftppc for syntax-checking
 libraries that require a single frontend invocation" )
 
-(defconst ppswift-project-stdlib-aux-ppswiftc-args
-  (append ppswift-project-single-frontend-ppswiftc-args
+(defconst swiftpp-project-stdlib-aux-swiftppc-args
+  (append swiftpp-project-single-frontend-swiftppc-args
           (list "-sil-serialize-vtables" "-parse-stdlib"))
-  "ppswiftc arguments for library components that are compiled as
+  "swiftppc arguments for library components that are compiled as
   though they are part of the standard library even though
   they're not strictly in that binary."  )
 
-(defconst ppswift-project-stdlib-ppswiftc-args
+(defconst swiftpp-project-stdlib-swiftppc-args
   (append
-   ppswift-project-stdlib-aux-ppswiftc-args (list "-nostdimport" "-module-name" "++Swift"))
-  "The arguments we'll pass to ppswiftc for syntax-checking the
+   swiftpp-project-stdlib-aux-swiftppc-args (list "-nostdimport" "-module-name" "Swift++"))
+  "The arguments we'll pass to swiftppc for syntax-checking the
 standard library" )
 
-(defun ppswift-project-files-to-compile-with (relative-file)
+(defun swiftpp-project-files-to-compile-with (relative-file)
   "Given RELATIVE-FILE, a project-relative path, returns a list
 of other files that are compiled along with it."
   (if (and (string-match-p "^test/\|^validation-test/" relative-file)
            (not (string-match-p "^test/multifile" relative-file)))
     nil
-    (directory-files (concat ppswift-project-directory (file-name-directory relative-file))))
+    (directory-files (concat swiftpp-project-directory (file-name-directory relative-file))))
 )
 
-(defun ppswift-project-ppswiftc-arguments (relative-file)
+(defun swiftpp-project-swiftppc-arguments (relative-file)
   "Given RELATIVE-FILE, a project-relative path, returns a list
-of arguments that are passed to ppswiftc when compiling it."
+of arguments that are passed to swiftppc when compiling it."
   (cond ((string-match-p "^stdlib/public/core/" relative-file)
-         ppswift-project-stdlib-ppswiftc-args)
+         swiftpp-project-stdlib-swiftppc-args)
         ((string-match-p
           "^stdlib/\(public/SwiftOnoneSupport\|internal\|private/SwiftPrivate\(ThreadExtras\|LibcExtras\)?\)/"
           relative-file)
-         ppswift-project-stdlib-aux-ppswiftc-args)
-        (t ppswift-project-single-frontend-ppswiftc-args)))
+         swiftpp-project-stdlib-aux-swiftppc-args)
+        (t swiftpp-project-single-frontend-swiftppc-args)))
 
-(defun ppswift-project-ppswift-syntax-check (ppswiftc temp-file)
+(defun swiftpp-project-swiftpp-syntax-check (swiftppc temp-file)
   "Return a flymake command-line list for syntax-checking the
-current buffer, potentially along with the other .ppswift and .ppswift.gyb
+current buffer, potentially along with the other .swiftpp and .swiftpp.gyb
 files in the same directory."
-  (let ((project-relative-buffer-file (file-relative-name (buffer-file-name) ppswift-project-directory)))
-    (ppswift-project-gyb-syntax-check1
-     ppswiftc temp-file
-     (ppswift-project-files-to-compile-with project-relative-buffer-file)
-     (ppswift-project-ppswiftc-arguments project-relative-buffer-file))))
+  (let ((project-relative-buffer-file (file-relative-name (buffer-file-name) swiftpp-project-directory)))
+    (swiftpp-project-gyb-syntax-check1
+     swiftppc temp-file
+     (swiftpp-project-files-to-compile-with project-relative-buffer-file)
+     (swiftpp-project-swiftppc-arguments project-relative-buffer-file))))
 
-(defun ppswift-project-gyb-syntax-check1 (ppswiftc temp-file other-files ppswiftc-arguments)
+(defun swiftpp-project-gyb-syntax-check1 (swiftppc temp-file other-files swiftppc-arguments)
   "Return a flymake command-line list for syntax-checking the
-current buffer along with the other .ppswift and .ppswift.gyb
+current buffer along with the other .swiftpp and .swiftpp.gyb
 files in the same directory."
-  (let* (gyb-targets ppswift-sources)
+  (let* (gyb-targets swiftpp-sources)
     (dolist (x (cons temp-file other-files))
       (unless (file-equal-p x (buffer-file-name))
-        (when (string-match-p "\\.ppswift$\\|\\.ppswift\\.gyb$" (if (string-equal x temp-file) (buffer-file-name) x))
-          (let ((ppswift-file (ppswift-project-gybbed-file x)))
-            (setq ppswift-sources (cons ppswift-file ppswift-sources))
+        (when (string-match-p "\\.swiftpp$\\|\\.swiftpp\\.gyb$" (if (string-equal x temp-file) (buffer-file-name) x))
+          (let ((swiftpp-file (swiftpp-project-gybbed-file x)))
+            (setq swiftpp-sources (cons swiftpp-file swiftpp-sources))
             (when (string-equal "gyb" (file-name-extension x))
-              (setq gyb-targets (cons ppswift-file gyb-targets)))))))
-    (setq ppswift-sources
-          (sort ppswift-sources
-                (lambda (x y) (< (ppswift-project-stdlib-compile-order x)
-                                 (ppswift-project-stdlib-compile-order y)))))
-    `(,(ppswift-project-executable-find "line-directive")
-      (,@gyb-targets "--" ,ppswiftc ,@ppswiftc-arguments ,@ppswift-sources))))
+              (setq gyb-targets (cons swiftpp-file gyb-targets)))))))
+    (setq swiftpp-sources
+          (sort swiftpp-sources
+                (lambda (x y) (< (swiftpp-project-stdlib-compile-order x)
+                                 (swiftpp-project-stdlib-compile-order y)))))
+    `(,(swiftpp-project-executable-find "line-directive")
+      (,@gyb-targets "--" ,swiftppc ,@swiftppc-arguments ,@swiftpp-sources))))
 
 (require 'flymake)
-(add-to-list 'flymake-allowed-file-name-masks '(".+\\.ppswift.gyb$" flymake-ppswift-init))
+(add-to-list 'flymake-allowed-file-name-masks '(".+\\.swiftpp.gyb$" flymake-swiftpp-init))
 
-(provide 'ppswift-project-settings)
-;; end of ppswift-project-settings.el
+(provide 'swiftpp-project-settings)
+;; end of swiftpp-project-settings.el

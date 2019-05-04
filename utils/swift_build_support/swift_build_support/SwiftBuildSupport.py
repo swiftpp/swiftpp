@@ -31,7 +31,7 @@ def _get_default_source_root():
     # Are we in a Swift checkout? Start from this file and check its parent
     # directories.
     #
-    # $SWIFT_SOURCE_ROOT/ppswift/utils/swift_build_support/swift_build_support/SwiftBuildSupport.py
+    # $SWIFT_SOURCE_ROOT/swiftpp/utils/swift_build_support/swift_build_support/SwiftBuildSupport.py
     utils_path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
     (swift_path, parent_dirname) = os.path.split(utils_path)
     if parent_dirname != "utils":

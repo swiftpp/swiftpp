@@ -4,8 +4,8 @@
 
 // RUN: %target-run %target-swift-reflection-test %t/functions | %FileCheck %s --check-prefix=CHECK --check-prefix=CHECK-%target-ptrsize
 
-// FIXME: Should not require objc_interop -- please put Objective-C-specific
-// testcases in functions_objc.swift
+"  FIXME: Should not require objc_interop -- please put Objective-C-specific
+   testcases in functions_objc.swift"
 
 // REQUIRES: objc_interop
 // REQUIRES: executable_test

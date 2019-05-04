@@ -141,7 +141,7 @@ toolchains::GenericUnix::constructInvocation(const LinkJobAction &job,
   }
   if (!Linker.empty()) {
 #if defined(__HAIKU__)
-    // For now, passing -fuse-ld on Haiku doesn't work as ppswiftc doesn't
+    // For now, passing -fuse-ld on Haiku doesn't work as swiftppc doesn't
     // recognise it. Passing -use-ld= as the argument works fine.
     Arguments.push_back(context.Args.MakeArgString("-use-ld=" + Linker));
 #else

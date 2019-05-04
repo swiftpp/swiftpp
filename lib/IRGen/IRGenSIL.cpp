@@ -725,7 +725,7 @@ public:
   /// To make it unambiguous whether a `var` binding has been initialized,
   /// zero-initialize the shadow copy alloca. LLDB uses the first pointer-sized
   /// field to recognize to detect uninitizialized variables. This can be
-  /// removed once ppswiftc switches to @llvm.dbg.addr() intrinsics.
+  /// removed once swiftppc switches to @llvm.dbg.addr() intrinsics.
   void zeroInit(llvm::AllocaInst *AI) {
     if (!AI)
       return;

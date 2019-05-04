@@ -278,7 +278,7 @@ source code, tests, and commit messages. See also the `LLVM lexicon`_.
     rather they must be the first file parsed by the compiler. PCHs are used
     only to accelerate the process of reading C/C++/Objective-C headers, such as
     the bridging headers read in by the ``-import-objc-header`` command-line
-    flag to ppswiftc.
+    flag to swiftppc.
 
   PR
     1. "Problem Report": An issue reported in `LLVM's bug tracker`__.

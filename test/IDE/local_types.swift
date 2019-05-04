@@ -1,7 +1,7 @@
 // Tests lookup and mangling of local types
 
 // RUN: %empty-directory(%t)
-// RUN: %target-ppswiftc_driver -v -emit-module -module-name LocalTypes -o %t/LocalTypes.swiftmodule %s
+// RUN: %target-swiftppc_driver -v -emit-module -module-name LocalTypes -o %t/LocalTypes.swiftmodule %s
 // RUN: %target-swift-ide-test -print-local-types -I %t -module-to-print LocalTypes -source-filename %s > %t.dump
 // RUN: %FileCheck %s < %t.dump
 // RUN: %FileCheck -check-prefix=NEGATIVE %s < %t.dump

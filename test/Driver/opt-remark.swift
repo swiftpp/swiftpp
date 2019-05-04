@@ -1,7 +1,7 @@
 // RUN: %empty-directory(%t)
-// RUN: %target-ppswiftc_driver -O %s -o %t/throwaway 2>&1 | %FileCheck -allow-empty -check-prefix=DEFAULT %s
-// RUN: %target-ppswiftc_driver -O -Rpass=sil-inliner %s -o %t/throwaway 2>&1 | %FileCheck -check-prefix=REMARK_PASSED %s
-// RUN: %target-ppswiftc_driver -O -Rpass-missed=sil-inliner %s -o %t/throwaway 2>&1 | %FileCheck -check-prefix=REMARK_MISSED %s
+// RUN: %target-swiftppc_driver -O %s -o %t/throwaway 2>&1 | %FileCheck -allow-empty -check-prefix=DEFAULT %s
+// RUN: %target-swiftppc_driver -O -Rpass=sil-inliner %s -o %t/throwaway 2>&1 | %FileCheck -check-prefix=REMARK_PASSED %s
+// RUN: %target-swiftppc_driver -O -Rpass-missed=sil-inliner %s -o %t/throwaway 2>&1 | %FileCheck -check-prefix=REMARK_MISSED %s
 
 // DEFAULT-NOT: remark:
 

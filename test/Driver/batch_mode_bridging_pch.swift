@@ -4,7 +4,7 @@
 // RUN: echo 'public func main() {}' >%t/main.swift
 // RUN: echo 'extern int foo;' >%t/foo-bridging-header.h
 //
-// RUN: %ppswiftc_driver -enable-bridging-pch -v -import-objc-header %t/foo-bridging-header.h -enable-batch-mode -c -emit-module -module-name main -j 2 %t/file-01.swift %t/file-02.swift %t/file-03.swift %t/main.swift %s 2>&1 | %FileCheck %s
+// RUN: %swiftppc_driver -enable-bridging-pch -v -import-objc-header %t/foo-bridging-header.h -enable-batch-mode -c -emit-module -module-name main -j 2 %t/file-01.swift %t/file-02.swift %t/file-03.swift %t/main.swift %s 2>&1 | %FileCheck %s
 //
 // Next we make a module map with an unknown attribute, which will cause an
 // AST-reader warning while (re)parsing the module map, while attaching a PCH.
@@ -16,7 +16,7 @@
 // RUN: echo 'module MyModule [DefinitelyNotAnAttribute] { header "header.h" export * }' >%t/MyModule/module.modulemap
 // RUN: touch %t/MyModule/header.h
 // RUN: echo '#include "MyModule/header.h"' >>%t/foo-bridging-header.h
-// RUN: %ppswiftc_driver -enable-bridging-pch -v -I %t -import-objc-header %t/foo-bridging-header.h -enable-batch-mode -c -emit-module -module-name main -j 2 %t/file-01.swift %t/file-02.swift %t/file-03.swift %t/main.swift -serialize-diagnostics %s 2>&1 | %FileCheck %s
+// RUN: %swiftppc_driver -enable-bridging-pch -v -I %t -import-objc-header %t/foo-bridging-header.h -enable-batch-mode -c -emit-module -module-name main -j 2 %t/file-01.swift %t/file-02.swift %t/file-03.swift %t/main.swift -serialize-diagnostics %s 2>&1 | %FileCheck %s
 //
 // CHECK: -emit-pch
 // CHECK: -primary-file {{.*}}/file-01.swift{{"?}} -primary-file {{.*}}/file-02.swift{{"?}}

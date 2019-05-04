@@ -132,7 +132,7 @@ is an extension of Swift's. A ``.sil`` file is a Swift source file
 with added SIL definitions. The Swift source is parsed only for its
 declarations; Swift ``func`` bodies (except for nested declarations)
 and top-level code are ignored by the SIL parser. In a ``.sil`` file,
-there are no implicit imports; the ``swift`` and/or ``Builtin``
+there are no implicit imports; the ``swiftpp`` and/or ``Builtin``
 standard modules must be imported explicitly if used.
 
 Here is an example of a ``.sil`` file::

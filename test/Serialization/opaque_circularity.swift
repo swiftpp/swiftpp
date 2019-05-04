@@ -1,4 +1,4 @@
-// RUN: %target-ppswiftc_driver -emit-module %s
+// RUN: %target-swiftppc_driver -emit-module %s
 
 // rdar://problem/49829836
 

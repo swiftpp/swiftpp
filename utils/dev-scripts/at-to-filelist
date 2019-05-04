@@ -16,9 +16,9 @@
 #
 # Example:
 #
-# Consider a ppswiftc command line that uses the @ symbol.
+# Consider a swiftppc command line that uses the @ symbol.
 #
-#   ppswiftc @/foo/bar/baz.txt
+#   swiftppc @/foo/bar/baz.txt
 #
 # When this is run, the @ command is expanded into a filelist in a temporary
 # file. This doesn't work with -### since -### outputs the command line with a

@@ -31,15 +31,15 @@ Here is how to dump the IR after the main phases of the Swift compiler
 
 #. **Parser**. To print the AST after parsing::
 
-    ppswiftc -dump-ast -O file.swift
+    swiftppc -dump-ast -O file.swift
 
 #. **SILGen**. To print the SIL immediately after SILGen::
 
-    ppswiftc -emit-silgen -O file.swift
+    swiftppc -emit-silgen -O file.swift
 
 #. **Mandatory SIL passes**. To print the SIL after the mandatory passes::
 
-    ppswiftc -emit-sil -Onone file.swift
+    swiftppc -emit-sil -Onone file.swift
 
   Well, this is not quite true, because the compiler is running some passes
   for -Onone after the mandatory passes, too. But for most purposes you will
@@ -48,19 +48,19 @@ Here is how to dump the IR after the main phases of the Swift compiler
 #. **Performance SIL passes**. To print the SIL after the complete SIL
    optimization pipeline::
 
-    ppswiftc -emit-sil -O file.swift
+    swiftppc -emit-sil -O file.swift
 
 #. **IRGen**. To print the LLVM IR after IR generation::
 
-    ppswiftc -emit-ir -Xfrontend -disable-llvm-optzns -O file.swift
+    swiftppc -emit-ir -Xfrontend -disable-llvm-optzns -O file.swift
 
 4. **LLVM passes**. To print the LLVM IR after LLVM passes::
 
-    ppswiftc -emit-ir -O file.swift
+    swiftppc -emit-ir -O file.swift
 
 5. **Code generation**. To print the final generated code::
 
-    ppswiftc -S -O file.swift
+    swiftppc -S -O file.swift
 
 Compilation stops at the phase where you print the output. So if you want to
 print the SIL *and* the LLVM IR, you have to run the compiler twice.
@@ -203,7 +203,7 @@ Debugging and Profiling on SIL level
 The compiler provides a way to debug and profile on SIL level. To enable SIL
 debugging add the front-end option -gsil together with -g. Example::
 
-    ppswiftc -g -Xfrontend -gsil -O test.swift -o a.out
+    swiftppc -g -Xfrontend -gsil -O test.swift -o a.out
 
 This writes the SIL after optimizations into a file and generates debug info
 for it. In the debugger and profiler you can then see the SIL code instead of

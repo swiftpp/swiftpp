@@ -27,7 +27,7 @@ bool swift::driver::getSingleFrontendInvocationFromDriverArguments(
     ArrayRef<const char *> Argv, DiagnosticEngine &Diags,
     llvm::function_ref<bool(ArrayRef<const char *> FrontendArgs)> Action) {
   SmallVector<const char *, 16> Args;
-  Args.push_back("<ppswiftc>"); // FIXME: Remove dummy argument.
+  Args.push_back("<swiftppc>"); // FIXME: Remove dummy argument.
   Args.insert(Args.end(), Argv.begin(), Argv.end());
 
   // When creating a CompilerInvocation, ensure that the driver creates a single
@@ -45,8 +45,8 @@ bool swift::driver::getSingleFrontendInvocationFromDriverArguments(
   Args.push_back("-driver-filelist-threshold");
   Args.push_back(neverThreshold.c_str());
 
-  // Force the driver into batch mode by specifying "ppswiftc" as the name.
-  Driver TheDriver("ppswiftc", "ppswiftc", Args, Diags);
+  // Force the driver into batch mode by specifying "swiftppc" as the name.
+  Driver TheDriver("swiftppc", "swiftppc", Args, Diags);
 
   // Don't check for the existence of input files, since the user of the
   // CompilerInvocation may wish to remap inputs to source buffers.

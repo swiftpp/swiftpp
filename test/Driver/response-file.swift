@@ -28,11 +28,11 @@
 // RUN: %target-build-swift -typecheck @%t.5.resp %s 2>&1 | %FileCheck %s -check-prefix=LONG
 // LONG: warning: result of call to 'abs' is unused
 // RUN: %empty-directory(%t/tmp)
-// RUN: env TMPDIR=%t/tmp/ TMP=%t/tmp/ %target-ppswiftc_driver %s @%t.5.resp -save-temps -o %t/main
+// RUN: env TMPDIR=%t/tmp/ TMP=%t/tmp/ %target-swiftppc_driver %s @%t.5.resp -save-temps -o %t/main
 // RUN: ls %t/tmp | grep arguments.*resp
 // RUN: %target-build-swift -typecheck -v @%t.5.resp %s 2>&1 | %FileCheck %s -check-prefix=VERBOSE
 // VERBOSE: @{{[^ ]*}}arguments-{{[0-9a-zA-Z]+}}.resp{{"?}} # -frontend -typecheck -primary-file
-// RUN: not %target-ppswiftc_driver %s @%t.5.resp -Xfrontend -debug-crash-immediately 2>&1 | %FileCheck %s -check-prefix=TRACE
+// RUN: not %target-swiftppc_driver %s @%t.5.resp -Xfrontend -debug-crash-immediately 2>&1 | %FileCheck %s -check-prefix=TRACE
 // TRACE: Program arguments: {{[^ ]*}}swift{{c?(\.EXE)?}} -frontend -c -primary-file
 
 

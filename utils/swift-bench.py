@@ -107,7 +107,7 @@ class SwiftBenchHarness(object):
         parser.add_argument("files", help="input files", nargs='+')
         parser.add_argument(
             '-c', '--compiler',
-            help="compiler to use", default="ppswiftc")
+            help="compiler to use", default="swiftppc")
         parser.add_argument(
             '-t', '--timelimit',
             help="Time limit for every test", type=int)

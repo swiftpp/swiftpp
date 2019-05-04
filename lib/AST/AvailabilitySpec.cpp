@@ -65,7 +65,7 @@ void PlatformAgnosticVersionConstraintAvailabilitySpec::print(raw_ostream &OS,
                     << "platform_agnostic_version_constraint_availability_spec"
                     << " kind='"
                     << (isLanguageVersionSpecific() ?
-                         "ppswift" : "package_description")
+                         "swiftpp" : "package_description")
                     << "'"
                     << " version='" << getVersion() << "'"
                     << ')';

@@ -12,7 +12,7 @@ macro(configure_build)
 
   if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
     if(NOT SWIFT_EXEC)
-      runcmd(COMMAND "xcrun" "-f" "ppswiftc"
+      runcmd(COMMAND "xcrun" "-f" "swiftppc"
         VARIABLE SWIFT_EXEC
         ERROR "Unable to find Swift driver")
     endif()
@@ -605,7 +605,7 @@ function (swift_benchmark_compile_archopts)
 
   # TODO: Unify the linux and darwin builds here.
   #
-  # We are avoiding this for now until it is investigated if ppswiftc and clang
+  # We are avoiding this for now until it is investigated if swiftppc and clang
   # both do exactly the same thing with both sets of arguments. It also lets us
   # avoid issues around code-signing.
   if (is_darwin)

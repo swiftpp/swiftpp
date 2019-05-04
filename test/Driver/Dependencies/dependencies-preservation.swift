@@ -5,8 +5,8 @@
 // RUN: %empty-directory(%t)
 // RUN: cp -r %S/Inputs/one-way/* %t
 // RUN: %{python} %S/Inputs/touch.py 443865900 %t/*
-// RUN: echo '{version: "'$(%ppswiftc_driver_plain -version | head -n1)'", inputs: {"./main.swift": [443865900, 0], "./other.swift": [443865900, 0]}}' > %t/main~buildrecord.swiftdeps
-// RUN: cd %t && %ppswiftc_driver -driver-use-frontend-path "%{python};%S/Inputs/update-dependencies.py" -c ./main.swift ./other.swift -module-name main -incremental -v -driver-show-incremental -output-file-map %t/output.json
+// RUN: echo '{version: "'$(%swiftppc_driver_plain -version | head -n1)'", inputs: {"./main.swift": [443865900, 0], "./other.swift": [443865900, 0]}}' > %t/main~buildrecord.swiftdeps
+// RUN: cd %t && %swiftppc_driver -driver-use-frontend-path "%{python};%S/Inputs/update-dependencies.py" -c ./main.swift ./other.swift -module-name main -incremental -v -driver-show-incremental -output-file-map %t/output.json
 
 // RUN: %FileCheck -check-prefix CHECK-ORIGINAL %s < main~buildrecord.swiftdeps~
 // CHECK-ORIGINAL: inputs: {"./main.swift": [443865900, 0], "./other.swift": [443865900, 0]}

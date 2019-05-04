@@ -6,8 +6,8 @@
             "remote": { "id": "apple/swift-llvm" } },
         "clang": {
             "remote": { "id": "apple/swift-clang" } },
-        "ppswift": {
-            "remote": { "id": "plusplusswift/ppswift" } },
+        "swiftpp": {
+            "remote": { "id": "swiftpp/swiftpp" } },
         "lldb": {
             "remote": { "id": "apple/swift-lldb" } },
         "cmark": {
@@ -54,7 +54,7 @@
             "repos": {
                 "llvm": "stable",
                 "clang": "stable",
-                "ppswift": "master",
+                "swiftpp": "master",
                 "lldb": "stable",
                 "cmark": "master",
                 "llbuild": "master",
@@ -83,7 +83,7 @@
                 "llvm": "upstream-with-swift",
                 "clang": "upstream-with-swift",
                 "compiler-rt": "upstream-with-swift",
-                "ppswift": "master-next",
+                "swiftpp": "master-next",
                 "lldb": "upstream-with-swift",
                 "cmark": "master",
                 "llbuild": "master",
@@ -108,7 +108,7 @@
             "repos": {
                 "llvm": "swift-3.0-branch",
                 "clang": "swift-3.0-branch",
-                "ppswift": "swift-3.0-branch",
+                "swiftpp": "swift-3.0-branch",
                 "lldb": "swift-3.0-branch",
                 "cmark": "swift-3.0-branch",
                 "llbuild": "swift-3.0-branch",
@@ -131,7 +131,7 @@
             "repos": {
                 "llvm": "swift-3.1-branch",
                 "clang": "swift-3.1-branch",
-                "ppswift": "swift-3.1-branch",
+                "swiftpp": "swift-3.1-branch",
                 "lldb": "swift-3.1-branch",
                 "cmark": "swift-3.1-branch",
                 "llbuild": "swift-3.1-branch",
@@ -154,7 +154,7 @@
             "repos": {
                 "llvm": "swift-4.0-branch",
                 "clang": "swift-4.0-branch",
-                "ppswift": "swift-4.0-branch",
+                "swiftpp": "swift-4.0-branch",
                 "lldb": "swift-4.0-branch",
                 "cmark": "swift-4.0-branch",
                 "llbuild": "swift-4.0-branch",
@@ -177,7 +177,7 @@
             "repos": {
                 "llvm": "swift-4.1-branch",
                 "clang": "swift-4.1-branch",
-                "ppswift": "swift-4.1-branch",
+                "swiftpp": "swift-4.1-branch",
                 "lldb": "swift-4.1-branch",
                 "cmark": "swift-4.1-branch",
                 "llbuild": "swift-4.1-branch",
@@ -200,7 +200,7 @@
             "repos": {
                 "llvm": "swift-4.2-branch",
                 "clang": "swift-4.2-branch",
-                "ppswift": "swift-4.2-branch",
+                "swiftpp": "swift-4.2-branch",
                 "lldb": "swift-4.2-branch",
                 "cmark": "swift-4.2-branch",
                 "llbuild": "swift-4.2-branch",
@@ -224,7 +224,7 @@
                 "llvm": "swift-5.0-branch",
                 "clang": "swift-5.0-branch",
                 "compiler-rt": "swift-5.0-branch",
-                "ppswift": "swift-5.0-branch",
+                "swiftpp": "swift-5.0-branch",
                 "lldb": "swift-5.0-branch",
                 "cmark": "swift-5.0-branch",
                 "llbuild": "swift-5.0-branch",
@@ -250,7 +250,7 @@
                 "llvm": "swift-5.0-branch",
                 "clang": "swift-5.0-branch",
                 "compiler-rt": "swift-5.0-branch",
-                "ppswift": "swift-5.1-old-llvm-branch",
+                "swiftpp": "swift-5.1-old-llvm-branch",
                 "lldb": "stable",
                 "cmark": "master",
                 "llbuild": "master",
@@ -276,7 +276,7 @@
                 "llvm": "swift-5.1-branch",
                 "clang": "swift-5.1-branch",
                 "compiler-rt": "swift-5.1-branch",
-                "ppswift": "swift-5.1-branch",
+                "swiftpp": "swift-5.1-branch",
                 "lldb": "swift-5.1-branch",
                 "cmark": "master",
                 "llbuild": "master",
@@ -302,7 +302,7 @@
                 "llvm": "swift-5.1-branch-03-18-2019",
                 "clang": "swift-5.1-branch-03-18-2019",
                 "compiler-rt": "swift-5.1-branch-03-18-2019",
-                "ppswift": "swift-5.1-branch-03-18-2019",
+                "swiftpp": "swift-5.1-branch-03-18-2019",
                 "lldb": "swift-5.1-branch-03-18-2019",
                 "cmark": "master",
                 "llbuild": "master",

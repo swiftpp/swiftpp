@@ -96,7 +96,7 @@ class Builder(object):
             cmake_args += ['-DCMAKE_INSTALL_PREFIX:PATH='+self.install_prefix]
         if self.version:
             cmake_args += ['-DSWIFT_LIBPARSER_VER:STRING='+self.version]
-        cmake_args += ['-DLLVM_ENABLE_PROJECTS=clang;ppswift', '-DLLVM_EXTERNAL_PROJECTS=ppswift']
+        cmake_args += ['-DLLVM_ENABLE_PROJECTS=clang;swiftpp', '-DLLVM_EXTERNAL_PROJECTS=swiftpp']
         cmake_args += ['-DSWIFT_BUILD_ONLY_SYNTAXPARSERLIB=TRUE']
         cmake_args += ['-DSWIFT_BUILD_PERF_TESTSUITE=NO', '-DSWIFT_INCLUDE_DOCS=NO']
         cmake_args += ['-DSWIFT_BUILD_REMOTE_MIRROR=FALSE', '-DSWIFT_BUILD_DYNAMIC_STDLIB=FALSE',
@@ -126,7 +126,7 @@ class Builder(object):
     def extract_symbols(self):
         if not isMac:
             return
-        extract_script = os.path.join(SWIFT_SOURCE_ROOT, "ppswift", "utils", "parser-lib", "darwin-extract-symbols")
+        extract_script = os.path.join(SWIFT_SOURCE_ROOT, "swiftpp", "utils", "parser-lib", "darwin-extract-symbols")
         print("--- Extracting symbols ---", file=sys.stderr)
         env = {'INSTALL_DIR': self.install_destdir,
                'INSTALL_PREFIX': self.install_prefix,
@@ -178,7 +178,7 @@ def main():
 
     toolchain = host_toolchain(xcrun_toolchain='default')
 
-    default_profile_input = os.path.join(SWIFT_SOURCE_ROOT, "ppswift", "utils", "parser-lib", "profile-input.swift")
+    default_profile_input = os.path.join(SWIFT_SOURCE_ROOT, "swiftpp", "utils", "parser-lib", "profile-input.swift")
     default_jobs = multiprocessing.cpu_count()
     default_build_dir = os.path.join(SWIFT_BUILD_ROOT, 'parser-lib')
     default_install_prefix = defaults.DARWIN_INSTALL_PREFIX if isMac else UNIX_INSTALL_PREFIX

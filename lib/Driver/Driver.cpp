@@ -94,8 +94,8 @@ void Driver::parseDriverKind(ArrayRef<const char *> Args) {
 
   Optional<DriverKind> Kind =
   llvm::StringSwitch<Optional<DriverKind>>(DriverName)
-  .Case("ppswift", DriverKind::Interactive)
-  .Case("ppswiftc", DriverKind::Batch)
+  .Case("swiftpp", DriverKind::Interactive)
+  .Case("swiftppc", DriverKind::Batch)
   .Case("swift-autolink-extract", DriverKind::AutolinkExtract)
   .Case("swift-format", DriverKind::SwiftFormat)
   .Default(None);
@@ -1139,7 +1139,7 @@ Driver::parseArgStrings(ArrayRef<const char *> Args) {
       if (A->getOption().hasFlag(UnsupportedFlag))
         Diags.diagnose(SourceLoc(), diag::error_unsupported_option,
             ArgList->getArgString(A->getIndex()), Name,
-            UnsupportedFlag == options::NoBatchOption ? "ppswift" : "ppswiftc");
+            UnsupportedFlag == options::NoBatchOption ? "swiftpp" : "swiftppc");
 
   return ArgList;
 }
@@ -1272,7 +1272,7 @@ static void diagnoseOutputModeArg(DiagnosticEngine &diags, const Arg *arg,
 
   case options::OPT_i:
     diags.diagnose(SourceLoc(), diag::error_i_mode,
-                   isInteractiveDriver ? driverName : "ppswift");
+                   isInteractiveDriver ? driverName : "swiftpp");
     break;
 
   case options::OPT_repl:
@@ -1729,6 +1729,7 @@ void Driver::buildActions(SmallVectorImpl<const Action *> &TopLevelActions,
 
       Action *Current = C.createAction<InputAction>(*InputArg, InputType);
       switch (InputType) {
+      case file_types::TY_SwiftPP:
       case file_types::TY_Swift:
       case file_types::TY_SIL:
       case file_types::TY_SIB: {
@@ -2825,7 +2826,7 @@ void Driver::chooseParseableInterfacePath(Compilation &C, const JobAction *JA,
     break;
   case OutputInfo::Mode::Immediate:
   case OutputInfo::Mode::REPL:
-    llvm_unreachable("these modes aren't usable with 'ppswiftc'");
+    llvm_unreachable("these modes aren't usable with 'swiftppc'");
   }
 
   StringRef outputPath = *getOutputFilenameFromPathArgOrAsTopLevel(

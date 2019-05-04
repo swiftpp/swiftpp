@@ -1,16 +1,16 @@
-// RUN: not %ppswiftc_driver -target x86_64-apple-macosx10.8 %s 2>&1 | %FileCheck --check-prefix=CHECK-OSX %s
-// RUN: not %ppswiftc_driver -target x86_64-apple-ios6.0 %s 2>&1 | %FileCheck --check-prefix=CHECK-IOS %s
-// RUN: not %ppswiftc_driver -target x86_64-apple-tvos8.0 %s 2>&1 | %FileCheck --check-prefix=CHECK-tvOS %s
-// RUN: not %ppswiftc_driver -target x86_64-apple-watchos1.0 %s 2>&1 | %FileCheck --check-prefix=CHECK-watchOS %s
+// RUN: not %swiftppc_driver -target x86_64-apple-macosx10.8 %s 2>&1 | %FileCheck --check-prefix=CHECK-OSX %s
+// RUN: not %swiftppc_driver -target x86_64-apple-ios6.0 %s 2>&1 | %FileCheck --check-prefix=CHECK-IOS %s
+// RUN: not %swiftppc_driver -target x86_64-apple-tvos8.0 %s 2>&1 | %FileCheck --check-prefix=CHECK-tvOS %s
+// RUN: not %swiftppc_driver -target x86_64-apple-watchos1.0 %s 2>&1 | %FileCheck --check-prefix=CHECK-watchOS %s
 
-// RUN: not %ppswiftc_driver -target i386-apple-ios11.0 %s -### 2>&1 | %FileCheck --check-prefix=CHECK-IOS-11 %s
-// RUN: not %ppswiftc_driver -target armv7-apple-ios11.0 %s -### 2>&1 | %FileCheck --check-prefix=CHECK-IOS-11 %s
-// RUN: not %ppswiftc_driver -target i386-apple-ios12.0 %s -### 2>&1 | %FileCheck --check-prefix=CHECK-IOS-12 %s
-// RUN: not %ppswiftc_driver -target armv7-apple-ios12.0 %s -### 2>&1 | %FileCheck --check-prefix=CHECK-IOS-12 %s
-// RUN: %ppswiftc_driver -target i386-apple-ios10.3 %s -### >/dev/null
-// RUN: %ppswiftc_driver -target armv7-apple-ios10.3 %s -### >/dev/null
-// RUN: %ppswiftc_driver -target x86_64-apple-ios11.0 %s -### >/dev/null
-// RUN: %ppswiftc_driver -target arm64-apple-ios11.0 %s -### >/dev/null
+// RUN: not %swiftppc_driver -target i386-apple-ios11.0 %s -### 2>&1 | %FileCheck --check-prefix=CHECK-IOS-11 %s
+// RUN: not %swiftppc_driver -target armv7-apple-ios11.0 %s -### 2>&1 | %FileCheck --check-prefix=CHECK-IOS-11 %s
+// RUN: not %swiftppc_driver -target i386-apple-ios12.0 %s -### 2>&1 | %FileCheck --check-prefix=CHECK-IOS-12 %s
+// RUN: not %swiftppc_driver -target armv7-apple-ios12.0 %s -### 2>&1 | %FileCheck --check-prefix=CHECK-IOS-12 %s
+// RUN: %swiftppc_driver -target i386-apple-ios10.3 %s -### >/dev/null
+// RUN: %swiftppc_driver -target armv7-apple-ios10.3 %s -### >/dev/null
+// RUN: %swiftppc_driver -target x86_64-apple-ios11.0 %s -### >/dev/null
+// RUN: %swiftppc_driver -target arm64-apple-ios11.0 %s -### >/dev/null
 
 
 // CHECK-OSX: Swift requires a minimum deployment target of OS X 10.9

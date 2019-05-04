@@ -62,13 +62,13 @@ KNOWN_SETTINGS=(
     lldb-assertions             "1"              "build lldb with assertions enabled"
     lldb-test-swift-compatibility     ""         "specify additional Swift compilers to test lldb with"
     llvm-build-type             "Debug"          "the CMake build variant for LLVM and Clang (Debug, RelWithDebInfo, Release, MinSizeRel).  Defaults to Debug."
-    swift-build-type            "Debug"          "the CMake build variant for ++Swift"
-    swift-enable-assertions     "1"              "enable assertions in ++Swift"
-    swift-analyze-code-coverage "not-merged"     "Code coverage analysis mode for ++Swift (false, not-merged, merged). Defaults to false if the argument is not present, and not-merged if the argument is present without a modifier."
-    swift-tools-enable-lto      ""               "enable LTO compilation of ++Swift tools. *NOTE* This does not include the swift standard library and runtime. Must be set to one of 'thin' or 'full'"
+    swift-build-type            "Debug"          "the CMake build variant for Swift++"
+    swift-enable-assertions     "1"              "enable assertions in Swift++"
+    swift-analyze-code-coverage "not-merged"     "Code coverage analysis mode for Swift++ (false, not-merged, merged). Defaults to false if the argument is not present, and not-merged if the argument is present without a modifier."
+    swift-tools-enable-lto      ""               "enable LTO compilation of Swift++ tools. *NOTE* This does not include the swift standard library and runtime. Must be set to one of 'thin' or 'full'"
     llvm-enable-lto             ""               "Must be set to one of 'thin' or 'full'"
     llvm-enable-modules         "0"              "enable building llvm using modules"
-    swift-tools-num-parallel-lto-link-jobs ""    "The number of parallel link jobs to use when compiling ++swift tools"
+    swift-tools-num-parallel-lto-link-jobs ""    "The number of parallel link jobs to use when compiling Swift++ tools"
     llvm-num-parallel-lto-link-jobs ""           "The number of parallel link jobs to use when compiling llvm"
     swift-stdlib-build-type     "Debug"          "the CMake build variant for Swift"
     swift-stdlib-enable-assertions "1"           "enable assertions in Swift"
@@ -1785,7 +1785,7 @@ function set_swiftpm_bootstrap_command() {
         return
     fi
 
-    SWIFTC_BIN="$(build_directory_bin ${LOCAL_HOST} swift)/ppswiftc"
+    SWIFTC_BIN="$(build_directory_bin ${LOCAL_HOST} swift)/swiftppc"
     LLBUILD_BIN="$(build_directory_bin ${LOCAL_HOST} llbuild)/swift-build-tool"
     if [[ ! "${SKIP_BUILD_FOUNDATION}" ]] ; then
         FOUNDATION_BUILD_DIR=$(build_directory ${host} foundation)
@@ -1820,7 +1820,7 @@ function set_swiftpm_bootstrap_command() {
     # SwiftPM needs to be told about the target, sysroot and linker to use
     # when cross-compiling
     swiftpm_bootstrap_command+=(
-        --ppswiftc="${SWIFTC_BIN}"
+        --swiftppc="${SWIFTC_BIN}"
         --sbt="${LLBUILD_BIN}"
         --build="$(build_directory ${host} swiftpm)")
 
@@ -1857,9 +1857,9 @@ function swiftpm_find_tool() {
 function set_swiftsyntax_build_command() {
     if [ "${BUILD_LIBPARSER_ONLY}" ]; then
         # we don't have a compiler built so we have to use the one in the environment.
-        SWIFTC_BIN="$(xcrun_find_tool ppswiftc)"
+        SWIFTC_BIN="$(xcrun_find_tool swiftppc)"
     else
-        SWIFTC_BIN="$(build_directory_bin ${LOCAL_HOST} swift)/ppswiftc"
+        SWIFTC_BIN="$(build_directory_bin ${LOCAL_HOST} swift)/swiftppc"
     fi
 
     swiftsyntax_build_command=("${SWIFTSYNTAX_SOURCE_DIR}/build-script.py")
@@ -1874,7 +1874,7 @@ function set_swiftsyntax_build_command() {
         --build-dir="$(build_directory ${host} swiftsyntax)"
         --swift-build-exec="$(swiftpm_find_tool swift-build)"
         --swift-test-exec="$(swiftpm_find_tool swift-test)"
-        --ppswiftc-exec="${SWIFTC_BIN}"
+        --swiftppc-exec="${SWIFTC_BIN}"
         --syntax-parser-header-dir="${SWIFT_SOURCE_DIR}/include/swift-c/SyntaxParser"
         --syntax-parser-lib-dir="$(build_directory ${host} swift)/lib"
         --swift-syntax-test-exec="$(build_directory_bin ${LOCAL_HOST} swift)/swift-syntax-test"
@@ -1908,7 +1908,7 @@ function set_stresstester_build_script_helper_command() {
     stresstester_build_script_helper_command+=(
         --package-dir="${package_name}"
         --build-dir="${package_build_dir}"
-        --ppswiftc-exec="$(build_directory_bin ${LOCAL_HOST} swift)/ppswiftc"
+        --swiftppc-exec="$(build_directory_bin ${LOCAL_HOST} swift)/swiftppc"
         --swift-build-exec="$(swiftpm_find_tool swift-build)"
         --swift-test-exec="$(swiftpm_find_tool swift-test)"
         --syntax-parser-header-dir="${SWIFT_SOURCE_DIR}/include/swift-c/SyntaxParser"
@@ -2090,7 +2090,7 @@ for host in "${ALL_HOSTS[@]}"; do
     )
 
     if [[ "${TEST_PATHS}" ]]; then
-        build_dir=$(build_directory ${host} "ppswift")
+        build_dir=$(build_directory ${host} "swiftpp")
 
         test_paths=()
         for path in ${TEST_PATHS}; do
@@ -2517,7 +2517,7 @@ for host in "${ALL_HOSTS[@]}"; do
                   cmake_options=(
                       "${cmake_options[@]}"
                       -DCMAKE_BUILD_TYPE:STRING="${LLDB_BUILD_TYPE}"
-                      -DLLDB_SWIFTC:PATH="$(build_directory ${LOCAL_HOST} swift)/bin/ppswiftc"
+                      -DLLDB_SWIFTC:PATH="$(build_directory ${LOCAL_HOST} swift)/bin/swiftppc"
                       -DLLDB_SWIFT_LIBS:PATH="$(build_directory ${LOCAL_HOST} swift)/lib/swift"
                       -DCMAKE_INSTALL_PREFIX:PATH="$(get_host_install_prefix ${host})"
                       -DClang_DIR:PATH=${llvm_build_dir}/lib/cmake/clang
@@ -2549,7 +2549,7 @@ for host in "${ALL_HOSTS[@]}"; do
                     -DFILECHECK_EXECUTABLE:PATH="$(build_directory_bin ${LOCAL_HOST} llvm)/FileCheck"
                     -DCMAKE_BUILD_TYPE:STRING="${LLBUILD_BUILD_TYPE}"
                     -DLLBUILD_ENABLE_ASSERTIONS:BOOL=$(true_false "${LLBUILD_ENABLE_ASSERTIONS}")
-                    -DSWIFTC_EXECUTABLE:PATH="$(build_directory_bin ${LOCAL_HOST} swift)/ppswiftc"
+                    -DSWIFTC_EXECUTABLE:PATH="$(build_directory_bin ${LOCAL_HOST} swift)/swiftppc"
                     -DFOUNDATION_BUILD_DIR:PATH="$(build_directory ${host} foundation)"
                     -DLIBDISPATCH_BUILD_DIR:PATH="$(build_directory ${host} libdispatch)"
                     -DLIBDISPATCH_SOURCE_DIR:PATH="${LIBDISPATCH_SOURCE_DIR}"
@@ -2593,7 +2593,7 @@ for host in "${ALL_HOSTS[@]}"; do
                 continue
                 ;;
             xctest)
-                SWIFTC_BIN="$(build_directory_bin ${LOCAL_HOST} swift)/ppswiftc"
+                SWIFTC_BIN="$(build_directory_bin ${LOCAL_HOST} swift)/swiftppc"
                 XCTEST_BUILD_DIR=$(build_directory ${host} xctest)
                 FOUNDATION_BUILD_DIR=$(build_directory ${host} foundation)
                 SWIFT_BUILD_DIR=$(build_directory ${host} swift)
@@ -2614,7 +2614,7 @@ for host in "${ALL_HOSTS[@]}"; do
                   fi
 
                   call "${XCTEST_SOURCE_DIR}"/build_script.py \
-                      --ppswiftc="${SWIFTC_BIN}" \
+                      --swiftppc="${SWIFTC_BIN}" \
                       --build-dir="${XCTEST_BUILD_DIR}" \
                       --foundation-build-dir="${FOUNDATION_BUILD_DIR}" \
                       --swift-build-dir="${SWIFT_BUILD_DIR}" \
@@ -2638,7 +2638,7 @@ for host in "${ALL_HOSTS[@]}"; do
                     -DCMAKE_BUILD_TYPE:STRING="${LIBDISPATCH_BUILD_TYPE}"
                     -DCMAKE_C_COMPILER:PATH="${LLVM_BIN}/clang"
                     -DCMAKE_CXX_COMPILER:PATH="${LLVM_BIN}/clang++"
-                    -DCMAKE_SWIFT_COMPILER:PATH="$(build_directory_bin ${LOCAL_HOST} swift)/ppswiftc"
+                    -DCMAKE_SWIFT_COMPILER:PATH="$(build_directory_bin ${LOCAL_HOST} swift)/swiftppc"
                     -DCMAKE_INSTALL_PREFIX:PATH="$(get_host_install_prefix ${host})"
                     -DCMAKE_INSTALL_LIBDIR:PATH="lib"
 
@@ -2661,7 +2661,7 @@ for host in "${ALL_HOSTS[@]}"; do
                 # is not yet built at this point.
                 XCTEST_BUILD_DIR=$(build_directory ${host} xctest)
 
-                SWIFTC_BIN="$(build_directory_bin ${LOCAL_HOST} swift)/ppswiftc"
+                SWIFTC_BIN="$(build_directory_bin ${LOCAL_HOST} swift)/swiftppc"
                 LLVM_BIN="$(build_directory_bin ${LOCAL_HOST} llvm)"
 
                 if [[ ${host} == "macosx"* ]]; then
@@ -2733,7 +2733,7 @@ for host in "${ALL_HOSTS[@]}"; do
             libdispatch|libdispatch_static)
                 LIBDISPATCH_BUILD_DIR=$(build_directory ${host} ${product})
                 SWIFT_BUILD_PATH="$(build_directory ${host} swift)"
-                SWIFTC_BIN="$(build_directory_bin ${LOCAL_HOST} swift)/ppswiftc"
+                SWIFTC_BIN="$(build_directory_bin ${LOCAL_HOST} swift)/swiftppc"
                 LLVM_BIN="$(build_directory_bin ${LOCAL_HOST} llvm)"
 
                 case "${host}" in
@@ -2829,7 +2829,7 @@ for host in "${ALL_HOSTS[@]}"; do
                     exit 1
                 fi
 
-                SWIFTC_BIN="$(build_directory_bin ${host} swift)/ppswiftc"
+                SWIFTC_BIN="$(build_directory_bin ${host} swift)/swiftppc"
                 SWIFT_LIB_DIR="$(build_directory ${host} swift)"/lib/swift/
 
                 set -x
@@ -3140,7 +3140,7 @@ for host in "${ALL_HOSTS[@]}"; do
                     fi
                 else
                     with_pushd "${results_dir}" \
-                        call env SWIFTC="$(build_directory $LOCAL_HOST swift)/bin/ppswiftc" \
+                        call env SWIFTC="$(build_directory $LOCAL_HOST swift)/bin/swiftppc" \
                         SWIFTLIBS="${swift_build_dir}/lib/swift" \
                         "${LLDB_SOURCE_DIR}"/test/dotest.py \
                         --executable "${lldb_executable}" \
@@ -3154,7 +3154,7 @@ for host in "${ALL_HOSTS[@]}"; do
                     if [[ -x "${LLDB_TEST_SWIFT_COMPATIBILITY}" ]] ; then
                         echo "Running LLDB swift compatibility tests against" \
                              "${LLDB_TEST_SWIFT_COMPATIBILITY}"
-                        call env SWIFTC="$(build_directory $LOCAL_HOST swift)/bin/ppswiftc" \
+                        call env SWIFTC="$(build_directory $LOCAL_HOST swift)/bin/swiftppc" \
                              SWIFTLIBS="${swift_build_dir}/lib/swift" \
                              "${LLDB_SOURCE_DIR}"/test/dotest.py \
                              --executable "${lldb_executable}" \
@@ -3238,11 +3238,11 @@ for host in "${ALL_HOSTS[@]}"; do
                   fi
 
                   echo "--- Running tests for ${product} ---"
-                  SWIFTC_BIN="$(build_directory_bin ${LOCAL_HOST} swift)/ppswiftc"
+                  SWIFTC_BIN="$(build_directory_bin ${LOCAL_HOST} swift)/swiftppc"
                   FOUNDATION_BUILD_DIR=$(build_directory ${host} foundation)
                   XCTEST_BUILD_DIR=$(build_directory ${host} xctest)
                   call "${XCTEST_SOURCE_DIR}"/build_script.py test \
-                      --ppswiftc="${SWIFTC_BIN}" \
+                      --swiftppc="${SWIFTC_BIN}" \
                       --lit="${LLVM_SOURCE_DIR}/utils/lit/lit.py" \
                       --foundation-build-dir="${FOUNDATION_BUILD_DIR}" \
                       ${LIBDISPATCH_BUILD_ARGS} \
@@ -3301,7 +3301,7 @@ for host in "${ALL_HOSTS[@]}"; do
                     LIBDISPATCH_BUILD_ARGS=( -DFOUNDATION_ENABLE_LIBDISPATCH=NO )
                 fi
 
-                SWIFTC_BIN="$(build_directory_bin ${LOCAL_HOST} swift)/ppswiftc"
+                SWIFTC_BIN="$(build_directory_bin ${LOCAL_HOST} swift)/swiftppc"
                 LLVM_BIN="$(build_directory_bin ${LOCAL_HOST} llvm)"
 
                 cmake_options=(
@@ -3378,7 +3378,7 @@ for host in "${ALL_HOSTS[@]}"; do
                 fi
 
                 PLAYGROUNDSUPPORT_BUILD_DIR=$(build_directory ${host} ${product})
-                SWIFTC_BIN="$(build_directory_bin ${host} swift)/ppswiftc"
+                SWIFTC_BIN="$(build_directory_bin ${host} swift)/swiftppc"
                 SWIFT_LIB_DIR="$(build_directory ${host} swift)"/lib/swift/
 
                 set -x

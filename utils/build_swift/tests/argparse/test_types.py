@@ -217,10 +217,10 @@ class TestClangVersionType(TestCase):
             clang_version_type('100.0.56.1')
 
 
-class TestPPSwiftVersionType(TestCase):
+class TestSwiftPPVersionType(TestCase):
 
     def test_valid_swift_version(self):
-        swift_version_type = types.PPSwiftVersionType()
+        swift_version_type = types.SwiftPPVersionType()
 
         version = swift_version_type('1.0')
         self.assertIsInstance(version, types.CompilerVersion)
@@ -237,7 +237,7 @@ class TestPPSwiftVersionType(TestCase):
             swift_version_type('100000.0.1')
 
     def test_invalid_swift_version(self):
-        swift_version_type = types.PPSwiftVersionType()
+        swift_version_type = types.SwiftPPVersionType()
 
         with self.assertRaises(ArgumentTypeError):
             swift_version_type('2')

@@ -6,7 +6,7 @@
 Note: This tool is still a work in progress.
 
 swift-format is a tool for automatically format your Swift files according to a
-set of rules. It is implemented as another driver kind, like ppswiftc, the batch
+set of rules. It is implemented as another driver kind, like swiftppc, the batch
 compiler, so swift-format is actually a symbolic link to swift. This tool uses
 libIDE to format code, so it can be leveraged from multiple systems and editors.
 

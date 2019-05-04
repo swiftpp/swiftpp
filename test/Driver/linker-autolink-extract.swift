@@ -1,4 +1,4 @@
-// RUN: %ppswiftc_driver -driver-print-jobs -target x86_64-unknown-linux-gnu -g %s | %FileCheck -check-prefix DEBUG_LINUX %s
+// RUN: %swiftppc_driver -driver-print-jobs -target x86_64-unknown-linux-gnu -g %s | %FileCheck -check-prefix DEBUG_LINUX %s
 
 // REQUIRES: autolink-extract
 

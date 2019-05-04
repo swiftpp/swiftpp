@@ -1,24 +1,24 @@
-// RUN: %ppswiftc_driver -driver-print-jobs -profile-generate -target x86_64-apple-macosx10.9 %s | %FileCheck -check-prefix=CHECK -check-prefix=OSX %s
+// RUN: %swiftppc_driver -driver-print-jobs -profile-generate -target x86_64-apple-macosx10.9 %s | %FileCheck -check-prefix=CHECK -check-prefix=OSX %s
 
-// RUN: %ppswiftc_driver -driver-print-jobs -profile-generate -target x86_64-apple-ios7.1 -resource-dir %S/Inputs/fake-resource-dir-old/lib/swift/ %s | %FileCheck -check-prefix=CHECK -check-prefix=IOS %s
-// RUN: %ppswiftc_driver -driver-print-jobs -profile-generate -target arm64-apple-ios7.1 -resource-dir %S/Inputs/fake-resource-dir-old/lib/swift/ %s | %FileCheck -check-prefix=CHECK -check-prefix=IOS %s
+// RUN: %swiftppc_driver -driver-print-jobs -profile-generate -target x86_64-apple-ios7.1 -resource-dir %S/Inputs/fake-resource-dir-old/lib/swift/ %s | %FileCheck -check-prefix=CHECK -check-prefix=IOS %s
+// RUN: %swiftppc_driver -driver-print-jobs -profile-generate -target arm64-apple-ios7.1 -resource-dir %S/Inputs/fake-resource-dir-old/lib/swift/ %s | %FileCheck -check-prefix=CHECK -check-prefix=IOS %s
 
-// RUN: %ppswiftc_driver -driver-print-jobs -profile-generate -target x86_64-apple-ios7.1 -resource-dir %S/Inputs/fake-resource-dir/lib/swift/ %s | %FileCheck -check-prefix=CHECK -check-prefix=IOSSIM %s
-// RUN: %ppswiftc_driver -driver-print-jobs -profile-generate -target arm64-apple-ios7.1 -resource-dir %S/Inputs/fake-resource-dir/lib/swift/ %s | %FileCheck -check-prefix=CHECK -check-prefix=IOS %s
+// RUN: %swiftppc_driver -driver-print-jobs -profile-generate -target x86_64-apple-ios7.1 -resource-dir %S/Inputs/fake-resource-dir/lib/swift/ %s | %FileCheck -check-prefix=CHECK -check-prefix=IOSSIM %s
+// RUN: %swiftppc_driver -driver-print-jobs -profile-generate -target arm64-apple-ios7.1 -resource-dir %S/Inputs/fake-resource-dir/lib/swift/ %s | %FileCheck -check-prefix=CHECK -check-prefix=IOS %s
 
-// RUN: %ppswiftc_driver -driver-print-jobs -profile-generate -target x86_64-apple-tvos9.0 -resource-dir %S/Inputs/fake-resource-dir-old/lib/swift/ %s | %FileCheck -check-prefix=CHECK -check-prefix=tvOS %s
-// RUN: %ppswiftc_driver -driver-print-jobs -profile-generate -target arm64-apple-tvos9.0 -resource-dir %S/Inputs/fake-resource-dir-old/lib/swift/ %s | %FileCheck -check-prefix=CHECK -check-prefix=tvOS %s
+// RUN: %swiftppc_driver -driver-print-jobs -profile-generate -target x86_64-apple-tvos9.0 -resource-dir %S/Inputs/fake-resource-dir-old/lib/swift/ %s | %FileCheck -check-prefix=CHECK -check-prefix=tvOS %s
+// RUN: %swiftppc_driver -driver-print-jobs -profile-generate -target arm64-apple-tvos9.0 -resource-dir %S/Inputs/fake-resource-dir-old/lib/swift/ %s | %FileCheck -check-prefix=CHECK -check-prefix=tvOS %s
 
-// RUN: %ppswiftc_driver -driver-print-jobs -profile-generate -target x86_64-apple-tvos9.0 -resource-dir %S/Inputs/fake-resource-dir/lib/swift/ %s | %FileCheck -check-prefix=CHECK -check-prefix=tvOS_SIM %s
-// RUN: %ppswiftc_driver -driver-print-jobs -profile-generate -target arm64-apple-tvos9.0 -resource-dir %S/Inputs/fake-resource-dir/lib/swift/ %s | %FileCheck -check-prefix=CHECK -check-prefix=tvOS %s
+// RUN: %swiftppc_driver -driver-print-jobs -profile-generate -target x86_64-apple-tvos9.0 -resource-dir %S/Inputs/fake-resource-dir/lib/swift/ %s | %FileCheck -check-prefix=CHECK -check-prefix=tvOS_SIM %s
+// RUN: %swiftppc_driver -driver-print-jobs -profile-generate -target arm64-apple-tvos9.0 -resource-dir %S/Inputs/fake-resource-dir/lib/swift/ %s | %FileCheck -check-prefix=CHECK -check-prefix=tvOS %s
 
-// RUN: %ppswiftc_driver -driver-print-jobs -profile-generate -target i386-apple-watchos2.0 -resource-dir %S/Inputs/fake-resource-dir-old/lib/swift/ %s | %FileCheck -check-prefix=CHECK -check-prefix=watchOS %s
-// RUN: %ppswiftc_driver -driver-print-jobs -profile-generate -target armv7k-apple-watchos2.0 -resource-dir %S/Inputs/fake-resource-dir-old/lib/swift/ %s | %FileCheck -check-prefix=CHECK -check-prefix=watchOS %s
-// RUN: %ppswiftc_driver -driver-print-jobs -profile-generate -target i386-apple-watchos2.0 -resource-dir %S/Inputs/fake-resource-dir/lib/swift/ %s | %FileCheck -check-prefix=CHECK -check-prefix=watchOS_SIM %s
-// RUN: %ppswiftc_driver -driver-print-jobs -profile-generate -target armv7k-apple-watchos2.0 -resource-dir %S/Inputs/fake-resource-dir/lib/swift/ %s | %FileCheck -check-prefix=CHECK -check-prefix=watchOS %s
+// RUN: %swiftppc_driver -driver-print-jobs -profile-generate -target i386-apple-watchos2.0 -resource-dir %S/Inputs/fake-resource-dir-old/lib/swift/ %s | %FileCheck -check-prefix=CHECK -check-prefix=watchOS %s
+// RUN: %swiftppc_driver -driver-print-jobs -profile-generate -target armv7k-apple-watchos2.0 -resource-dir %S/Inputs/fake-resource-dir-old/lib/swift/ %s | %FileCheck -check-prefix=CHECK -check-prefix=watchOS %s
+// RUN: %swiftppc_driver -driver-print-jobs -profile-generate -target i386-apple-watchos2.0 -resource-dir %S/Inputs/fake-resource-dir/lib/swift/ %s | %FileCheck -check-prefix=CHECK -check-prefix=watchOS_SIM %s
+// RUN: %swiftppc_driver -driver-print-jobs -profile-generate -target armv7k-apple-watchos2.0 -resource-dir %S/Inputs/fake-resource-dir/lib/swift/ %s | %FileCheck -check-prefix=CHECK -check-prefix=watchOS %s
 
-// RUN: %ppswiftc_driver -driver-print-jobs -profile-generate -target x86_64-unknown-linux-gnu %s | %FileCheck -check-prefix=CHECK -check-prefix=LINUX %s
-// RUN: %ppswiftc_driver -driver-print-jobs -profile-generate -target x86_64-unknown-windows-msvc %s | %FileCheck -check-prefix=CHECK -check-prefix=WINDOWS %s
+// RUN: %swiftppc_driver -driver-print-jobs -profile-generate -target x86_64-unknown-linux-gnu %s | %FileCheck -check-prefix=CHECK -check-prefix=LINUX %s
+// RUN: %swiftppc_driver -driver-print-jobs -profile-generate -target x86_64-unknown-windows-msvc %s | %FileCheck -check-prefix=CHECK -check-prefix=WINDOWS %s
 
 // CHECK: swift
 // CHECK: -profile-generate
@@ -52,12 +52,12 @@
 // WINDOWS: lib{{(\\\\|/)}}swift{{(\\\\|/)}}clang{{(\\\\|/)}}lib{{(\\\\|/)}}windows{{(\\\\|/)}}clang_rt.profile-x86_64.lib
 // WINDOWS: -u__llvm_profile_runtime
 
-// RUN: not %ppswiftc_driver -driver-print-jobs -profile-generate -profile-use=/dev/null %s 2>&1 | %FileCheck -check-prefix=MIX_GEN_USE %s
+// RUN: not %swiftppc_driver -driver-print-jobs -profile-generate -profile-use=/dev/null %s 2>&1 | %FileCheck -check-prefix=MIX_GEN_USE %s
 // MIX_GEN_USE: conflicting options '-profile-generate' and '-profile-use'
 
-// RUN: not %ppswiftc_driver -driver-print-jobs -profile-use=%t.does_not_exist %s 2>&1 | %FileCheck -check-prefix=USE_MISSING_FILE %s
+// RUN: not %swiftppc_driver -driver-print-jobs -profile-use=%t.does_not_exist %s 2>&1 | %FileCheck -check-prefix=USE_MISSING_FILE %s
 // USE_MISSING_FILE: no profdata file exists at '{{[^']+}}.does_not_exist'
 
-// RUN: %ppswiftc_driver -driver-print-jobs -profile-use=/dev/null %s | %FileCheck -check-prefix=USE_DEVNULL %s
+// RUN: %swiftppc_driver -driver-print-jobs -profile-use=/dev/null %s | %FileCheck -check-prefix=USE_DEVNULL %s
 // USE_DEVNULL: swift
 // USE_DEVNULL: -profile-use={{/dev/null|(.*local\\\\temp\\\\.*profiling-[^ ]*.o)}}

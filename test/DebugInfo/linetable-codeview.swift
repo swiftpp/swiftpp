@@ -1,4 +1,4 @@
-// RUN: %ppswiftc_driver %s -g -debug-info-format=codeview -emit-ir -o - | %FileCheck %s
+// RUN: %swiftppc_driver %s -g -debug-info-format=codeview -emit-ir -o - | %FileCheck %s
 func markUsed<T>(_ t: T) {}
 func arithmetic(_ a: Int64, _ b: Int64) {
   markUsed(a + b)             // line 4

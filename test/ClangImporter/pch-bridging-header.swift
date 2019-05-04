@@ -7,18 +7,18 @@
 // RUN: %target-typecheck-verify-swift -import-objc-header %t/sdk-bridging-header.pch
 
 // Now test the driver-automated version is inert when disabled
-// RUN: env TMPDIR=%t/tmp/ %target-ppswiftc_driver -typecheck -disable-bridging-pch -save-temps %s -import-objc-header %S/Inputs/sdk-bridging-header.h
+// RUN: env TMPDIR=%t/tmp/ %target-swiftppc_driver -typecheck -disable-bridging-pch -save-temps %s -import-objc-header %S/Inputs/sdk-bridging-header.h
 // RUN: not ls %t/tmp/*.pch >/dev/null 2>&1
 
 // Test the driver-automated version works by default
-// RUN: env TMPDIR=%t/tmp/ %target-ppswiftc_driver -typecheck -save-temps %s -import-objc-header %S/Inputs/sdk-bridging-header.h
+// RUN: env TMPDIR=%t/tmp/ %target-swiftppc_driver -typecheck -save-temps %s -import-objc-header %S/Inputs/sdk-bridging-header.h
 // RUN: ls %t/tmp/*.pch >/dev/null 2>&1
 // RUN: llvm-objdump -raw-clang-ast %t/tmp/*.pch | llvm-bcanalyzer -dump | %FileCheck %s
 // CHECK: ORIGINAL_FILE{{.*}}Inputs/sdk-bridging-header.h
 
 // Test the driver-automated version deletes its PCH file when done
 // RUN: rm %t/tmp/*.pch
-// RUN: env TMPDIR=%t/tmp/ %target-ppswiftc_driver -typecheck %s -import-objc-header %S/Inputs/sdk-bridging-header.h
+// RUN: env TMPDIR=%t/tmp/ %target-swiftppc_driver -typecheck %s -import-objc-header %S/Inputs/sdk-bridging-header.h
 // RUN: not ls %t/tmp/*.pch >/dev/null 2>&1
 
 // Test -emit-pch invocation but with a persistent PCH
@@ -37,7 +37,7 @@
 // RUN: ls %t/pch_with_dot/*swift*clang*.pch | count 2
 
 // Test the driver-automated version using persistent PCH
-// RUN: %target-ppswiftc_driver -typecheck -save-temps %s -import-objc-header %S/Inputs/sdk-bridging-header.h -pch-output-dir %t/pch3
+// RUN: %target-swiftppc_driver -typecheck -save-temps %s -import-objc-header %S/Inputs/sdk-bridging-header.h -pch-output-dir %t/pch3
 // RUN: ls %t/pch3/*.pch >/dev/null 2>&1
 // RUN: llvm-objdump -raw-clang-ast %t/pch3/*.pch | llvm-bcanalyzer -dump | %FileCheck %s -check-prefix=PERSISTENT
 // PERSISTENT: ORIGINAL_FILE{{.*}}Inputs/sdk-bridging-header.h

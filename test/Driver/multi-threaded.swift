@@ -1,24 +1,24 @@
 // RUN: %empty-directory(%t)
-// RUN: %target-ppswiftc_driver -driver-print-jobs -module-name=ThisModule -wmo -num-threads 4 %S/Inputs/main.swift %s -emit-module -o test.swiftmodule | %FileCheck -check-prefix=MODULE %s
+// RUN: %target-swiftppc_driver -driver-print-jobs -module-name=ThisModule -wmo -num-threads 4 %S/Inputs/main.swift %s -emit-module -o test.swiftmodule | %FileCheck -check-prefix=MODULE %s
 // RUN: echo "{\"%/s\": {\"assembly\": \"/build/multi-threaded.s\"}, \"%/S/Inputs/main.swift\": {\"assembly\": \"/build/main.s\"}}" > %t/ofms.json
-// RUN: %target-ppswiftc_driver -driver-print-jobs -module-name=ThisModule -wmo -num-threads 4 %/S/Inputs/main.swift %/s -output-file-map %t/ofms.json -S | %FileCheck -check-prefix=ASSEMBLY %s
-// RUN: %target-ppswiftc_driver -driver-print-jobs -module-name=ThisModule -wmo -num-threads 4 %S/Inputs/main.swift %s -c | %FileCheck -check-prefix=OBJECT %s
-// RUN: cd %t && %target-ppswiftc_driver -parseable-output -module-name=ThisModule -wmo -num-threads 4 %S/Inputs/main.swift %s -c 2> %t/parseable-output
+// RUN: %target-swiftppc_driver -driver-print-jobs -module-name=ThisModule -wmo -num-threads 4 %/S/Inputs/main.swift %/s -output-file-map %t/ofms.json -S | %FileCheck -check-prefix=ASSEMBLY %s
+// RUN: %target-swiftppc_driver -driver-print-jobs -module-name=ThisModule -wmo -num-threads 4 %S/Inputs/main.swift %s -c | %FileCheck -check-prefix=OBJECT %s
+// RUN: cd %t && %target-swiftppc_driver -parseable-output -module-name=ThisModule -wmo -num-threads 4 %S/Inputs/main.swift %s -c 2> %t/parseable-output
 // RUN: cat %t/parseable-output | %FileCheck -check-prefix=PARSEABLE %s
-// RUN: cd %t && env TMPDIR=/tmp %ppswiftc_driver -driver-print-jobs -module-name=ThisModule -wmo -num-threads 4 %S/Inputs/main.swift %s -o a.out | %FileCheck -check-prefix=EXEC %s
+// RUN: cd %t && env TMPDIR=/tmp %swiftppc_driver -driver-print-jobs -module-name=ThisModule -wmo -num-threads 4 %S/Inputs/main.swift %s -o a.out | %FileCheck -check-prefix=EXEC %s
 // RUN: echo "{\"%/s\": {\"llvm-bc\": \"%/t/multi-threaded.bc\", \"object\": \"%/t/multi-threaded.o\"}, \"%/S/Inputs/main.swift\": {\"llvm-bc\": \"%/t/main.bc\", \"object\": \"%/t/main.o\"}}" > %t/ofmo.json
-// RUN: %target-ppswiftc_driver -module-name=ThisModule -wmo -num-threads 4 %S/Inputs/main.swift %s  -emit-dependencies -output-file-map %t/ofmo.json -c
+// RUN: %target-swiftppc_driver -module-name=ThisModule -wmo -num-threads 4 %S/Inputs/main.swift %s  -emit-dependencies -output-file-map %t/ofmo.json -c
 // RUN: cat %t/*.d | %FileCheck -check-prefix=DEPENDENCIES %s
 
 // Check if -embed-bitcode works
-// RUN: %target-ppswiftc_driver -driver-print-jobs -module-name=ThisModule -embed-bitcode -wmo -num-threads 4 %/S/Inputs/main.swift %/s -output-file-map %t/ofmo.json -c | %FileCheck -check-prefix=BITCODE %s
+// RUN: %target-swiftppc_driver -driver-print-jobs -module-name=ThisModule -embed-bitcode -wmo -num-threads 4 %/S/Inputs/main.swift %/s -output-file-map %t/ofmo.json -c | %FileCheck -check-prefix=BITCODE %s
 
 // Check if -embed-bitcode works with -parseable-output
-// RUN: %target-ppswiftc_driver -parseable-output -module-name=ThisModule -embed-bitcode -wmo -num-threads 4 %/S/Inputs/main.swift %/s -output-file-map %t/ofmo.json -c 2> %t/parseable2
+// RUN: %target-swiftppc_driver -parseable-output -module-name=ThisModule -embed-bitcode -wmo -num-threads 4 %/S/Inputs/main.swift %/s -output-file-map %t/ofmo.json -c 2> %t/parseable2
 // RUN: cat %t/parseable2 | %FileCheck -check-prefix=PARSEABLE2 %s
 
 // Check if linking works with -parseable-output
-// RUN: cd %t && %target-ppswiftc_driver -parseable-output -module-name=ThisModule -wmo -num-threads 4 %/S/Inputs/main.swift %/s -output-file-map %t/ofmo.json -o a.out 2> %t/parseable3
+// RUN: cd %t && %target-swiftppc_driver -parseable-output -module-name=ThisModule -wmo -num-threads 4 %/S/Inputs/main.swift %/s -output-file-map %t/ofmo.json -o a.out 2> %t/parseable3
 // RUN: cat %t/parseable3 | %FileCheck -check-prefix=PARSEABLE3 %s
 
 // MODULE: -frontend

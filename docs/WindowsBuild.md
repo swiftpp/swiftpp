@@ -217,7 +217,7 @@ cmake -G Ninja^
   -DCMAKE_BUILD_TYPE=RelWithDebInfo^
   -DCMAKE_C_COMPILER=clang-cl^
   -DCMAKE_CXX_COMPILER=clang-cl^
-  -DCMAKE_SWIFT_COMPILER=S:\b\swift\bin\ppswiftc.exe^
+  -DCMAKE_SWIFT_COMPILER=S:\b\swift\bin\swiftppc.exe^
   -DENABLE_SWIFT=ON^
   -DENABLE_TESTING=OFF^
   S:\swift-corelibs-libdispatch
@@ -254,7 +254,7 @@ cd "S:\b\foundation
 cmake -G Ninja^
   -DCMAKE_BUILD_TYPE=RelWithDebInfo^
   -DCMAKE_C_COMPILER=clang-cl^
-  -DCMAKE_SWIFT_COMPILER=S:\b\swift\bin\ppswiftc.exe^
+  -DCMAKE_SWIFT_COMPILER=S:\b\swift\bin\swiftppc.exe^
   -DCURL_LIBRARY="S:/curl/builds/libcurl-vc15-x64-release-static-ipv6-sspi-winssl/lib/libcurl_a.lib"^
   -DCURL_INCLUDE_DIR="S:/curl/builds/libcurl-vc15-x64-release-static-ipv6-sspi-winssl/include"^
   -DENABLE_TESTING=NO^
@@ -280,7 +280,7 @@ cd "S:\b\xctest"
 cmake -G Ninja^
   -DBUILD_SHARED_LIBS=YES^
   -DCMAKE_BUILD_TYPE=RelWithDebInfo^
-  -DCMAKE_SWIFT_COMPILER=S:\b\swift\bin\ppswiftc.exe^
+  -DCMAKE_SWIFT_COMPILER=S:\b\swift\bin\swiftppc.exe^
   -DXCTEST_PATH_TO_FOUNDATION_BUILD=S:\b\foundation^
   -DXCTEST_PATH_TO_LIBDISPATCH_SOURCE=S:\swift-corelibs-libdispatch^
   -DXCTEST_PATH_TO_LIBDISPATCH_BUILD=S:\b\libdispatch^
@@ -308,7 +308,7 @@ cd "S:\b\foundation
 cmake -G Ninja^
   -DCMAKE_BUILD_TYPE=RelWithDebInfo^
   -DCMAKE_C_COMPILER=clang-cl^
-  -DCMAKE_SWIFT_COMPILER=S:\b\swift\bin\ppswiftc.exe^
+  -DCMAKE_SWIFT_COMPILER=S:\b\swift\bin\swiftppc.exe^
   -DCURL_LIBRARY="S:/curl/builds/libcurl-vc15-x64-release-static-ipv6-sspi-winssl/lib/libcurl_a.lib"^
   -DCURL_INCLUDE_DIR="S:/curl/builds/libcurl-vc15-x64-release-static-ipv6-sspi-winssl/include"^
   -DENABLE_TESTING=YES^

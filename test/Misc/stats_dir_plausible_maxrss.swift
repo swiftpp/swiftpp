@@ -1,6 +1,6 @@
 // RUN: %empty-directory(%t)
 // RUN: touch %t/main.swift
-// RUN: %target-ppswiftc_driver -o %t/main -module-name main -stats-output-dir %t %t/main.swift
+// RUN: %target-swiftppc_driver -o %t/main -module-name main -stats-output-dir %t %t/main.swift
 // RUN: %{python} %utils/process-stats-dir.py --set-csv-baseline %t/frontend.csv %t
 // RUN: %FileCheck -input-file %t/frontend.csv %s
 

@@ -244,21 +244,21 @@ class HostSpecificConfiguration(object):
             platforms_to_skip_test.add(StdlibDeploymentTarget.iOS)
         else:
             exit_rejecting_arguments("error: iOS device tests are not " +
-                                     "supported in open-source ++Swift.")
+                                     "supported in open-source Swift++.")
         if not args.test_ios_simulator:
             platforms_to_skip_test.add(StdlibDeploymentTarget.iOSSimulator)
         if not args.test_tvos_host:
             platforms_to_skip_test.add(StdlibDeploymentTarget.AppleTV)
         else:
             exit_rejecting_arguments("error: tvOS device tests are not " +
-                                     "supported in open-source ++Swift.")
+                                     "supported in open-source Swift++.")
         if not args.test_tvos_simulator:
             platforms_to_skip_test.add(StdlibDeploymentTarget.AppleTVSimulator)
         if not args.test_watchos_host:
             platforms_to_skip_test.add(StdlibDeploymentTarget.AppleWatch)
         else:
             exit_rejecting_arguments("error: watchOS device tests are not " +
-                                     "supported in open-source ++Swift.")
+                                     "supported in open-source Swift++.")
         if not args.test_watchos_simulator:
             platforms_to_skip_test.add(
                 StdlibDeploymentTarget.AppleWatchSimulator)
@@ -939,10 +939,10 @@ class BuildScriptInvocation(object):
                 " ".join(config.swift_stdlib_build_targets)))
             if config.swift_test_run_targets and (
                     self.args.test or self.args.long_test):
-                print("Running ++Swift tests for: {}".format(
+                print("Running Swift++ tests for: {}".format(
                     " ".join(config.swift_test_run_targets)))
             if config.swift_benchmark_run_targets and self.args.benchmark:
-                print("Running ++Swift benchmarks for: {}".format(
+                print("Running Swift++ benchmarks for: {}".format(
                     " ".join(config.swift_benchmark_run_targets)))
 
             for product_class in impl_product_classes:
@@ -1033,7 +1033,7 @@ def clean_delay():
 def main_preset():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        description="""Builds ++Swift using a preset.""")
+        description="""Builds Swift++ using a preset.""")
     parser.add_argument(
         "-n", "--dry-run",
         help="print the commands that would be executed, but do not execute "

@@ -2,8 +2,8 @@
 // ** GENERIC UNIX TARGETS - linking via clang++ **
 //=================================================
 
-// RUN: %ppswiftc_driver -### -target x86_64-linux-unknown -tools-directory %S/Inputs/fake-toolchain %s 2>&1 | %FileCheck -check-prefix CLANGSUB %s
-// RUN: %ppswiftc_driver -### -target x86_64-linux-unknown -tools-directory /Something/obviously/fake %s 2>&1 | %FileCheck -check-prefix BINUTILS %s
+// RUN: %swiftppc_driver -### -target x86_64-linux-unknown -tools-directory %S/Inputs/fake-toolchain %s 2>&1 | %FileCheck -check-prefix CLANGSUB %s
+// RUN: %swiftppc_driver -### -target x86_64-linux-unknown -tools-directory /Something/obviously/fake %s 2>&1 | %FileCheck -check-prefix BINUTILS %s
 
 // CLANGSUB: swift
 // CLANGSUB-SAME: -o [[OBJECTFILE:.*]]
@@ -28,7 +28,7 @@
 // ** DARWIN TARGETS - linking via ld **
 //======================================
 
-// RUN: %ppswiftc_driver -### -target x86_64-apple-macosx10.9 -tools-directory %S/Inputs/fake-toolchain %s 2>&1 | %FileCheck -check-prefix LDSUB %s
+// RUN: %swiftppc_driver -### -target x86_64-apple-macosx10.9 -tools-directory %S/Inputs/fake-toolchain %s 2>&1 | %FileCheck -check-prefix LDSUB %s
 
 // LDSUB: swift
 // LDSUB-SAME: -o [[OBJECTFILE:.*]]

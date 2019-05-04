@@ -354,7 +354,7 @@ EXPECTED_OPTIONS = [
     SetOption('--lldb-build-with-cmake', dest='lldb_build_with_xcode',
               value='0'),
     SetOption('--debug-llvm', dest='llvm_build_variant', value='Debug'),
-    SetOption('--debug-ppswift', dest='swift_build_variant', value='Debug'),
+    SetOption('--debug-swiftpp', dest='swift_build_variant', value='Debug'),
     SetOption('--debug-swift-stdlib',
               dest='swift_stdlib_build_variant', value='Debug'),
     SetOption('--eclipse',

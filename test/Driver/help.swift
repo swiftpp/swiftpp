@@ -1,16 +1,16 @@
 // Check that options printed with -help respect whether the driver is invoked
-// as 'ppswift' or as 'ppswiftc'.
+// as 'swiftpp' or as 'swiftppc'.
 
-// RUN: %ppswiftc_driver -help | %FileCheck -check-prefix CHECK -check-prefix CHECK-SWIFTC %s
-// RUN: %ppswiftc_driver -help | %FileCheck -check-prefix NEGATIVE -check-prefix NEGATIVE-SWIFTC %s
+// RUN: %swiftppc_driver -help | %FileCheck -check-prefix CHECK -check-prefix CHECK-SWIFTC %s
+// RUN: %swiftppc_driver -help | %FileCheck -check-prefix NEGATIVE -check-prefix NEGATIVE-SWIFTC %s
 
 // RUN: %swift_driver -help | %FileCheck -check-prefix CHECK -check-prefix CHECK-SWIFT %s
 // RUN: %swift_driver -help | %FileCheck -check-prefix NEGATIVE -check-prefix NEGATIVE-SWIFT %s
 
-// Options that work with both 'ppswiftc' and 'ppswift':
+// Options that work with both 'swiftppc' and 'swiftpp':
 // CHECK-DAG: -swift-version
 
-// ppswiftc-only options:
+// swiftppc-only options:
 // CHECK-SWIFTC-DAG: -typecheck
 // NEGATIVE-SWIFT-NOT: -typecheck
 

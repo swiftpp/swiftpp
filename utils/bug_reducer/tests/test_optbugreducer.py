@@ -72,9 +72,9 @@ class OptBugReducerTestCase(unittest.TestCase):
         (root, ext) = os.path.splitext(filename)
         return os.path.join(self.tmp_dir, os.path.basename(root) + '.sib')
 
-    def run_ppswiftc_command(self, name):
+    def run_swiftppc_command(self, name):
         input_file_path = self._get_test_file_path(name)
-        args = [self.tools.ppswiftc,
+        args = [self.tools.swiftppc,
                 '-module-cache-path', self.module_cache,
                 '-sdk', self.sdk,
                 '-Onone', '-parse-as-library',
@@ -87,7 +87,7 @@ class OptBugReducerTestCase(unittest.TestCase):
 
     def test_basic(self):
         name = 'testbasic'
-        self.run_ppswiftc_command(name)
+        self.run_swiftppc_command(name)
         args = [
             self.reducer,
             'opt',
@@ -116,7 +116,7 @@ class OptBugReducerTestCase(unittest.TestCase):
 
     def test_suffix_in_need_of_prefix(self):
         name = 'testsuffixinneedofprefix'
-        self.run_ppswiftc_command(name)
+        self.run_swiftppc_command(name)
         args = [
             self.reducer,
             'opt',
@@ -145,7 +145,7 @@ class OptBugReducerTestCase(unittest.TestCase):
 
     def test_reduce_function(self):
         name = 'testreducefunction'
-        self.run_ppswiftc_command(name)
+        self.run_swiftppc_command(name)
         args = [
             self.reducer,
             'opt',

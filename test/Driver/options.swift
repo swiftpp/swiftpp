@@ -1,39 +1,39 @@
-// RUN: not %ppswiftc_driver -emit-silgen -parse-as-library %s -module-name "Swift" 2>&1 | %FileCheck -check-prefix=STDLIB_MODULE %s
-// RUN: %target-ppswiftc_driver -emit-silgen -parse-as-library %s -module-name "Swift" -parse-stdlib -###
+// RUN: not %swiftppc_driver -emit-silgen -parse-as-library %s -module-name "Swift" 2>&1 | %FileCheck -check-prefix=STDLIB_MODULE %s
+// RUN: %target-swiftppc_driver -emit-silgen -parse-as-library %s -module-name "Swift" -parse-stdlib -###
 // STDLIB_MODULE: error: module name "Swift" is reserved for the standard library{{$}}
 
-// RUN: not %ppswiftc_driver -crazy-option-that-does-not-exist %s 2>&1 | %FileCheck -check-prefix=INVALID_OPTION %s
+// RUN: not %swiftppc_driver -crazy-option-that-does-not-exist %s 2>&1 | %FileCheck -check-prefix=INVALID_OPTION %s
 // RUN: not %swift_driver -crazy-option-that-does-not-exist 2>&1 | %FileCheck -check-prefix=INVALID_OPTION %s
 // INVALID_OPTION: error: unknown argument: '-crazy-option-that-does-not-exist'
 
-// RUN: %ppswiftc_driver -assert-config Debug -### %s | %FileCheck -check-prefix=ASSERTCONFIG %s
+// RUN: %swiftppc_driver -assert-config Debug -### %s | %FileCheck -check-prefix=ASSERTCONFIG %s
 // RUN: %swift_driver -assert-config Debug -### | %FileCheck -check-prefix=ASSERTCONFIG %s
 // ASSERTCONFIG: -assert-config Debug
 
-// RUN: %ppswiftc_driver -assert-config Release -### %s | %FileCheck -check-prefix=ASSERTCONFIG_RELEASE %s
+// RUN: %swiftppc_driver -assert-config Release -### %s | %FileCheck -check-prefix=ASSERTCONFIG_RELEASE %s
 // RUN: %swift_driver -assert-config Release -### %s | %FileCheck -check-prefix=ASSERTCONFIG_RELEASE %s
 // ASSERTCONFIG_RELEASE: -assert-config Release
 
-// RUN: %ppswiftc_driver -assert-config Unchecked -### %s | %FileCheck -check-prefix=ASSERTCONFIG_UNCHECKED %s
+// RUN: %swiftppc_driver -assert-config Unchecked -### %s | %FileCheck -check-prefix=ASSERTCONFIG_UNCHECKED %s
 // RUN: %swift_driver -assert-config Unchecked -### %s | %FileCheck -check-prefix=ASSERTCONFIG_UNCHECKED %s
 // ASSERTCONFIG_UNCHECKED: -assert-config Unchecked
 
-// RUN: %ppswiftc_driver -assert-config DisableReplacement -### %s | %FileCheck -check-prefix=ASSERTCONFIG_DISABLEREPLACEMENT %s
+// RUN: %swiftppc_driver -assert-config DisableReplacement -### %s | %FileCheck -check-prefix=ASSERTCONFIG_DISABLEREPLACEMENT %s
 // RUN: %swift_driver -assert-config DisableReplacement -### %s | %FileCheck -check-prefix=ASSERTCONFIG_DISABLEREPLACEMENT %s
 // ASSERTCONFIG_DISABLEREPLACEMENT: -assert-config DisableReplacement
 
-// RUN: not %ppswiftc_driver -import-objc-header fake.h -import-underlying-module -c %s 2>&1 | %FileCheck -check-prefix=FRAMEWORK_BRIDGING_HEADER %s
+// RUN: not %swiftppc_driver -import-objc-header fake.h -import-underlying-module -c %s 2>&1 | %FileCheck -check-prefix=FRAMEWORK_BRIDGING_HEADER %s
 // FRAMEWORK_BRIDGING_HEADER: error: using bridging headers with framework targets is unsupported
 
-// RUN: not %ppswiftc_driver -import-objc-header fake.h -emit-parseable-module-interface %s 2>&1 | %FileCheck -check-prefix=BRIDGING_HEADER_SWIFTINTERFACE %s
-// RUN: not %ppswiftc_driver -import-objc-header fake.h -emit-parseable-module-interface-path fake.swiftinterface %s 2>&1 | %FileCheck -check-prefix=BRIDGING_HEADER_SWIFTINTERFACE %s
+// RUN: not %swiftppc_driver -import-objc-header fake.h -emit-parseable-module-interface %s 2>&1 | %FileCheck -check-prefix=BRIDGING_HEADER_SWIFTINTERFACE %s
+// RUN: not %swiftppc_driver -import-objc-header fake.h -emit-parseable-module-interface-path fake.swiftinterface %s 2>&1 | %FileCheck -check-prefix=BRIDGING_HEADER_SWIFTINTERFACE %s
 // BRIDGING_HEADER_SWIFTINTERFACE: error: using bridging headers with module interfaces is unsupported
 
 // RUN: %swift_driver -### | %FileCheck -check-prefix=DEFAULT_REPL %s
 // DEFAULT_REPL: -repl
-// RUN: not %ppswiftc_driver 2>&1 | %FileCheck -check-prefix=DEFAULT_EXEC_ERR  %s
+// RUN: not %swiftppc_driver 2>&1 | %FileCheck -check-prefix=DEFAULT_EXEC_ERR  %s
 // DEFAULT_EXEC_ERR: error: no input files
-// RUN: %ppswiftc_driver %s -### 2>&1 | %FileCheck -check-prefix=DEFAULT_EXEC  %s
+// RUN: %swiftppc_driver %s -### 2>&1 | %FileCheck -check-prefix=DEFAULT_EXEC  %s
 // DEFAULT_EXEC: -c
 // DEFAULT_EXEC: {{ld|clang\+\+}}
 
@@ -55,25 +55,25 @@
 
 // RUN: not %swift_driver -### -i %s 2>&1 | %FileCheck -check-prefix=I_MODE %s
 // RUN: not %swift_driver -### -i 2>&1 | %FileCheck -check-prefix=I_MODE %s
-// RUN: not %ppswiftc_driver -### -i %s 2>&1 | %FileCheck -check-prefix=I_MODE %s
-// RUN: not %ppswiftc_driver -### -i 2>&1 | %FileCheck -check-prefix=I_MODE %s
+// RUN: not %swiftppc_driver -### -i %s 2>&1 | %FileCheck -check-prefix=I_MODE %s
+// RUN: not %swiftppc_driver -### -i 2>&1 | %FileCheck -check-prefix=I_MODE %s
 // I_MODE: error: the flag '-i' is no longer required and has been removed; use 'swift input-filename'
 
 // RUN: not %swift_driver -### -c %s 2>&1 | %FileCheck -check-prefix=C_MODE %s
-// C_MODE: error: option '-c' is not supported by 'ppswift'; did you mean to use 'ppswiftc'?
+// C_MODE: error: option '-c' is not supported by 'swiftpp'; did you mean to use 'swiftppc'?
 // RUN: not %swift_driver -### -emit-object %s 2>&1 | %FileCheck -check-prefix=OBJ_MODE %s
-// OBJ_MODE: error: option '-emit-object' is not supported by 'ppswift'; did you mean to use 'ppswiftc'?
+// OBJ_MODE: error: option '-emit-object' is not supported by 'swiftpp'; did you mean to use 'swiftppc'?
 // RUN: not %swift_driver -### -emit-executable %s 2>&1 | %FileCheck -check-prefix=EXEC_MODE %s
-// EXEC_MODE: error: option '-emit-executable' is not supported by 'ppswift'; did you mean to use 'ppswiftc'?
+// EXEC_MODE: error: option '-emit-executable' is not supported by 'swiftpp'; did you mean to use 'swiftppc'?
 // RUN: not %swift_driver -### -o %t %s 2>&1 | %FileCheck -check-prefix=ARG_o %s
-// ARG_o: error: option '-o' is not supported by 'ppswift'; did you mean to use 'ppswiftc'?
+// ARG_o: error: option '-o' is not supported by 'swiftpp'; did you mean to use 'swiftppc'?
 
-// RUN: not %ppswiftc_driver -### -repl 2>&1 | %FileCheck -check-prefix=REPL_MODE_SWIFTC %s
-// REPL_MODE_SWIFTC: error: option '-repl' is not supported by 'ppswiftc'; did you mean to use 'ppswift'?
-// RUN: not %ppswiftc_driver -### -lldb-repl 2>&1 | %FileCheck -check-prefix=LLDB_REPL_MODE_SWIFTC %s
-// LLDB_REPL_MODE_SWIFTC: error: option '-lldb-repl' is not supported by 'ppswiftc'; did you mean to use 'ppswift'?
-// RUN: not %ppswiftc_driver -### -deprecated-integrated-repl 2>&1 | %FileCheck -check-prefix=INT_REPL_MODE_SWIFTC %s
-// INT_REPL_MODE_SWIFTC: error: option '-deprecated-integrated-repl' is not supported by 'ppswiftc'; did you mean to use 'ppswift'?
+// RUN: not %swiftppc_driver -### -repl 2>&1 | %FileCheck -check-prefix=REPL_MODE_SWIFTC %s
+// REPL_MODE_SWIFTC: error: option '-repl' is not supported by 'swiftppc'; did you mean to use 'swiftpp'?
+// RUN: not %swiftppc_driver -### -lldb-repl 2>&1 | %FileCheck -check-prefix=LLDB_REPL_MODE_SWIFTC %s
+// LLDB_REPL_MODE_SWIFTC: error: option '-lldb-repl' is not supported by 'swiftppc'; did you mean to use 'swiftpp'?
+// RUN: not %swiftppc_driver -### -deprecated-integrated-repl 2>&1 | %FileCheck -check-prefix=INT_REPL_MODE_SWIFTC %s
+// INT_REPL_MODE_SWIFTC: error: option '-deprecated-integrated-repl' is not supported by 'swiftppc'; did you mean to use 'swiftpp'?
 
 // RUN: %swift_driver -g -### %s 2>&1 | %FileCheck -check-prefix=OPTIONS_BEFORE_FILE %s
 // OPTIONS_BEFORE_FILE: -g
@@ -81,45 +81,45 @@
 // RUN: not %swift_driver -target abc -### %s 2>&1 | %FileCheck -check-prefix=BAD_TARGET %s
 // BAD_TARGET: error: unknown target 'abc'
 
-// RUN: %ppswiftc_driver -incremental %s -### 2>&1 | %FileCheck -check-prefix=INCREMENTAL_WITHOUT_OFM %s
+// RUN: %swiftppc_driver -incremental %s -### 2>&1 | %FileCheck -check-prefix=INCREMENTAL_WITHOUT_OFM %s
 // INCREMENTAL_WITHOUT_OFM: warning: ignoring -incremental (currently requires an output file map)
 // INCREMENTAL_WITHOUT_OFM: swift{{c?(\.EXE)?"?}} -frontend
 
-// RUN: %ppswiftc_driver -incremental -output-file-map %S/Inputs/empty-ofm.json %s -### 2>&1 | %FileCheck -check-prefix=INCREMENTAL_WITHOUT_OFM_ENTRY %s
+// RUN: %swiftppc_driver -incremental -output-file-map %S/Inputs/empty-ofm.json %s -### 2>&1 | %FileCheck -check-prefix=INCREMENTAL_WITHOUT_OFM_ENTRY %s
 // INCREMENTAL_WITHOUT_OFM_ENTRY: ignoring -incremental; output file map has no master dependencies entry ("swift-dependencies" under "")
 // INCREMENTAL_WITHOUT_OFM_ENTRY: swift{{c?(\.EXE)?"?}} -frontend
 
-// RUN: %ppswiftc_driver -driver-print-jobs -enforce-exclusivity=checked %s | %FileCheck -check-prefix=EXCLUSIVITY_CHECKED %s
+// RUN: %swiftppc_driver -driver-print-jobs -enforce-exclusivity=checked %s | %FileCheck -check-prefix=EXCLUSIVITY_CHECKED %s
 // EXCLUSIVITY_CHECKED: swift
 // EXCLUSIVITY_CHECKED: -enforce-exclusivity=checked
 
-// RUN: %ppswiftc_driver -driver-print-jobs -remove-runtime-asserts %s | %FileCheck -check-prefix=REMOVE_RUNTIME_ASSERTS %s
+// RUN: %swiftppc_driver -driver-print-jobs -remove-runtime-asserts %s | %FileCheck -check-prefix=REMOVE_RUNTIME_ASSERTS %s
 // REMOVE_RUNTIME_ASSERTS: swift
 // REMOVE_RUNTIME_ASSERTS: -frontend {{.*}} -remove-runtime-asserts
 
-// RUN: %ppswiftc_driver -driver-print-jobs -assume-single-threaded %s | %FileCheck -check-prefix=ASSUME_SINGLE_THREADED %s
+// RUN: %swiftppc_driver -driver-print-jobs -assume-single-threaded %s | %FileCheck -check-prefix=ASSUME_SINGLE_THREADED %s
 // ASSUME_SINGLE_THREADED: swift
 // ASSUME_SINGLE_THREADED: -frontend {{.*}} -assume-single-threaded
 
-// RUN: not %ppswiftc_driver -incremental -autolink-force-load %s 2>&1 | %FileCheck -check-prefix=AUTOLINK_FORCE_LOAD %s
-// RUN: not %ppswiftc_driver -autolink-force-load -incremental %s 2>&1 | %FileCheck -check-prefix=AUTOLINK_FORCE_LOAD %s
+// RUN: not %swiftppc_driver -incremental -autolink-force-load %s 2>&1 | %FileCheck -check-prefix=AUTOLINK_FORCE_LOAD %s
+// RUN: not %swiftppc_driver -autolink-force-load -incremental %s 2>&1 | %FileCheck -check-prefix=AUTOLINK_FORCE_LOAD %s
 // AUTOLINK_FORCE_LOAD: error: '-autolink-force-load' is not supported with '-incremental'
 
 // RUN: %swift_driver -### -g -debug-info-format=codeview %s | %FileCheck -check-prefix DEBUG_INFO_FORMAT_CODEVIEW %s
 // RUN: %swift_driver -### -g -debug-info-format=dwarf %s | %FileCheck -check-prefix DEBUG_INFO_FORMAT_DWARF %s
-// RUN: %ppswiftc_driver -### -g -debug-info-format=codeview %s | %FileCheck -check-prefix DEBUG_INFO_FORMAT_CODEVIEW %s
-// RUN: %ppswiftc_driver -### -g -debug-info-format=dwarf %s | %FileCheck -check-prefix DEBUG_INFO_FORMAT_DWARF %s
+// RUN: %swiftppc_driver -### -g -debug-info-format=codeview %s | %FileCheck -check-prefix DEBUG_INFO_FORMAT_CODEVIEW %s
+// RUN: %swiftppc_driver -### -g -debug-info-format=dwarf %s | %FileCheck -check-prefix DEBUG_INFO_FORMAT_DWARF %s
 // DEBUG_INFO_FORMAT_CODEVIEW: -debug-info-format=codeview
 // DEBUG_INFO_FORMAT_DWARF: -debug-info-format=dwarf
 
 // RUN: not %swift_driver -debug-info-format=dwarf %s 2>&1 | %FileCheck -check-prefix MISSING_OPTION_G_ERROR %s
 // RUN: not %swift_driver -debug-info-format=codeview %s 2>&1 | %FileCheck -check-prefix MISSING_OPTION_G_ERROR %s
-// RUN: not %ppswiftc_driver -debug-info-format=dwarf %s 2>&1 | %FileCheck -check-prefix MISSING_OPTION_G_ERROR %s
-// RUN: not %ppswiftc_driver -debug-info-format=codeview %s 2>&1 | %FileCheck -check-prefix MISSING_OPTION_G_ERROR %s
+// RUN: not %swiftppc_driver -debug-info-format=dwarf %s 2>&1 | %FileCheck -check-prefix MISSING_OPTION_G_ERROR %s
+// RUN: not %swiftppc_driver -debug-info-format=codeview %s 2>&1 | %FileCheck -check-prefix MISSING_OPTION_G_ERROR %s
 // MISSING_OPTION_G_ERROR: error: option '-debug-info-format={{.*}}' is missing a required argument (-g)
 
 // RUN: not %swift_driver -gline-tables-only -debug-info-format=codeview %s 2>&1 | %FileCheck -check-prefix BAD_DEBUG_LEVEL_ERROR %s
 // RUN: not %swift_driver -gdwarf-types -debug-info-format=codeview %s 2>&1 | %FileCheck -check-prefix BAD_DEBUG_LEVEL_ERROR %s
-// RUN: not %ppswiftc_driver -gline-tables-only -debug-info-format=codeview %s 2>&1 | %FileCheck -check-prefix BAD_DEBUG_LEVEL_ERROR %s
-// RUN: not %ppswiftc_driver -gdwarf-types -debug-info-format=codeview %s 2>&1 | %FileCheck -check-prefix BAD_DEBUG_LEVEL_ERROR %s
+// RUN: not %swiftppc_driver -gline-tables-only -debug-info-format=codeview %s 2>&1 | %FileCheck -check-prefix BAD_DEBUG_LEVEL_ERROR %s
+// RUN: not %swiftppc_driver -gdwarf-types -debug-info-format=codeview %s 2>&1 | %FileCheck -check-prefix BAD_DEBUG_LEVEL_ERROR %s
 // BAD_DEBUG_LEVEL_ERROR: error: argument '-debug-info-format=codeview' is not allowed with '{{.*}}'

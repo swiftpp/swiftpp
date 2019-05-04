@@ -1,6 +1,6 @@
 // RUN: %empty-directory(%t)
-// RUN: %target-ppswiftc_driver -emit-module -o %t -module-name Empty -module-link-name swiftEmpty %S/../Inputs/empty.swift
-// RUN: %target-ppswiftc_driver %s -I %t -emit-ir | %FileCheck %s
+// RUN: %target-swiftppc_driver -emit-module -o %t -module-name Empty -module-link-name swiftEmpty %S/../Inputs/empty.swift
+// RUN: %target-swiftppc_driver %s -I %t -emit-ir | %FileCheck %s
 
 // REQUIRES: objc_interop
 

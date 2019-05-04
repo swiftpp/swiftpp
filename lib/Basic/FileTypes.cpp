@@ -66,6 +66,7 @@ ID file_types::lookupTypeForName(StringRef Name) {
 
 bool file_types::isTextual(ID Id) {
   switch (Id) {
+  case file_types::TY_SwiftPP:
   case file_types::TY_Swift:
   case file_types::TY_SIL:
   case file_types::TY_Dependencies:
@@ -112,6 +113,7 @@ bool file_types::isAfterLLVM(ID Id) {
   case file_types::TY_LLVM_BC:
   case file_types::TY_Object:
     return true;
+  case file_types::TY_SwiftPP:
   case file_types::TY_Swift:
   case file_types::TY_PCH:
   case file_types::TY_ImportedModules:
@@ -148,6 +150,7 @@ bool file_types::isAfterLLVM(ID Id) {
 
 bool file_types::isPartOfSwiftCompilation(ID Id) {
   switch (Id) {
+  case file_types::TY_SwiftPP:
   case file_types::TY_Swift:
   case file_types::TY_SIL:
   case file_types::TY_RawSIL:

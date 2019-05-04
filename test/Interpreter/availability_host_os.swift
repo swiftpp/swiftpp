@@ -1,6 +1,6 @@
 // Note: This is deliberately testing the target-less invocation of swift(c).
 
-// RUN: %ppswiftc_driver -typecheck -import-objc-header %S/Inputs/availability_host_os.h -DFAIL -Xfrontend -verify %s
+// RUN: %swiftppc_driver -typecheck -import-objc-header %S/Inputs/availability_host_os.h -DFAIL -Xfrontend -verify %s
 // RUN: %swift_driver -import-objc-header %S/Inputs/availability_host_os.h -DFAIL -Xfrontend -verify %s
 
 // RUN: %swift_driver -import-objc-header %S/Inputs/availability_host_os.h %s | %FileCheck %s

@@ -283,7 +283,7 @@ public:
         llvm::errs().resetColor();
       });
 
-    e = el_init("ppswift", stdin, stdout, stderr);
+    e = el_init("swiftpp", stdin, stdout, stderr);
     h = history_winit();
     PromptContinuationLevel = 0;
     el_wset(e, EL_EDITOR, L"emacs");
