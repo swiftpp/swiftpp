@@ -23,7 +23,7 @@ from .llvm import LLVM
 from .ninja import Ninja
 from .skstresstester import SKStressTester
 from .sourcekitlsp import SourceKitLSP
-from .swift import Swift
+from .swiftpp import SwiftPP
 from .swiftevolve import SwiftEvolve
 from .swiftpm import SwiftPM
 from .swiftsyntax import SwiftSyntax
@@ -40,7 +40,6 @@ __all__ = [
     'LLDB',
     'LLVM',
     'Ninja',
-    'Swift',
     'SwiftPM',
     'XCTest',
     'SwiftSyntax',

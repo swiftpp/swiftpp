@@ -42,38 +42,38 @@ def compute_build_subdir(args):
     if args.llvm_assertions:
         llvm_build_dir_label += "Assert"
 
-    swift_build_dir_label = args.swift_build_variant
+    swiftpp_build_dir_label = args.swift_build_variant
     if args.swift_assertions:
-        swift_build_dir_label += "Assert"
+        swiftpp_build_dir_label += "Assert"
     if args.swift_analyze_code_coverage != "false":
-        swift_build_dir_label += "Coverage"
+        swiftpp_build_dir_label += "Coverage"
 
     swift_stdlib_build_dir_label = args.swift_stdlib_build_variant
     if args.swift_stdlib_assertions:
         swift_stdlib_build_dir_label += "Assert"
 
     # FIXME: mangle LLDB build configuration into the directory name.
-    if (llvm_build_dir_label == swift_build_dir_label and
+    if (llvm_build_dir_label == swiftpp_build_dir_label and
             llvm_build_dir_label == swift_stdlib_build_dir_label and
-            swift_build_dir_label == cmark_build_dir_label):
+            swiftpp_build_dir_label == cmark_build_dir_label):
         # Use a simple directory name if all projects use the same build
         # type.
         build_subdir += "-" + llvm_build_dir_label
-    elif (llvm_build_dir_label != swift_build_dir_label and
+    elif (llvm_build_dir_label != swiftpp_build_dir_label and
             llvm_build_dir_label == swift_stdlib_build_dir_label and
-            swift_build_dir_label == cmark_build_dir_label):
+            swiftpp_build_dir_label == cmark_build_dir_label):
         # Swift build type differs.
         build_subdir += "-" + llvm_build_dir_label
-        build_subdir += "+swiftpp-" + swift_build_dir_label
-    elif (llvm_build_dir_label == swift_build_dir_label and
+        build_subdir += "+swiftpp-" + swiftpp_build_dir_label
+    elif (llvm_build_dir_label == swiftpp_build_dir_label and
             llvm_build_dir_label != swift_stdlib_build_dir_label and
-            swift_build_dir_label == cmark_build_dir_label):
+            swiftpp_build_dir_label == cmark_build_dir_label):
         # Swift stdlib build type differs.
         build_subdir += "-" + llvm_build_dir_label
         build_subdir += "+stdlib-" + swift_stdlib_build_dir_label
-    elif (llvm_build_dir_label == swift_build_dir_label and
+    elif (llvm_build_dir_label == swiftpp_build_dir_label and
             llvm_build_dir_label == swift_stdlib_build_dir_label and
-            swift_build_dir_label != cmark_build_dir_label):
+            swiftpp_build_dir_label != cmark_build_dir_label):
         # cmark build type differs.
         build_subdir += "-" + llvm_build_dir_label
         build_subdir += "+cmark-" + cmark_build_dir_label
@@ -82,7 +82,7 @@ def compute_build_subdir(args):
         # the information.
         build_subdir += "+cmark-" + cmark_build_dir_label
         build_subdir += "+llvm-" + llvm_build_dir_label
-        build_subdir += "+swift-" + swift_build_dir_label
+        build_subdir += "+swiftpp-" + swiftpp_build_dir_label
         build_subdir += "+stdlib-" + swift_stdlib_build_dir_label
 
     # If we have a sanitizer enabled, mangle it into the subdir.

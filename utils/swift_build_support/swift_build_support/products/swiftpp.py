@@ -13,7 +13,7 @@
 from . import product
 
 
-class Swift(product.Product):
+class SwiftPP(product.Product):
 
     def __init__(self, args, toolchain, source_dir, build_dir):
         product.Product.__init__(self, args, toolchain, source_dir,

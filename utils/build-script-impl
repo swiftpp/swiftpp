@@ -266,7 +266,7 @@ KNOWN_SETTINGS=(
     lldb-cmake-options                 ""        "CMake options used for all lldb targets"
     llvm-cmake-options                 ""        "CMake options used for all llvm targets"
     ninja-cmake-options                ""        "CMake options used for all ninja targets"
-    swift-cmake-options                ""        "CMake options used for all swift targets"
+    swiftpp-cmake-options              ""        "CMake options used for all swift targets"
     swiftpm-cmake-options              ""        "CMake options used for all swiftpm targets"
     xctest-cmake-options               ""        "CMake options used for all xctest targets"
     playgroundsupport-cmake-options    ""        "CMake options used for all playgroundsupport targets"
@@ -421,7 +421,7 @@ function should_execute_host_actions_for_phase() {
 
 function set_build_options_for_host() {
     llvm_cmake_options=()
-    swift_cmake_options=()
+    swiftpp_cmake_options=()
     cmark_cmake_options=()
     lldb_cmake_options=()
     swiftpm_bootstrap_options=()
@@ -654,7 +654,7 @@ function set_build_options_for_host() {
                 for target in "${DARWIN_SDK_DEPLOYMENT_TARGETS[@]}"; do
                     local IFS="-"; triple=($target)
                     sdk_target=$(toupper ${triple[0]}_${triple[1]})
-                    swift_cmake_options+=(
+                    swiftpp_cmake_options+=(
                         "-DSWIFTLIB_DEPLOYMENT_VERSION_${sdk_target}=${triple[2]}"
                     )
                 done
@@ -684,7 +684,7 @@ function set_build_options_for_host() {
 
             if [[ $(is_swift_lto_enabled) == "TRUE" ]]; then
                 if [[ $(cmake_needs_to_specify_standard_computed_defaults) = "TRUE" ]]; then
-                    swift_cmake_options+=(
+                    swiftpp_cmake_options+=(
                         "-DCMAKE_C_STANDARD_COMPUTED_DEFAULT=AppleClang"
                         "-DCMAKE_CXX_STANDARD_COMPUTED_DEFAULT=AppleClang"
                     )
@@ -694,13 +694,13 @@ function set_build_options_for_host() {
                     -DLLVM_ENABLE_MODULE_DEBUGGING:BOOL=NO
                 )
 
-                swift_cmake_options+=(
+                swiftpp_cmake_options+=(
                     -DLLVM_ENABLE_MODULE_DEBUGGING:BOOL=NO
                     "-DSWIFT_PARALLEL_LINK_JOBS=${SWIFT_TOOLS_NUM_PARALLEL_LTO_LINK_JOBS}"
                 )
             fi
 
-            swift_cmake_options+=(
+            swiftpp_cmake_options+=(
                 -DSWIFT_DARWIN_DEPLOYMENT_VERSION_OSX="${DARWIN_DEPLOYMENT_VERSION_OSX}"
                 -DSWIFT_DARWIN_DEPLOYMENT_VERSION_IOS="${DARWIN_DEPLOYMENT_VERSION_IOS}"
                 -DSWIFT_DARWIN_DEPLOYMENT_VERSION_TVOS="${DARWIN_DEPLOYMENT_VERSION_TVOS}"
@@ -742,14 +742,14 @@ function set_build_options_for_host() {
         llvm_cmake_options+=(
             -DLLVM_HOST_TRIPLE:STRING="${SWIFT_HOST_TRIPLE}"
         )
-        swift_cmake_options+=(
+        swiftpp_cmake_options+=(
             -DSWIFT_HOST_TRIPLE:STRING="${SWIFT_HOST_TRIPLE}"
         )
         lldb_cmake_options+=(
             -DLLVM_HOST_TRIPLE:STRING="${SWIFT_HOST_TRIPLE}"
         )
     fi
-    swift_cmake_options+=(
+    swiftpp_cmake_options+=(
         -DSWIFT_HOST_VARIANT="${SWIFT_HOST_VARIANT}"
         -DSWIFT_HOST_VARIANT_SDK="${SWIFT_HOST_VARIANT_SDK}"
         -DSWIFT_HOST_VARIANT_ARCH="${SWIFT_HOST_VARIANT_ARCH}"
@@ -759,7 +759,7 @@ function set_build_options_for_host() {
         llvm_cmake_options+=(
             -DLLVM_LIT_ARGS="${LLVM_LIT_ARGS}"
         )
-        swift_cmake_options+=(
+        swiftpp_cmake_options+=(
             -DLLVM_LIT_ARGS="${LLVM_LIT_ARGS}"
         )
     fi
@@ -771,11 +771,11 @@ function set_build_options_for_host() {
     fi
 
     if [[ "${SWIFT_PROFILE_INSTR_USE}" ]]; then
-        swift_cmake_options+=(
+        swiftpp_cmake_options+=(
             -DSWIFT_PROFDATA_FILE="${SWIFT_PROFILE_INSTR_USE}"
         )
     fi
-    swift_cmake_options+=(
+    swiftpp_cmake_options+=(
         -DCOVERAGE_DB="${COVERAGE_DB}"
     )
 }
@@ -1248,7 +1248,7 @@ fi
 if [[ ! "${SKIP_BUILD_LIBICU}" ]] ; then
      PRODUCTS=("${PRODUCTS[@]}" libicu)
 fi
-PRODUCTS=("${PRODUCTS[@]}" swift)
+PRODUCTS=("${PRODUCTS[@]}" swiftpp)
 if [[ ! "${SKIP_BUILD_LLDB}" ]] ; then
      PRODUCTS=("${PRODUCTS[@]}" lldb)
 fi
@@ -1586,7 +1586,7 @@ function build_directory_bin() {
                 # Reuse LLVM's build type.
                 echo "${root}/${LLVM_BUILD_TYPE}/bin"
                 ;;
-            swift)
+            swiftpp)
                 echo "${root}/${SWIFT_BUILD_TYPE}/bin"
                 ;;
             lldb)
@@ -1737,7 +1737,7 @@ function cmake_config_opt() {
                 # Reuse LLVM's build type.
                 echo "--config ${LLVM_BUILD_TYPE}"
                 ;;
-            swift)
+            swiftpp)
                 echo "--config ${SWIFT_BUILD_TYPE}"
                 ;;
             lldb)
@@ -1875,7 +1875,7 @@ function set_swiftsyntax_build_command() {
         --swift-build-exec="$(swiftpm_find_tool swift-build)"
         --swift-test-exec="$(swiftpm_find_tool swift-test)"
         --swiftppc-exec="${SWIFTC_BIN}"
-        --syntax-parser-header-dir="${SWIFT_SOURCE_DIR}/include/swift-c/SyntaxParser"
+        --syntax-parser-header-dir="${SWIFTPP_SOURCE_DIR}/include/swift-c/SyntaxParser"
         --syntax-parser-lib-dir="$(build_directory ${host} swift)/lib"
         --swift-syntax-test-exec="$(build_directory_bin ${LOCAL_HOST} swift)/swift-syntax-test"
         --filecheck-exec="$(build_directory_bin ${LOCAL_HOST} llvm)/FileCheck")
@@ -1911,7 +1911,7 @@ function set_stresstester_build_script_helper_command() {
         --swiftppc-exec="$(build_directory_bin ${LOCAL_HOST} swift)/swiftppc"
         --swift-build-exec="$(swiftpm_find_tool swift-build)"
         --swift-test-exec="$(swiftpm_find_tool swift-test)"
-        --syntax-parser-header-dir="${SWIFT_SOURCE_DIR}/include/swift-c/SyntaxParser"
+        --syntax-parser-header-dir="${SWIFTPP_SOURCE_DIR}/include/swift-c/SyntaxParser"
         --syntax-parser-lib-dir="$(build_directory ${host} swift)/lib"
         --sourcekitd-dir="$(build_directory ${host} swift)/lib"
         --swiftsyntax-dir="$(build_directory ${host} swiftsyntax)/${swiftsyntax_config}"
@@ -1934,12 +1934,12 @@ function set_lldb_xcodebuild_options() {
     llvm_build_dir=$(build_directory ${host} llvm)
     cmark_build_dir=$(build_directory ${host} cmark)
     lldb_build_dir=$(build_directory ${host} lldb)
-    swift_build_dir=$(build_directory ${host} swift)
+    swift_build_dir=$(build_directory ${host} swiftpp)
 
     lldb_xcodebuild_options=(
         LLDB_PATH_TO_LLVM_SOURCE="${LLVM_SOURCE_DIR}"
         LLDB_PATH_TO_CLANG_SOURCE="${CLANG_SOURCE_DIR}"
-        LLDB_PATH_TO_SWIFT_SOURCE="${SWIFT_SOURCE_DIR}"
+        LLDB_PATH_TO_SWIFT_SOURCE="${SWIFTPP_SOURCE_DIR}"
         LLDB_PATH_TO_LLVM_BUILD="${llvm_build_dir}"
         LLDB_PATH_TO_CLANG_BUILD="${llvm_build_dir}"
         LLDB_PATH_TO_SWIFT_BUILD="${swift_build_dir}"
@@ -2043,47 +2043,47 @@ for host in "${ALL_HOSTS[@]}"; do
     )
 
     if [[ "${DARWIN_TOOLCHAIN_VERSION}" ]] ; then
-        swift_cmake_options=(
-            "${swift_cmake_options[@]}"
+        swiftpp_cmake_options=(
+            "${swiftpp_cmake_options[@]}"
             -DDARWIN_TOOLCHAIN_VERSION="${DARWIN_TOOLCHAIN_VERSION}"
         )
     fi
 
     if [[ "${ENABLE_ASAN}" || "$(uname -s)" == "Linux" ]] ; then
-        swift_cmake_options=(
-            "${swift_cmake_options[@]}"
+        swiftpp_cmake_options=(
+            "${swiftpp_cmake_options[@]}"
             -DSWIFT_SOURCEKIT_USE_INPROC_LIBRARY:BOOL=TRUE
         )
     fi
 
     if [[ "${DARWIN_CRASH_REPORTER_CLIENT}" ]] ; then
-        swift_cmake_options=(
-            "${swift_cmake_options[@]}"
+        swiftpp_cmake_options=(
+            "${swiftpp_cmake_options[@]}"
             -DSWIFT_RUNTIME_CRASH_REPORTER_CLIENT:BOOL=TRUE
         )
     fi
 
-    swift_cmake_options=(
-        "${swift_cmake_options[@]}"
+    swiftpp_cmake_options=(
+        "${swiftpp_cmake_options[@]}"
         -DSWIFT_DARWIN_XCRUN_TOOLCHAIN:STRING="${DARWIN_XCRUN_TOOLCHAIN}"
     )
 
     if [[ "${DARWIN_STDLIB_INSTALL_NAME_DIR}" ]] ; then
-        swift_cmake_options=(
-            "${swift_cmake_options[@]}"
+        swiftpp_cmake_options=(
+            "${swiftpp_cmake_options[@]}"
             -DSWIFT_DARWIN_STDLIB_INSTALL_NAME_DIR:STRING="${DARWIN_STDLIB_INSTALL_NAME_DIR}"
         )
     fi
 
     if [[ "${EXTRA_SWIFT_ARGS}" ]] ; then
-        swift_cmake_options=(
-            "${swift_cmake_options[@]}"
+        swiftpp_cmake_options=(
+            "${swiftpp_cmake_options[@]}"
             -DSWIFT_EXPERIMENTAL_EXTRA_REGEXP_FLAGS="${EXTRA_SWIFT_ARGS}"
         )
     fi
 
-    swift_cmake_options=(
-        "${swift_cmake_options[@]}"
+    swiftpp_cmake_options=(
+        "${swiftpp_cmake_options[@]}"
         -DSWIFT_AST_VERIFIER:BOOL=$(true_false "${SWIFT_ENABLE_AST_VERIFIER}")
         -DSWIFT_SIL_VERIFY_ALL:BOOL=$(true_false "${SIL_VERIFY_ALL}")
         -DSWIFT_RUNTIME_ENABLE_LEAK_CHECKER:BOOL=$(true_false "${SWIFT_RUNTIME_ENABLE_LEAK_CHECKER}")
@@ -2099,14 +2099,14 @@ for host in "${ALL_HOSTS[@]}"; do
             )
         done
 
-        swift_cmake_options=(
-            "${swift_cmake_options[@]}"
+        swiftpp_cmake_options=(
+            "${swiftpp_cmake_options[@]}"
             -DSWIFT_LIT_TEST_PATHS="${test_paths}")
     fi
 
     if [[ "${SKIP_TEST_SOURCEKIT}" ]] ; then
-        swift_cmake_options=(
-            "${swift_cmake_options[@]}"
+        swiftpp_cmake_options=(
+            "${swiftpp_cmake_options[@]}"
             -DSWIFT_ENABLE_SOURCEKIT_TESTS:BOOL=FALSE
         )
     fi
@@ -2243,7 +2243,7 @@ for host in "${ALL_HOSTS[@]}"; do
 
                 ;;
 
-            swift)
+            swiftpp)
 
                 if [[ ! "${SKIP_BUILD_ANDROID}" ]]; then
                     cmake_options=(
@@ -2265,10 +2265,10 @@ for host in "${ALL_HOSTS[@]}"; do
                     # Split LOCAL_HOST into a pair ``arch-sdk``
                     # Example LOCAL_HOST: macosx-x86_64
                     [[ ${LOCAL_HOST} =~ (.*)-(.*) ]]
-                    overlay_target_closure_cmd="${SWIFT_SOURCE_DIR}/utils/find-overlay-deps-closure.sh ${DARWIN_OVERLAY_TARGET} ${BASH_REMATCH[1]} ${BASH_REMATCH[2]}"
+                    overlay_target_closure_cmd="${SWIFTPP_SOURCE_DIR}/utils/find-overlay-deps-closure.sh ${DARWIN_OVERLAY_TARGET} ${BASH_REMATCH[1]} ${BASH_REMATCH[2]}"
                     overlay_target_closure=$($overlay_target_closure_cmd)
-                    swift_cmake_options=(
-                        "${swift_cmake_options[@]}"
+                    swiftpp_cmake_options=(
+                        "${swiftpp_cmake_options[@]}"
                         "-DSWIFT_OVERLAY_TARGETS:STRING=${overlay_target_closure}"
                     )
                 fi
@@ -2357,7 +2357,7 @@ for host in "${ALL_HOSTS[@]}"; do
                     -DSWIFT_TOOLS_ENABLE_LTO:STRING="${SWIFT_TOOLS_ENABLE_LTO}"
                     -DSWIFT_BUILD_RUNTIME_WITH_HOST_COMPILER:BOOL=$(true_false "${BUILD_RUNTIME_WITH_HOST_COMPILER}")
                     -DLIBDISPATCH_CMAKE_BUILD_TYPE:STRING="${LIBDISPATCH_BUILD_TYPE}"
-                    "${swift_cmake_options[@]}"
+                    "${swiftpp_cmake_options[@]}"
                 )
 
                 if [[ "${BUILD_TOOLCHAIN_ONLY}" ]]; then
@@ -2970,7 +2970,7 @@ for host in "${ALL_HOSTS[@]}"; do
             libcxx)
                 continue # We don't test libc++
                 ;;
-            swift)
+            swiftpp)
                 executable_target=
                 results_targets=
                 if ! [[ "${SKIP_TEST_SWIFT}" ]]; then
@@ -3483,7 +3483,7 @@ for host in "${ALL_HOSTS[@]}"; do
                 fi
                 INSTALL_TARGETS=install-cxx-headers
                 ;;
-            swift)
+            swiftpp)
                 if [[ -z "${INSTALL_SWIFT}" ]] ; then
                     continue
                 fi
@@ -3897,13 +3897,13 @@ function build_and_test_installable_package() {
 
           if [[ "${DARWIN_TOOLCHAIN_APPLICATION_CERT}" ]] ; then
             echo "-- Codesign xctoolchain --"
-            call "${SWIFT_SOURCE_DIR}/utils/toolchain-codesign" "${DARWIN_TOOLCHAIN_APPLICATION_CERT}" "${host_install_destdir}${TOOLCHAIN_PREFIX}/"
+            call "${SWIFTPP_SOURCE_DIR}/utils/toolchain-codesign" "${DARWIN_TOOLCHAIN_APPLICATION_CERT}" "${host_install_destdir}${TOOLCHAIN_PREFIX}/"
           fi
           if [[ "${DARWIN_TOOLCHAIN_INSTALLER_PACKAGE}" ]] ; then
             echo "-- Create Installer --"
-            call "${SWIFT_SOURCE_DIR}/utils/toolchain-installer" "${host_install_destdir}${TOOLCHAIN_PREFIX}/" "${DARWIN_TOOLCHAIN_BUNDLE_IDENTIFIER}" \
+            call "${SWIFTPP_SOURCE_DIR}/utils/toolchain-installer" "${host_install_destdir}${TOOLCHAIN_PREFIX}/" "${DARWIN_TOOLCHAIN_BUNDLE_IDENTIFIER}" \
                 "${DARWIN_TOOLCHAIN_INSTALLER_CERT}" "${DARWIN_TOOLCHAIN_INSTALLER_PACKAGE}" "${DARWIN_TOOLCHAIN_INSTALL_LOCATION}" \
-                "${DARWIN_TOOLCHAIN_VERSION}" "${SWIFT_SOURCE_DIR}/utils/darwin-installer-scripts"
+                "${DARWIN_TOOLCHAIN_VERSION}" "${SWIFTPP_SOURCE_DIR}/utils/darwin-installer-scripts"
           fi
 
           # host_install_destdir contains the toolchain prefix.
@@ -3979,7 +3979,7 @@ if [[ ${#LIPO_SRC_DIRS[@]} -gt 0 ]]; then
     else
         LIPO_PATH="${HOST_LIPO}"
     fi
-    call "${SWIFT_SOURCE_DIR}"/utils/recursive-lipo --lipo=${LIPO_PATH} --copy-subdirs="$(get_host_install_prefix ${host})lib/swift $(get_host_install_prefix ${host})lib/swift_static" --destination="$(get_host_install_destdir ${mergedHost})" ${LIPO_SRC_DIRS[@]}
+    call "${SWIFTPP_SOURCE_DIR}"/utils/recursive-lipo --lipo=${LIPO_PATH} --copy-subdirs="$(get_host_install_prefix ${host})lib/swift $(get_host_install_prefix ${host})lib/swift_static" --destination="$(get_host_install_destdir ${mergedHost})" ${LIPO_SRC_DIRS[@]}
 
     # Build and test the lipo-ed package.
     build_and_test_installable_package ${mergedHost}
