@@ -178,7 +178,7 @@ KNOWN_SETTINGS=(
     skip-test-optimize-none-implicit-dynamic ""  "set to skip testing the test suite in optimize none with implicit dynamic mode"
     skip-test-sourcekit         ""               "set to skip testing SourceKit"
     stress-test-sourcekit       ""               "set to run the stress-SourceKit target"
-    workspace                   "${HOME}/src"    "source directory containing llvm, clang, swift"
+    workspace                   "${HOME}/src"    "source directory containing llvm, clang, swiftpp"
     enable-llvm-assertions      "1"              "set to enable llvm assertions"
     build-llvm                  "1"              "set to 1 to build LLVM and Clang"
     build-swift-tools           "1"              "set to 1 to build Swift host tools"
@@ -275,7 +275,7 @@ KNOWN_SETTINGS=(
     only-execute                       "all"     "Only execute the named action (see implementation)"
     llvm-lit-args                      ""        "If set, override the lit args passed to LLVM"
     clang-profile-instr-use            ""        "If set, profile file to use for clang PGO while building llvm/clang"
-    swift-profile-instr-use            ""        "If set, profile file to use for clang PGO while building swift"
+    swift-profile-instr-use            ""        "If set, profile file to use for clang PGO while building swiftpp"
     coverage-db                        ""        "If set, coverage database to use when prioritizing testing"
     build-toolchain-only               ""        "If set, only build the necessary tools to build an external toolchain"
     skip-local-host-install            ""        "If we are cross-compiling multiple targets, skip an install pass locally if the hosts match"
@@ -1190,7 +1190,7 @@ function should_build_stdlib_target() {
 # Calculate source directories for each product.
 #
 NINJA_SOURCE_DIR="${WORKSPACE}/ninja"
-SWIFT_SOURCE_DIR="${WORKSPACE}/swift"
+SWIFTPP_SOURCE_DIR="${WORKSPACE}/swiftpp"
 LLVM_SOURCE_DIR="${WORKSPACE}/llvm"
 CMARK_SOURCE_DIR="${WORKSPACE}/cmark"
 LLDB_SOURCE_DIR="${WORKSPACE}/lldb"
@@ -2447,7 +2447,7 @@ for host in "${ALL_HOSTS[@]}"; do
                     native_swift_tools_path="$(build_directory_bin ${LOCAL_HOST} swift)"
                     cmake_options=(
                         "${cmake_options[@]}"
-                        -DSWIFT_EXEC:STRING="${native_swift_tools_path}/swiftc"
+                        -DSWIFT_EXEC:STRING="${native_swift_tools_path}/swiftppc"
                     )
                     build_targets=("${build_targets[@]}"
                                    "${SWIFT_BENCHMARK_TARGETS[@]}")

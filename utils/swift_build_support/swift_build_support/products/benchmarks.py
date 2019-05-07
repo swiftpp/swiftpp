@@ -57,7 +57,7 @@ def run_build_script_helper(host_target, product, args):
     # the assumption that each product is in its own build directory. This
     # product is not like that and has its package/tools instead in
     # ./$SOURCE_ROOT/swift/benchmark.
-    package_path = os.path.join(product.source_dir, '..', 'swift', 'benchmark')
+    package_path = os.path.join(product.source_dir, '..', 'swiftpp', 'benchmark')
     package_path = os.path.abspath(package_path)
 
     # We use a separate python helper to enable quicker iteration when working

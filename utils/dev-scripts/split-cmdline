@@ -17,7 +17,7 @@
 # Example:
 #
 # $ swiftppc -c hello.swift -### | split-cmdline
-# /path-to-swift/bin/swift \
+# /path-to-swift/bin/swiftpp \
 #   -frontend \
 #   -c \
 #   -primary-file hello.swift \

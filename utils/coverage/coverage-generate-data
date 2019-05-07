@@ -100,7 +100,7 @@ def dump_coverage_data(merged_file):
     """Dump coverage data of file at path `merged_file` using llvm-cov"""
     try:
         swift = os.path.join(global_build_subdir,
-                             'swift-macosx-x86_64/bin/swift')
+                             'swift-macosx-x86_64/bin/swiftpp')
         coverage_log = os.path.join(os.path.dirname(merged_file),
                                     'coverage.log')
         testname = os.path.basename(os.path.dirname(merged_file))
@@ -112,7 +112,7 @@ def dump_coverage_data(merged_file):
         )
         output = [line.split()[0]
                   for line in output.split()
-                  if '0.00' not in line and '/swift' in line]
+                  if '0.00' not in line and '/swiftpp' in line]
         with open(coverage_log, 'w') as f:
             logging.info('Dumping coverage data: %s', testname)
             (returncode2, dumped) = check_output(

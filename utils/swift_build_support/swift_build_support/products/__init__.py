@@ -40,6 +40,7 @@ __all__ = [
     'LLDB',
     'LLVM',
     'Ninja',
+    'SwiftPP',
     'SwiftPM',
     'XCTest',
     'SwiftSyntax',

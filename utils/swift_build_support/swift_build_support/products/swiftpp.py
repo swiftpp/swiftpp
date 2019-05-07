@@ -1,4 +1,4 @@
-# swift_build_support/products/swift.py -------------------------*- python -*-
+# swift_build_support/products/swiftpp.py -----------------------*- python -*-
 #
 # This source file is part of the Swift.org open source project
 #
