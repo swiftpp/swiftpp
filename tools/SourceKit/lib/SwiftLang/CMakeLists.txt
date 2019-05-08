@@ -15,7 +15,7 @@ add_sourcekit_library(SourceKitSwiftLang
     swiftDWARFImporter swiftClangImporter swiftIDE
     swiftAST swiftMarkup swiftParse swiftParseSIL swiftSIL swiftSILGen
     swiftSILOptimizer swiftIRGen swiftSema swiftBasic swiftSerialization
-    swiftSyntax swiftOption libcmark_static
+    swiftSyntax swiftOption
     # Clang dependencies.
       clangIndex
       clangFormat

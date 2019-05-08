@@ -384,11 +384,6 @@ function(print_versions)
     find_version(${CMAKE_MAKE_PROGRAM} "--version" FALSE)
   endif()
 
-  if(${SWIFT_PATH_TO_CMARK_BUILD})
-    find_version("cmark" "--version" TRUE)
-    find_version("${SWIFT_PATH_TO_CMARK_BUILD}/src/cmark" "--version" FALSE)
-  endif()
-
   message(STATUS "Finding version for: ${CMAKE_C_COMPILER}")
   message(STATUS "Found version: ${CMAKE_C_COMPILER_VERSION}")
   message(STATUS "")

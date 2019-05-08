@@ -51,7 +51,6 @@ KNOWN_SETTINGS=(
     host-libtool                ""               "the path to libtool"
     darwin-xcrun-toolchain      "default"        "the name of the toolchain to use on Darwin"
     ninja-bin                   ""               "the path to Ninja tool"
-    cmark-build-type            "Debug"          "the CMake build variant for CommonMark (Debug, RelWithDebInfo, Release, MinSizeRel).  Defaults to Debug."
     lldb-extra-cmake-args       ""               "extra command line args to pass to lldb cmake"
     lldb-extra-xcodebuild-args  ""               "extra command line args to pass to lldb xcodebuild"
     lldb-test-cc                ""               "CC to use for building LLDB testsuite test inferiors.  Defaults to just-built, in-tree clang.  If set to 'host-toolchain', sets it to same as host-cc."
@@ -111,7 +110,6 @@ KNOWN_SETTINGS=(
     skip-reconfigure            ""               "set to skip reconfigure"
     swift-primary-variant-sdk   ""               "default SDK for target binaries"
     swift-primary-variant-arch  ""               "default arch for target binaries"
-    skip-build-cmark            ""               "set to skip building CommonMark"
     skip-build-llvm             ""               "set to skip building LLVM/Clang"
     skip-build-compiler-rt      ""               "set to skip building Compiler-RT"
     skip-build-swift            ""               "set to skip building Swift"
@@ -141,7 +139,6 @@ KNOWN_SETTINGS=(
     skip-build-benchmarks       ""               "set to skip building Swift Benchmark Suite"
     skip-build-external-benchmarks "1"            "set to skip building the external Swift Benchmark Suite. (skipped by default)"
     skip-build-playgroundsupport ""              "set to skip building PlaygroundSupport"
-    skip-test-cmark             ""               "set to skip testing CommonMark"
     skip-test-lldb              ""               "set to skip testing lldb"
     skip-test-swift             ""               "set to skip testing Swift"
     skip-test-llbuild           ""               "set to skip testing llbuild"
@@ -200,7 +197,6 @@ KNOWN_SETTINGS=(
     embed-bitcode-section       "0"              "embed an LLVM bitcode section in stdlib/overlay binaries for supported platforms"
     darwin-crash-reporter-client ""              "whether to enable CrashReporter integration"
     darwin-stdlib-install-name-dir ""            "the directory of the install_name for standard library dylibs"
-    install-cmark               ""               "whether to install cmark"
     install-swift               ""               "whether to install Swift"
     install-lldb                ""               "whether to install LLDB"
     install-llbuild             ""               "whether to install llbuild"
@@ -257,7 +253,6 @@ KNOWN_SETTINGS=(
     android-arch                       "armv7"   "The Android target architecture when building for Android"
     check-args-only                    ""        "set to check all arguments are known. Exit with status 0 if success, non zero otherwise"
     common-cmake-options               ""        "CMake options used for all targets, including LLVM/Clang"
-    cmark-cmake-options                ""        "CMake options used for all cmark targets"
     ninja-cmake-options                ""        "CMake options used for all ninja targets"
     foundation-cmake-options           ""        "CMake options used for all foundation targets"
     libdispatch-cmake-options          ""        "CMake options used for all libdispatch targets"
@@ -422,7 +417,6 @@ function should_execute_host_actions_for_phase() {
 function set_build_options_for_host() {
     llvm_cmake_options=()
     swiftpp_cmake_options=()
-    cmark_cmake_options=()
     lldb_cmake_options=()
     swiftpm_bootstrap_options=()
     SWIFT_HOST_VARIANT=
@@ -1192,7 +1186,6 @@ function should_build_stdlib_target() {
 NINJA_SOURCE_DIR="${WORKSPACE}/ninja"
 SWIFTPP_SOURCE_DIR="${WORKSPACE}/swiftpp"
 LLVM_SOURCE_DIR="${WORKSPACE}/llvm"
-CMARK_SOURCE_DIR="${WORKSPACE}/cmark"
 LLDB_SOURCE_DIR="${WORKSPACE}/lldb"
 LLBUILD_SOURCE_DIR="${WORKSPACE}/llbuild"
 SWIFTPM_SOURCE_DIR="${WORKSPACE}/swiftpm"
@@ -1580,9 +1573,6 @@ function build_directory_bin() {
     root="$(build_directory ${host} ${product})"
     if [[ "${CMAKE_GENERATOR}" == "Xcode" ]] ; then
         case ${product} in
-            cmark)
-                echo "${root}/${CMARK_BUILD_TYPE}/bin"
-                ;;
             llvm)
                 echo "${root}/${LLVM_BUILD_TYPE}/bin"
                 ;;
@@ -1731,9 +1721,6 @@ function cmake_config_opt() {
         # CMake automatically adds --target ALL_BUILD if we don't pass this.
         echo "--target ZERO_CHECK "
         case ${product} in
-            cmark)
-                echo "--config ${CMARK_BUILD_TYPE}"
-                ;;
             llvm)
                 echo "--config ${LLVM_BUILD_TYPE}"
                 ;;
@@ -1936,7 +1923,6 @@ function set_swiftevolve_build_command() {
 # build of any LLDB target.
 function set_lldb_xcodebuild_options() {
     llvm_build_dir=$(build_directory ${host} llvm)
-    cmark_build_dir=$(build_directory ${host} cmark)
     lldb_build_dir=$(build_directory ${host} lldb)
     swift_build_dir=$(build_directory ${host} swiftpp)
 
@@ -2388,8 +2374,6 @@ for host in "${ALL_HOSTS[@]}"; do
                     -DCMAKE_INSTALL_PREFIX:PATH="$(get_host_install_prefix ${host})"
                     -DClang_DIR:PATH=${llvm_build_dir}/lib/cmake/clang
                     -DLLVM_DIR:PATH=${llvm_build_dir}/lib/cmake/llvm
-                    -DSWIFT_PATH_TO_CMARK_SOURCE:PATH="${CMARK_SOURCE_DIR}"
-                    -DSWIFT_PATH_TO_CMARK_BUILD:PATH="$(build_directory ${host} cmark)"
                     -DSWIFT_PATH_TO_LIBDISPATCH_SOURCE:PATH="${LIBDISPATCH_SOURCE_DIR}"
                 )
 

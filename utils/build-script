@@ -485,7 +485,6 @@ class BuildScriptInvocation(object):
             "--darwin-deployment-version-watchos=%s" % (
                 args.darwin_deployment_version_watchos),
             "--cmake", toolchain.cmake,
-            "--cmark-build-type", args.cmark_build_variant,
             "--llvm-build-type", args.llvm_build_variant,
             "--swift-build-type", args.swift_build_variant,
             "--swift-stdlib-build-type", args.swift_stdlib_build_variant,
@@ -603,7 +602,7 @@ class BuildScriptInvocation(object):
             ]
 
         if args.skip_build:
-            impl_args += ["--skip-build-cmark",
+            impl_args += [
                           "--skip-build-llvm",
                           "--skip-build-swift"]
         if not args.build_benchmarks:
@@ -672,7 +671,7 @@ class BuildScriptInvocation(object):
         if not args.test and not args.long_test and not args.stress_test:
             impl_args += ["--skip-test-swift"]
         if not args.test:
-            impl_args += ["--skip-test-cmark",
+            impl_args += [
                           "--skip-test-lldb",
                           "--skip-test-llbuild",
                           "--skip-test-swiftpm",

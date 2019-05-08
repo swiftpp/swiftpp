@@ -47,10 +47,6 @@ def _apply_default_arguments(args):
     """Preprocess argument namespace to apply default behaviors.
     """
 
-    # Build cmark if any cmark-related options were specified.
-    if (args.cmark_build_variant is not None):
-        args.build_cmark = True
-
     # Build LLDB if any LLDB-related options were specified.
     if args.lldb_build_variant is not None or \
        args.lldb_assertions is not None or \

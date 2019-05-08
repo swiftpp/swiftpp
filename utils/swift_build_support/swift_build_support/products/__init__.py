@@ -11,7 +11,6 @@
 # ----------------------------------------------------------------------------
 
 from .benchmarks import Benchmarks
-from .cmark import CMark
 from .foundation import Foundation
 from .indexstoredb import IndexStoreDB
 from .libcxx import LibCXX
@@ -30,7 +29,6 @@ from .swiftsyntax import SwiftSyntax
 from .xctest import XCTest
 
 __all__ = [
-    'CMark',
     'Ninja',
     'Foundation',
     'LibCXX',
