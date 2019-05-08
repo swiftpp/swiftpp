@@ -21,9 +21,11 @@
 #include "swift/AST/Types.h"
 #include "swift/AST/PrettyStackTrace.h"
 #include "swift/AST/RawComment.h"
-#include "swift/Markup/Markup.h"
+// #include "swift/Markup/Markup.h"
 
 using namespace swift;
+
+#if 	REMOVED_BLOATING
 
 void *DocComment::operator new(size_t Bytes, swift::markup::MarkupContext &MC,
                                unsigned Alignment) {
@@ -457,3 +459,5 @@ swift::getCascadingDocComment(swift::markup::MarkupContext &MC, const Decl *D) {
 
   return None;
 }
+
+#endif	// REMOVED-BLOATINGS

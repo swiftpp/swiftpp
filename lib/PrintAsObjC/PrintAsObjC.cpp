@@ -21,7 +21,7 @@
 #include "swift/AST/ProtocolConformance.h"
 #include "swift/AST/TypeVisitor.h"
 #include "swift/AST/SwiftNameTranslation.h"
-#include "swift/AST/Comment.h"
+// #include "swift/AST/Comment.h"
 #include "swift/Basic/StringExtras.h"
 #include "swift/Basic/Version.h"
 #include "swift/ClangImporter/ClangImporter.h"
@@ -254,10 +254,12 @@ private:
   }
 
   void printDocumentationComment(Decl *D) {
+#if REMOVED_BLOATING
     swift::markup::MarkupContext MC;
     auto DC = getSingleDocComment(MC, D);
     if (DC.hasValue())
       ide::getDocumentationCommentAsDoxygen(DC.getValue(), os);
+#endif	// REMOVED_BLOATING
   }
 
   /// Prints an encoded string, escaped properly for C.

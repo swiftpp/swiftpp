@@ -119,7 +119,6 @@ if(SWIFT_BUILD_ONLY_SYNTAXPARSERLIB)
 else()
   target_link_libraries(swiftAST PRIVATE
     swiftBasic
-    swiftMarkup
     swiftSyntax)
 endif()
 

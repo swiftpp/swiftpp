@@ -15,7 +15,7 @@
 #include "ExprContextAnalysis.h"
 #include "swift/AST/ASTPrinter.h"
 #include "swift/AST/ASTWalker.h"
-#include "swift/AST/Comment.h"
+// #include "swift/AST/Comment.h"
 #include "swift/AST/Initializer.h"
 #include "swift/AST/GenericSignature.h"
 #include "swift/AST/LazyResolver.h"
@@ -36,7 +36,7 @@
 #include "swift/Subsystems.h"
 #include "clang/AST/ASTContext.h"
 #include "clang/AST/Attr.h"
-#include "clang/AST/Comment.h"
+// #include "clang/AST/Comment.h"
 #include "clang/AST/CommentVisitor.h"
 #include "clang/AST/Decl.h"
 #include "clang/Basic/Module.h"
@@ -220,6 +220,9 @@ void getClangDocKeyword(ClangImporter &Importer, const Decl *D,
 } // end namespace clang
 
 namespace swift {
+
+#if REMOVED_BLOATING
+
 namespace markup {
 class SwiftDocWordExtractor : public MarkupASTWalker {
   CommandWordsPairs &Pairs;
@@ -283,6 +286,9 @@ void getSwiftDocKeyword(const Decl* D, CommandWordsPairs &Words) {
   }
 }
 } // end namespace markup
+
+#endif	// REMOVED_BLOATING
+
 } // end namespace swift
 
 using DeclFilter = std::function<bool(ValueDecl *, DeclVisibilityKind)>;
@@ -1552,12 +1558,14 @@ private:
 
   void setClangDeclKeywords(const ValueDecl *VD, CommandWordsPairs &Pairs,
                             CodeCompletionResultBuilder &Builder) {
+#if REMOVED_BLOATING
     if (auto *CD = VD->getClangDecl()) {
       clang::comments::getClangDocKeyword(*Importer, CD, Pairs);
     } else {
       swift::markup::getSwiftDocKeyword(VD, Pairs);
     }
     Builder.addDeclDocCommentWords(llvm::makeArrayRef(Pairs));
+#endif	// REMOVED_BLOATING
   }
 
   bool shouldUseFunctionReference(AbstractFunctionDecl *D) {

@@ -13,7 +13,7 @@ add_sourcekit_library(SourceKitSwiftLang
   LINK_LIBS
     SourceKitCore swiftDriver swiftFrontend
     swiftDWARFImporter swiftClangImporter swiftIDE
-    swiftAST swiftMarkup swiftParse swiftParseSIL swiftSIL swiftSILGen
+    swiftAST swiftParse swiftParseSIL swiftSIL swiftSILGen
     swiftSILOptimizer swiftIRGen swiftSema swiftBasic swiftSerialization
     swiftSyntax swiftOption
     # Clang dependencies.

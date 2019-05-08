@@ -16,7 +16,7 @@
 #include "swift/AST/ASTDemangler.h"
 #include "swift/AST/ASTPrinter.h"
 #include "swift/AST/ASTWalker.h"
-#include "swift/AST/Comment.h"
+// #include "swift/AST/Comment.h"
 #include "swift/AST/DebuggerClient.h"
 #include "swift/AST/DiagnosticConsumer.h"
 #include "swift/AST/DiagnosticEngine.h"
@@ -42,7 +42,7 @@
 #include "swift/IDE/Utils.h"
 #include "swift/Index/Index.h"
 #include "swift/Sema/IDETypeChecking.h"
-#include "swift/Markup/Markup.h"
+// #include "swift/Markup/Markup.h"
 #include "swift/Config.h"
 #include "clang/APINotes/APINotesReader.h"
 #include "clang/APINotes/APINotesWriter.h"
@@ -2329,6 +2329,7 @@ public:
   ASTDocCommentDumper() : OS(llvm::outs()) {}
 
   bool walkToDeclPre(Decl *D) override {
+#if REMOVED_BLOATING
     if (D->isImplicit())
       return true;
 
@@ -2336,6 +2337,7 @@ public:
     auto DC = getSingleDocComment(MC, D);
     if (DC.hasValue())
       swift::markup::dump(DC.getValue()->getDocument(), OS);
+#endif	// REMOVED_BLOATING
 
     return true;
   }
@@ -2435,6 +2437,8 @@ public:
   }
 
   void printDocComment(const Decl *D) {
+
+#if REMOVED_BLOATING
     std::string XML;
     {
       llvm::raw_string_ostream OS(XML);
@@ -2480,6 +2484,7 @@ public:
       OS << " CommentXMLInvalid=[libxml error]";
       break;
     }
+#endif	// REMOVED_BLOATING
   }
 
   bool walkToDeclPre(Decl *D) override {

@@ -24,7 +24,7 @@
 #include "swift/AST/Types.h"
 #include "swift/Basic/PrimitiveParsing.h"
 #include "swift/Basic/SourceManager.h"
-#include "swift/Markup/Markup.h"
+// #include "swift/Markup/Markup.h"
 #include "swift/Parse/Lexer.h"
 #include "llvm/ADT/SmallString.h"
 #include "llvm/ADT/StringRef.h"
@@ -146,12 +146,16 @@ RawComment Decl::getRawComment() const {
   // Ask the parent module.
   if (auto *Unit =
           dyn_cast<FileUnit>(this->getDeclContext()->getModuleScopeContext())) {
+
+#if 	REMOVED_BLOATING
+
     if (Optional<CommentInfo> C = Unit->getCommentForDecl(this)) {
       swift::markup::MarkupContext MC;
       Context.setBriefComment(this, C->Brief);
       Context.setRawComment(this, C->Raw);
       return C->Raw;
     }
+#endif	// REMOVED_BLOATING
   }
 
   // Give up.
@@ -211,6 +215,7 @@ static StringRef extractBriefComment(ASTContext &Context, RawComment RC,
                                      const Decl *D) {
   PrettyStackTraceDecl StackTrace("extracting brief comment for", D);
 
+#if REMOVED_BLOATING
   if (!D->canHaveComment())
     return StringRef();
 
@@ -230,6 +235,9 @@ static StringRef extractBriefComment(ASTContext &Context, RawComment RC,
     return StringRef();
 
   return Context.AllocateCopy(OS.str());
+#else	// REMOVED_BLOATING
+  return StringRef();
+#endif	// !REMOVED_BLOATING
 }
 
 StringRef Decl::getBriefComment() const {
@@ -241,11 +249,13 @@ StringRef Decl::getBriefComment() const {
     return Comment.getValue();
 
   StringRef Result;
+#if REMOVED_BLOATING
   auto RC = getRawComment();
   if (!RC.isEmpty())
     Result = extractBriefComment(Context, RC, this);
 
   Context.setBriefComment(this, Result);
+#endif	// REMOVED_BLOATING
   return Result;
 }
 

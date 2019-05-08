@@ -14,7 +14,7 @@
 #include "swift/Index/Utils.h"
 
 #include "swift/AST/ASTContext.h"
-#include "swift/AST/Comment.h"
+// #include "swift/AST/Comment.h"
 #include "swift/AST/Decl.h"
 #include "swift/AST/Expr.h"
 #include "swift/AST/Module.h"
@@ -25,7 +25,7 @@
 #include "swift/Basic/SourceManager.h"
 #include "swift/Basic/StringExtras.h"
 #include "swift/IDE/SourceEntityWalker.h"
-#include "swift/Markup/Markup.h"
+// #include "swift/Markup/Markup.h"
 #include "swift/Sema/IDETypeChecking.h"
 #include "llvm/ADT/APInt.h"
 #include "llvm/ADT/SmallVector.h"
@@ -1382,6 +1382,7 @@ bool IndexSwiftASTWalker::indexComment(const Decl *D) {
   if (tagLocs.empty())
     return true;
 
+#if REMOVED_BLOATING
   swift::markup::MarkupContext MC;
   auto DC = getSingleDocComment(MC, D);
   if (!DC.hasValue())
@@ -1418,6 +1419,8 @@ bool IndexSwiftASTWalker::indexComment(const Decl *D) {
     }
   }
   return !Cancelled;
+#endif	// REMOVED_BLOATING
+  return true;
 }
 
 llvm::hash_code

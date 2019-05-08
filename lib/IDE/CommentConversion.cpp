@@ -12,13 +12,15 @@
 
 #include "swift/IDE/CommentConversion.h"
 #include "swift/AST/ASTContext.h"
-#include "swift/AST/Comment.h"
+// #include "swift/AST/Comment.h"
 #include "swift/AST/Decl.h"
 #include "swift/AST/USRGeneration.h"
 #include "swift/AST/RawComment.h"
 #include "swift/Basic/SourceManager.h"
+#if REMOVED_BLOATING
 #include "swift/Markup/Markup.h"
 #include "swift/Markup/XMLUtils.h"
+#endif	// REMOVED_BLOATING
 #include "swift/Parse/Token.h"
 #include "swift/Subsystems.h"
 #include "llvm/Support/MemoryBuffer.h"
@@ -27,7 +29,7 @@
 #include "clang/AST/Decl.h"
 #include "clang/Index/CommentToXML.h"
 
-using namespace swift::markup;
+// using namespace swift::markup;
 using namespace swift;
 
 //===----------------------------------------------------------------------===//
@@ -35,6 +37,9 @@ using namespace swift;
 //===----------------------------------------------------------------------===//
 
 namespace {
+
+#if REMOVED_BLOATING
+
 struct CommentToXMLConverter {
   raw_ostream &OS;
 
@@ -258,10 +263,16 @@ struct CommentToXMLConverter {
     OS << "</Tags>";
   }
 
+#if REMOVED_BLOATING
   void visitDocComment(const DocComment *DC);
   void visitCommentParts(const swift::markup::CommentParts &Parts);
+#endif	// REMOVED_BLOATING
 };
+
+#endif	// REMOVED_BLOATING
 } // unnamed namespace
+
+#if REMOVED_BLOATING
 
 void CommentToXMLConverter::visitCommentParts(const swift::markup::CommentParts &Parts) {
   if (Parts.Brief.hasValue()) {
@@ -296,6 +307,10 @@ void CommentToXMLConverter::visitCommentParts(const swift::markup::CommentParts 
     OS << "</Discussion>";
   }
 }
+
+#endif	// REMOVED_BLOATING
+
+#if REMOVED_BLOATING
 
 void CommentToXMLConverter::visitDocComment(const DocComment *DC) {
   const Decl *D = DC->getDecl();
@@ -398,6 +413,10 @@ static bool getClangDocumentationCommentAsXML(const clang::Decl *D,
   return true;
 }
 
+#endif	// REMOVED_BLOATING
+
+#if	REMOVED_BLOATING
+
 static void replaceObjcDeclarationsWithSwiftOnes(const Decl *D,
                                                        StringRef Doc,
                                                        raw_ostream &OS) {
@@ -438,13 +457,28 @@ static LineList getLineListFromComment(SourceManager &SourceMgr,
   return MC.getLineList(Comment);
 }
 
+#endif	// REMOVED_BLOATING
+
 std::string ide::extractPlainTextFromComment(const StringRef Text) {
+
+#if 	REMOVED_BLOATING
+
   SourceManager SourceMgr;
   swift::markup::MarkupContext MC;
   return getLineListFromComment(SourceMgr, MC, Text).str();
+
+#else
+
+  return Text;
+
+#endif
+
 }
 
 bool ide::getDocumentationCommentAsXML(const Decl *D, raw_ostream &OS) {
+
+#if REMOVED_BLOATING
+
   auto MaybeClangNode = D->getClangNode();
   if (MaybeClangNode) {
     if (auto *CD = MaybeClangNode.getAsDecl()) {
@@ -467,10 +501,16 @@ bool ide::getDocumentationCommentAsXML(const Decl *D, raw_ostream &OS) {
   Converter.visitDocComment(DC.getValue());
 
   OS.flush();
+
+#endif	// REMOVED_BLOATING
   return true;
+
 }
 
 bool ide::getLocalizationKey(const Decl *D, raw_ostream &OS) {
+
+#if		REMOVED_BLOATING
+
   swift::markup::MarkupContext MC;
   auto DC = getCascadingDocComment(MC, D);
   if (!DC.hasValue())
@@ -481,10 +521,15 @@ bool ide::getLocalizationKey(const Decl *D, raw_ostream &OS) {
     return true;
   }
 
+#endif	// REMOVED_BLOATING
+
   return false;
 }
 
 bool ide::convertMarkupToXML(StringRef Text, raw_ostream &OS) {
+
+#if		REMOVED_BLOATING
+
   std::string Comment;
   {
     llvm::raw_string_ostream OS(Comment);
@@ -499,12 +544,18 @@ bool ide::convertMarkupToXML(StringRef Text, raw_ostream &OS) {
     OS.flush();
     return false;
   }
+
+#endif	// REMOVED_BLOATING
   return true;
 }
+
+// #endif	// REMOVED_BLOATING
 
 //===----------------------------------------------------------------------===//
 // Conversion to Doxygen.
 //===----------------------------------------------------------------------===//
+
+#if REMOVED_BLOATING
 
 class DoxygenConverter : public MarkupASTVisitor<DoxygenConverter> {
   llvm::raw_ostream &OS;
@@ -804,6 +855,10 @@ public:
   }
 };
 
+#endif	// REMOVED_BLOATING
+
+#if REMOVED_BLOATING
+
 void ide::getDocumentationCommentAsDoxygen(const DocComment *DC,
                                            raw_ostream &OS) {
   DoxygenConverter Converter(OS);
@@ -837,4 +892,6 @@ void ide::getDocumentationCommentAsDoxygen(const DocComment *DC,
     Converter.visit(RF.getValue());
   }
 }
+
+#endif	// REMOVED_BLOATING
 
