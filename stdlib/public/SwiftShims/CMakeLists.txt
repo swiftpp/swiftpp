@@ -71,6 +71,7 @@ endforeach()
 # Put the output dir itself last so that it isn't considered the primary output.
 list(APPEND outputs "${output_dir}")
 
+set(LLVM_PACKAGE_VERSION 7.0.0svn)
 add_custom_target("copy_shim_headers"
     DEPENDS "${outputs}"
     COMMENT "Copying SwiftShims module to ${output_dir}")
