@@ -2130,6 +2130,7 @@ for host in "${ALL_HOSTS[@]}"; do
         cmake_options=("${common_cmake_options_host[@]}")
 
         llvm_build_dir=$(build_directory ${host} llvm)
+		llvm_build_dir="${LLVM_BUILD_DIR}"
         module_cache="${build_dir}/module-cache"
 
         # Add any specific cmake options specified by build-script
