@@ -45,6 +45,7 @@ if(SWIFT_BUILD_STDLIB AND SWIFT_BUILD_SDK_OVERLAY)
 else()
   set(BUILD_FOUNDATION FALSE)
 endif()
+set(BUILD_FOUNDATION FALSE)
 
 if(SWIFT_BUILD_SOURCEKIT)
   add_swift_tool_subdirectory(SourceKit)

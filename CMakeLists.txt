@@ -47,7 +47,7 @@ option(SWIFT_BUILD_REMOTE_MIRROR
 
 option(SWIFT_BUILD_DYNAMIC_STDLIB
     "Build dynamic variants of the Swift standard library"
-    TRUE)
+    FALSE)
 
 option(SWIFT_BUILD_STATIC_STDLIB
     "Build static variants of the Swift standard library"
@@ -55,7 +55,7 @@ option(SWIFT_BUILD_STATIC_STDLIB
 
 option(SWIFT_BUILD_DYNAMIC_SDK_OVERLAY
     "Build dynamic variants of the Swift SDK overlay"
-    TRUE)
+    FALSE)
 
 option(SWIFT_BUILD_STATIC_SDK_OVERLAY
     "Build static variants of the Swift SDK overlay"
@@ -72,12 +72,14 @@ if(SWIFT_BUILD_DYNAMIC_STDLIB OR SWIFT_BUILD_STATIC_STDLIB)
 else()
   set(SWIFT_BUILD_STDLIB FALSE)
 endif()
+set(SWIFT_BUILD_STDLIB FALSE)
 
 if(SWIFT_BUILD_DYNAMIC_SDK_OVERLAY OR SWIFT_BUILD_STATIC_SDK_OVERLAY)
   set(SWIFT_BUILD_SDK_OVERLAY TRUE)
 else()
   set(SWIFT_BUILD_SDK_OVERLAY FALSE)
 endif()
+set(SWIFT_BUILD_SDK_OVERLAY FALSE)
 
 option(SWIFT_BUILD_PERF_TESTSUITE
     "Create in-tree targets for building Swift++ performance benchmarks."
@@ -91,7 +93,8 @@ option(SWIFT_INCLUDE_TESTS "Create targets for building/running tests." TRUE)
 
 option(SWIFT_INCLUDE_DOCS
     "Create targets for building docs."
-    TRUE)
+#    TRUE)
+	FALSE)
 
 #
 # Miscellaneous User-configurable options.

@@ -800,21 +800,21 @@ def create_argument_parser():
     # -------------------------------------------------------------------------
     in_group('Run build')
 
-    option('--build-swift-dynamic-stdlib', toggle_true,
-           default=True,
+    option('--build-swift-dynamic-stdlib', toggle_false,
+           default=False,
            help='build dynamic variants of the Swift standard library')
 
-    option('--build-swift-static-stdlib', toggle_true,
+    option('--build-swift-static-stdlib', toggle_false,
            help='build static variants of the Swift standard library')
 
-    option('--build-swift-dynamic-sdk-overlay', toggle_true,
-           default=True,
+    option('--build-swift-dynamic-sdk-overlay', toggle_false,
+           default=False,
            help='build dynamic variants of the Swift SDK overlay')
 
-    option('--build-swift-static-sdk-overlay', toggle_true,
+    option('--build-swift-static-sdk-overlay', toggle_false,
            help='build static variants of the Swift SDK overlay')
 
-    option('--build-swift-stdlib-unittest-extra', toggle_true,
+    option('--build-swift-stdlib-unittest-extra', toggle_false,
            help='Build optional StdlibUnittest components')
 
     option(['-S', '--skip-build'], store_true,
