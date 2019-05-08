@@ -163,7 +163,6 @@ macro(swift_common_standalone_build_config_clang product)
   include_directories(${CLANG_INCLUDE_DIRS})
 endmacro()
 
-
 # Common cmake project config for standalone builds.
 #
 # Parameters:
@@ -195,9 +194,6 @@ macro(swift_common_unified_build_config product)
   set(${product}_NATIVE_CLANG_TOOLS_PATH "${CMAKE_BINARY_DIR}/bin")
   set(LLVM_PACKAGE_VERSION ${PACKAGE_VERSION})
   set(LLVM_CMAKE_DIR "${CMAKE_SOURCE_DIR}/cmake/modules")
-
-  # If cmark was checked out into tools/cmark, expect to build it as
-  # part of the unified build.
 
   include_directories(
       "${CLANG_BUILD_INCLUDE_DIR}"

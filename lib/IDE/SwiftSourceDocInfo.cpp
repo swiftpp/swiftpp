@@ -63,7 +63,9 @@ swift::ide::parseLineCol(StringRef LineCol) {
 }
 
 void XMLEscapingPrinter::printText(StringRef Text) {
+#if 	REMOVED_BLOATING
   swift::markup::appendWithXMLEscaping(OS, Text);
+#endif	// REMOVED_BLOATING
 }
 
 void XMLEscapingPrinter::printXML(StringRef Text) {

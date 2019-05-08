@@ -1424,6 +1424,7 @@ public:
         return None;
       return ident;
 
+#if 	REMOVED_BLOATING
     } else if (advanceIf(':')) {
       if (ident.equals_lower("parameters") && numSpaces > 1)
         return None;
@@ -1436,6 +1437,7 @@ public:
                          .Default(false);
       if (isField)
         return ident;
+#endif	// REMOVED_BLOATING
     }
 
     return None;

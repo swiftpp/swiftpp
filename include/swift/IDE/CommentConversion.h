@@ -19,7 +19,9 @@
 
 namespace swift {
 class Decl;
+#if REMOVED_BLOATING
 class DocComment;
+#endif	// REMOVED_BLOATING
 
 namespace ide {
 
@@ -33,8 +35,10 @@ bool getDocumentationCommentAsXML(const Decl *D, raw_ostream &OS);
 /// print it into the given output stream and return true. Else, return false.
 bool getLocalizationKey(const Decl *D, raw_ostream &OS);
 
+#if REMOVED_BLOATING
 /// Converts the given comment to Doxygen.
 void getDocumentationCommentAsDoxygen(const DocComment *DC, raw_ostream &OS);
+#endif	// REMOVED_BLOATING
 
 /// Extract and normalize text from the given comment.
 std::string extractPlainTextFromComment(const StringRef Text);

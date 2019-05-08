@@ -16,7 +16,9 @@
 //===----------------------------------------------------------------------===//
 
 #include "swift/AST/RawComment.h"
-#include "swift/AST/Comment.h"
+#if 	REMOVED_BLOATING
+#	include "swift/AST/Comment.h"
+#endif	// REMOVED_BLOATING
 #include "swift/AST/ASTContext.h"
 #include "swift/AST/Decl.h"
 #include "swift/AST/Module.h"

@@ -101,7 +101,9 @@ namespace swift {
   class DiagnosticEngine;
   class TypeCheckerDebugConsumer;
   struct RawComment;
+#if REMOVED_BLOATING
   class DocComment;
+#endif	// REMOVED_BLOATING
   class SILBoxType;
   class TypeAliasDecl;
   class VarDecl;

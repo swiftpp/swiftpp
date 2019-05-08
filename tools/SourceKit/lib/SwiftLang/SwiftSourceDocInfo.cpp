@@ -849,6 +849,7 @@ static bool passCursorInfoForDecl(SourceFile* SF,
     {
       RelDeclsStream<<"<RelatedName usr=\"";
       SwiftLangSupport::printUSR(RelatedDecl, RelDeclsStream);
+#if REMOVED_BLOATING
       RelDeclsStream<<"\">";
       if (isa<AbstractFunctionDecl>(RelatedDecl) && DuplicateName) {
         // Related decls are generally overloads, so print parameter types to
@@ -872,6 +873,9 @@ static bool passCursorInfoForDecl(SourceFile* SF,
         swift::markup::appendWithXMLEscaping(RelDeclsStream, Buf);
       }
       RelDeclsStream<<"</RelatedName>";
+#else
+	  RelDeclsStream<<"\" />";
+#endif
     }
     RelDeclsStream.endPiece();
   });

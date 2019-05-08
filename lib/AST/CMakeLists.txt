@@ -37,7 +37,7 @@ add_swift_host_library(swiftAST STATIC
   DiagnosticConsumer.cpp
   DiagnosticEngine.cpp
   DiagnosticList.cpp
-  DocComment.cpp
+# DocComment.cpp
   Evaluator.cpp
   ExperimentalDependencies.cpp
   ExperimentalDependenciesSourceFileDepGraphConstructor.cpp
