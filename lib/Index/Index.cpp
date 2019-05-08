@@ -14,7 +14,9 @@
 #include "swift/Index/Utils.h"
 
 #include "swift/AST/ASTContext.h"
-// #include "swift/AST/Comment.h"
+#if 	REMOVED_BLOATING
+#	include "swift/AST/Comment.h"
+#endif	// REMOVED_BLOATING
 #include "swift/AST/Decl.h"
 #include "swift/AST/Expr.h"
 #include "swift/AST/Module.h"
@@ -25,7 +27,9 @@
 #include "swift/Basic/SourceManager.h"
 #include "swift/Basic/StringExtras.h"
 #include "swift/IDE/SourceEntityWalker.h"
-// #include "swift/Markup/Markup.h"
+#if 	REMOVED_BLOATING
+#	include "swift/Markup/Markup.h"
+#endif	// REMOVED_BLOATING
 #include "swift/Sema/IDETypeChecking.h"
 #include "llvm/ADT/APInt.h"
 #include "llvm/ADT/SmallVector.h"

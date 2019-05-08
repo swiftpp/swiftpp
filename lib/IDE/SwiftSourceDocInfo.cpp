@@ -18,7 +18,9 @@
 #include "swift/Frontend/PrintingDiagnosticConsumer.h"
 #include "swift/IDE/CommentConversion.h"
 #include "swift/IDE/Utils.h"
-#include "swift/Markup/XMLUtils.h"
+#if 	REMOVED_BLOATING
+#	include "swift/Markup/XMLUtils.h"
+#endif	// REMOVED_BLOATING
 #include "swift/Subsystems.h"
 
 #include "clang/AST/ASTContext.h"

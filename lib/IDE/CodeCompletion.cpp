@@ -15,7 +15,9 @@
 #include "ExprContextAnalysis.h"
 #include "swift/AST/ASTPrinter.h"
 #include "swift/AST/ASTWalker.h"
-// #include "swift/AST/Comment.h"
+#if 	REMOVED_BLOATING
+#	include "swift/AST/Comment.h"
+#endif	// REMOVED_BLOATING
 #include "swift/AST/Initializer.h"
 #include "swift/AST/GenericSignature.h"
 #include "swift/AST/LazyResolver.h"

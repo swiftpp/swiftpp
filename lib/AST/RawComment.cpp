@@ -24,7 +24,9 @@
 #include "swift/AST/Types.h"
 #include "swift/Basic/PrimitiveParsing.h"
 #include "swift/Basic/SourceManager.h"
-// #include "swift/Markup/Markup.h"
+#if 	REMOVED_BLOATING
+#	include "swift/Markup/Markup.h"
+#endif	// REMOVED_BLOATING
 #include "swift/Parse/Lexer.h"
 #include "llvm/ADT/SmallString.h"
 #include "llvm/ADT/StringRef.h"

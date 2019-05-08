@@ -16,7 +16,9 @@
 #include "swift/AST/ASTDemangler.h"
 #include "swift/AST/ASTPrinter.h"
 #include "swift/AST/ASTWalker.h"
-// #include "swift/AST/Comment.h"
+#if 	REMOVED_BLOATING
+#	include "swift/AST/Comment.h"
+#endif	// REMOVED_BLOATING
 #include "swift/AST/DebuggerClient.h"
 #include "swift/AST/DiagnosticConsumer.h"
 #include "swift/AST/DiagnosticEngine.h"
@@ -42,7 +44,9 @@
 #include "swift/IDE/Utils.h"
 #include "swift/Index/Index.h"
 #include "swift/Sema/IDETypeChecking.h"
-// #include "swift/Markup/Markup.h"
+#if 	REMOVED_BLOATING
+#	include "swift/Markup/Markup.h"
+#endif	// REMOVED_BLOATING
 #include "swift/Config.h"
 #include "clang/APINotes/APINotesReader.h"
 #include "clang/APINotes/APINotesWriter.h"

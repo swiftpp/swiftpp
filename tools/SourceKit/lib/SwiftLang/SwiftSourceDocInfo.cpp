@@ -30,7 +30,9 @@
 #include "swift/IDE/SourceEntityWalker.h"
 #include "swift/IDE/Utils.h"
 #include "swift/IDE/Refactoring.h"
-#include "swift/Markup/XMLUtils.h"
+#if 	REMOVED_BLOATING
+#	include "swift/Markup/XMLUtils.h"
+#endif	// REMOVED_BLOATING
 #include "swift/Sema/IDETypeChecking.h"
 
 #include "clang/AST/ASTContext.h"

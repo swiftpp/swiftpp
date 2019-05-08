@@ -21,7 +21,9 @@
 #include "swift/AST/ProtocolConformance.h"
 #include "swift/AST/TypeVisitor.h"
 #include "swift/AST/SwiftNameTranslation.h"
-// #include "swift/AST/Comment.h"
+#if 	REMOVED_BLOATING
+#	include "swift/AST/Comment.h"
+#endif	// REMOVED_BLOATING
 #include "swift/Basic/StringExtras.h"
 #include "swift/Basic/Version.h"
 #include "swift/ClangImporter/ClangImporter.h"

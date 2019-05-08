@@ -12,14 +12,16 @@
 
 #include "swift/IDE/CommentConversion.h"
 #include "swift/AST/ASTContext.h"
-// #include "swift/AST/Comment.h"
+#if 	REMOVED_BLOATING
+#	include "swift/AST/Comment.h"
+#endif	// REMOVED_BLOATING
 #include "swift/AST/Decl.h"
 #include "swift/AST/USRGeneration.h"
 #include "swift/AST/RawComment.h"
 #include "swift/Basic/SourceManager.h"
-#if REMOVED_BLOATING
-#include "swift/Markup/Markup.h"
-#include "swift/Markup/XMLUtils.h"
+#if 	REMOVED_BLOATING
+#	include "swift/Markup/Markup.h"
+#	include "swift/Markup/XMLUtils.h"
 #endif	// REMOVED_BLOATING
 #include "swift/Parse/Token.h"
 #include "swift/Subsystems.h"
@@ -29,7 +31,9 @@
 #include "clang/AST/Decl.h"
 #include "clang/Index/CommentToXML.h"
 
-// using namespace swift::markup;
+#if 	REMOVED_BLOATING
+using namespace swift::markup;
+#endif	// REMOVED_BLOATING
 using namespace swift;
 
 //===----------------------------------------------------------------------===//
