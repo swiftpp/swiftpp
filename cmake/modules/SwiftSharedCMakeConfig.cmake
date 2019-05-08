@@ -255,6 +255,20 @@ macro(swift_common_unified_build_config product)
   endif()
 endmacro()
 
+function(append value)
+  foreach(variable ${ARGN})
+    set(${variable} "${${variable}} ${value}" PARENT_SCOPE)
+  endforeach(variable)
+endfunction()
+
+function(append_if condition value)
+  if (${condition})
+    foreach(variable ${ARGN})
+      set(${variable} "${${variable}} ${value}" PARENT_SCOPE)
+    endforeach(variable)
+  endif()
+endfunction()
+
 # Common cmake project config for additional warnings.
 #
 macro(swift_common_cxx_warnings)
