@@ -529,6 +529,7 @@ private:
   void skipHashbang(bool EatNewline);
 
   void skipSlashStarComment();
+  void skipDoubleQuoteComment();
   void lexHash();
   void lexIdentifier();
   void lexDollarIdent();
