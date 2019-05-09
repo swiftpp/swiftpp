@@ -523,6 +523,71 @@ void Lexer::skipSlashStarComment() {
     NextToken.setAtStartOfLine(true);
 }
 
+static bool skipToEndOfDoubleQuoteComment(const char *&CurPtr,
+                                        const char *BufferEnd,
+                                        const char *CodeCompletionPtr = nullptr,
+                                        DiagnosticEngine *Diags = nullptr) {
+  const char *StartPtr = CurPtr-1;
+
+  bool isMultiline = false;
+
+  while (1) {
+    switch (*CurPtr++) {
+    case '"':
+      return isMultiline;
+      break;
+
+    case '\n':
+    case '\r':
+      isMultiline = true;
+      break;
+
+    default:
+      // If this is a "high" UTF-8 character, validate it.
+      if (Diags && (signed char)(CurPtr[-1]) < 0) {
+        --CurPtr;
+        const char *CharStart = CurPtr;
+        if (validateUTF8CharacterAndAdvance(CurPtr, BufferEnd) == ~0U)
+          Diags->diagnose(Lexer::getSourceLoc(CharStart),
+                          diag::lex_invalid_utf8);
+      }
+
+      break;   // Otherwise, eat other characters.
+    case 0:
+      if (CurPtr - 1 != BufferEnd) {
+        if (Diags && CurPtr - 1 != CodeCompletionPtr) {
+          // If this is a random nul character in the middle of a buffer, skip
+          // it as whitespace.
+          diagnoseEmbeddedNul(Diags, CurPtr - 1);
+        }
+        continue;
+      }
+      // Otherwise, we have an unterminated " comment.
+      --CurPtr;
+
+      if (Diags) {
+        llvm::SmallString<8> Terminator("\"");
+        const char *EOL = (CurPtr[-1] == '\n') ? (CurPtr - 1) : CurPtr;
+        Diags
+            ->diagnose(Lexer::getSourceLoc(EOL),
+                       diag::lex_unterminated_block_comment)
+            .fixItInsert(Lexer::getSourceLoc(EOL), Terminator);
+        Diags->diagnose(Lexer::getSourceLoc(StartPtr), diag::lex_comment_start);
+      }
+      return isMultiline;
+    }
+  }
+}
+
+/// skipDoubleQuoteComment - "" comments are skipped (treated as whitespace).
+/// Note that (unlike in C) block comments can be nested.
+void Lexer::skipDoubleQuoteComment() {
+  bool isMultiline =
+      skipToEndOfDoubleQuoteComment(CurPtr, BufferEnd, CodeCompletionPtr, Diags);
+  if (isMultiline)
+    NextToken.setAtStartOfLine(true);
+}
+
 static bool isValidIdentifierContinuationCodePoint(uint32_t c) {
   if (c < 0x80)
     return clang::isIdentifierBody(c, /*dollar*/true);
@@ -1838,9 +1903,13 @@ void Lexer::lexStringLiteral(unsigned CustomDelimiterLen) {
   const char QuoteChar = CurPtr[-1];
   const char *TokStart = CurPtr - 1 - CustomDelimiterLen;
 
+#if 	REMOVED_NOT_SMALLTALK
   // NOTE: We only allow single-quote string literals so we can emit useful
   // diagnostics about changing them to double quotes.
   assert((QuoteChar == '"' || QuoteChar == '\'') && "Unexpected start");
+#else
+  assert(QuoteChar == '\'' && "Unexpected start");
+#endif
 
   bool IsMultilineString = advanceIfMultilineDelimiter(CurPtr, Diags);
   if (IsMultilineString && *CurPtr != '\n' && *CurPtr != '\r')
@@ -2436,6 +2505,11 @@ void Lexer::lexImpl() {
       return formToken(tok::comment, TokStart);
     }
     return lexOperatorIdentifier();
+  case '"':
+      skipDoubleQuoteComment();
+      assert(isKeepingComments() &&
+             "Non token comment should be eaten by lexTrivia as LeadingTrivia");
+      return formToken(tok::comment, TokStart);
   case '%':
     // Lex %[0-9a-zA-Z_]+ as a local SIL value
     if (InSILBody && clang::isIdentifierBody(CurPtr[0])) {
@@ -2489,7 +2563,6 @@ void Lexer::lexImpl() {
   case '5': case '6': case '7': case '8': case '9':
     return lexNumber();
 
-  case '"':
   case '\'':
     return lexStringLiteral();
       
@@ -2590,6 +2663,19 @@ Restart:
       goto Restart;
     }
     break;
+  case '"':
+    if (IsForTrailingTrivia || isKeepingComments()) {
+      // Don't lex comments as trailing trivias (for now).
+      // Don't try to lex comments here if we are lexing comments as Tokens.
+      break;
+    } else {
+      // " ... " comment.
+      skipDoubleQuoteComment();
+      size_t Length = CurPtr - TriviaStart;
+      Pieces.push_back(TriviaKind::BlockComment, Length);
+      goto Restart;
+    }
+    break;
   case '#':
     if (TriviaStart == ContentStart && *CurPtr == '!') {
       // Hashbang '#!/path/to/swift'.
@@ -2630,7 +2716,7 @@ Restart:
   case ',': case ';': case ':': case '\\': case '$':
   case '0': case '1': case '2': case '3': case '4':
   case '5': case '6': case '7': case '8': case '9':
-  case '"': case '\'': case '`':
+  case '\'': case '`':
   // Start of identifiers.
   case 'A': case 'B': case 'C': case 'D': case 'E': case 'F': case 'G':
   case 'H': case 'I': case 'J': case 'K': case 'L': case 'M': case 'N':
