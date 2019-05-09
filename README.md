@@ -1,4 +1,4 @@
-<img src="https://swiftpp.github.io/images/logo.png" alt="Swift++ logo" height="70" >
+<img align="right" src="https://swiftpp.github.io/images/logo-alpha-cropped-small.png" alt="Swift++ logo">
 
 ## Welcome to Swift++
 
@@ -6,7 +6,7 @@
   of Swift, but having the readability and elegance of Smalltalk. By basing this compiler
   on the Swift ecosystem, we'll take advantage of the popularity of the system as it's
   ported to platforms as diverse as desktop machines, smartphones and servers. Now that
-  Swift 5 has been released, and has standardized the Swift ABI stability and its process
+  Swift 5 has been released and has standardized the Swift ABI stability and its process
   for future enhancements, we can build on that groundwork to ensure Swift++ code will
   remain compatible with Apple's future plans for the language and its ecosystem.
 
