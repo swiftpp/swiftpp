@@ -1850,6 +1850,8 @@ static void validateMultilineIndents(const Token &Str,
                                   commonIndentation);
 }
 
+#if	REMOVED_NOT_SMALLTALK
+
 /// Emit diagnostics for single-quote string and suggest replacement
 /// with double-quoted equivalent.
 static void diagnoseSingleQuoteStringLiteral(const char *TokStart,
@@ -1894,6 +1896,8 @@ static void diagnoseSingleQuoteStringLiteral(const char *TokStart,
       .fixItReplaceChars(Lexer::getSourceLoc(TokStart),
                          Lexer::getSourceLoc(TokEnd), replacement);
 }
+
+#endif	// REMOVED_NOT_SMALLTALK
 
 /// lexStringLiteral:
 ///   string_literal ::= ["]([^"\\\n\r]|character_escape)*["]
@@ -1959,11 +1963,13 @@ void Lexer::lexStringLiteral(unsigned CustomDelimiterLen) {
     wasErroneous |= CharValue == ~1U;
   }
 
+#if 	REMOVE_NOT_SMALLTALK
   if (QuoteChar == '\'') {
     assert(!IsMultilineString && CustomDelimiterLen == 0 &&
            "Single quoted string cannot have custom delimitor, nor multiline");
     diagnoseSingleQuoteStringLiteral(TokStart, CurPtr, Diags);
   }
+#endif	// REMOVE_NOT_SMALLTALK
 
   if (wasErroneous)
     return formToken(tok::unknown, TokStart);
