@@ -27,7 +27,7 @@
 
 	- To further support code portability from Pharo and other Smalltalk derivatives, a separate
 	  tool or environment would support fileIns.
-
+	
   - Implement (or port) regular Smalltalk classes as expected.
 
   - Implement a compiler with bare-bones functionality, focusing on compilation speed, interoperability, and
