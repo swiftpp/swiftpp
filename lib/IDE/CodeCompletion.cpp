@@ -38,7 +38,7 @@
 #include "swift/Subsystems.h"
 #include "clang/AST/ASTContext.h"
 #include "clang/AST/Attr.h"
-// #include "clang/AST/Comment.h"
+#include "clang/AST/Comment.h"
 #include "clang/AST/CommentVisitor.h"
 #include "clang/AST/Decl.h"
 #include "clang/Basic/Module.h"
