@@ -2563,19 +2563,30 @@ Restart:
       break;
     } else if (*CurPtr == '/') {
       // '// ...' comment.
+		
+#if REMOVED_BLOATING
       bool isDocComment = CurPtr[1] == '/';
       skipSlashSlashComment(/*EatNewline=*/false);
       size_t Length = CurPtr - TriviaStart;
       Pieces.push_back(isDocComment ? TriviaKind::DocLineComment
                                     : TriviaKind::LineComment, Length);
+#endif	// REMOVED_BLOATING
+      skipSlashSlashComment(/*EatNewline=*/false);
+      size_t Length = CurPtr - TriviaStart;
+      Pieces.push_back(TriviaKind::LineComment, Length);
       goto Restart;
     } else if (*CurPtr == '*') {
       // '/* ... */' comment.
+#if REMOVED_BLOATING
       bool isDocComment = CurPtr[1] == '*';
       skipSlashStarComment();
       size_t Length = CurPtr - TriviaStart;
       Pieces.push_back(isDocComment ? TriviaKind::DocBlockComment
                                     : TriviaKind::BlockComment, Length);
+#endif	// REMOVED_BLOATING
+      skipSlashStarComment();
+      size_t Length = CurPtr - TriviaStart;
+      Pieces.push_back(TriviaKind::BlockComment, Length);
       goto Restart;
     }
     break;
