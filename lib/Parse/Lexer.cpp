@@ -781,7 +781,10 @@ static bool isLeftBound(const char *tokBegin, const char *bufferBegin) {
   switch (tokBegin[-1]) {
   case ' ': case '\r': case '\n': case '\t': // whitespace
   case '(': case '[': case '{':              // opening delimiters
-  case ',': case ';': case ':':              // expression separators
+  case ',': case ';':                        // expression separators
+#if 	REMOVED_NOT_SMALLTALK
+                      case ':':              // expression separators
+#endif	// REMOVED_NOT_SMALLTALK
   case '\0':                                 // whitespace / last char in file
     return false;
 
@@ -811,7 +814,10 @@ static bool isRightBound(const char *tokEnd, bool isLeftBound,
   switch (*tokEnd) {
   case ' ': case '\r': case '\n': case '\t': // whitespace
   case ')': case ']': case '}':              // closing delimiters
-  case ',': case ';': case ':':              // expression separators
+  case ',': case ';':                        // expression separators
+#if 	REMOVED_NOT_SMALLTALK
+                      case ':':              // expression separators
+#endif	// REMOVED_NOT_SMALLTALK
     return false;
 
   case '\0':
@@ -2488,8 +2494,23 @@ void Lexer::lexImpl() {
 
   case ',': return formToken(tok::comma, TokStart);
   case ';': return formToken(tok::semi, TokStart);
-  case ':': return formToken(tok::colon, TokStart);
   case '\\': return formToken(tok::backslash, TokStart);
+  case ':':
+    {
+      tok matchedToken = tok::colon;
+
+      if(CurPtr[0] == ':')
+      {
+        ++CurPtr;
+        matchedToken = tok::oper_type;
+        if(CurPtr[0] == '^')
+        {
+          ++CurPtr;
+          matchedToken = tok::arrow;
+        }
+      }
+      return formToken(matchedToken, TokStart);
+    }
 
   case '#':
     if (unsigned CustomDelimiterLen = advanceIfCustomDelimiter(CurPtr, Diags))
