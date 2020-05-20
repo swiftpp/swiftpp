@@ -62,7 +62,7 @@ SWIFT_SOURCE_ROOT = os.environ.get(
 # Set SWIFT_BUILD_ROOT to a directory that will contain a subdirectory
 # for each build configuration
 SWIFT_BUILD_ROOT = os.environ.get(
-    "SWIFT_BUILD_ROOT", os.path.join(SWIFT_SOURCE_ROOT, "build"))
+    "SWIFT_BUILD_ROOT", os.path.join(SWIFT_SOURCE_ROOT, "build-swiftpp"))
 
 
 def _get_default_swift_repo_name():

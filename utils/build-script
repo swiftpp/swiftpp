@@ -448,7 +448,7 @@ class BuildScriptInvocation(object):
             args=self.args,
             toolchain=self.toolchain,
             source_dir=self.workspace.source_dir("ninja"),
-            build_dir=self.workspace.build_dir("build", "ninja"))
+            build_dir=self.workspace.build_dir("build-swiftpp", "ninja"))
         ninja_build.build()
         self.toolchain.ninja = ninja_build.ninja_bin_path
 
