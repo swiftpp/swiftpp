@@ -864,6 +864,7 @@ class BuildScriptInvocation(object):
         # but it matches the existing structure of the `build-script-impl`.
 
         product_classes = []
+        product_classes.append(products.LLVM)
         if self.args.build_libcxx:
             product_classes.append(products.LibCXX)
         if self.args.build_libicu:

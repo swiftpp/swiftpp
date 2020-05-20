@@ -1224,7 +1224,7 @@ if [ -e "${WORKSPACE}/compiler-rt" ] ; then
     fi
 fi
 
-PRODUCTS=()
+PRODUCTS=(llvm)
 if [[ ! "${SKIP_BUILD_LIBCXX}" ]] ; then
      PRODUCTS=("${PRODUCTS[@]}" libcxx)
 fi
@@ -2102,7 +2102,7 @@ for host in "${ALL_HOSTS[@]}"; do
         cmake_options=("${common_cmake_options_host[@]}")
 
         llvm_build_dir=$(build_directory ${host} llvm)
-		llvm_build_dir="${LLVM_BUILD_DIR}"
+		# llvm_build_dir="${LLVM_BUILD_DIR}"
         module_cache="${build_dir}/module-cache"
 
         # Add any specific cmake options specified by build-script
@@ -2111,6 +2111,105 @@ for host in "${ALL_HOSTS[@]}"; do
         cmake_options+=("${product_cmake_options[@]}")
 
         case ${product} in
+            llvm)
+                if [ "${BUILD_LLVM}" == "0" ] ; then
+                    build_targets=(clean)
+                fi
+                if [ "${SKIP_BUILD_LLVM}" ] ; then
+                    # We can't skip the build completely because the standalone
+                    # build of Swift depend on these.
+                    build_targets=(llvm-tblgen clang-headers intrinsics_gen clang-tablegen-targets)
+                fi
+
+                if [ "${HOST_LIBTOOL}" ] ; then
+                    cmake_options=(
+                        "${cmake_options[@]}"
+                        -DCMAKE_LIBTOOL:PATH="${HOST_LIBTOOL}"
+                    )
+                fi
+
+                # Note: we set the variable:
+                #
+                # LLVM_TOOL_SWIFT_BUILD
+                #
+                # below because this script builds swift separately, and people
+                # often have reasons to symlink the swift directory into
+                # llvm/tools, e.g. to build LLDB.
+                cmake_options=(
+                    "${cmake_options[@]}"
+                    -DCMAKE_C_FLAGS="$(llvm_c_flags ${host})"
+                    -DCMAKE_CXX_FLAGS="$(llvm_c_flags ${host})"
+                    -DCMAKE_C_FLAGS_RELWITHDEBINFO="-O2 -DNDEBUG"
+                    -DCMAKE_CXX_FLAGS_RELWITHDEBINFO="-O2 -DNDEBUG"
+                    -DCMAKE_BUILD_TYPE:STRING="${LLVM_BUILD_TYPE}"
+                    -DLLVM_TOOL_SWIFT_BUILD:BOOL=NO
+                    -DLLVM_INCLUDE_DOCS:BOOL=TRUE
+                    -DLLVM_ENABLE_LTO:STRING="${LLVM_ENABLE_LTO}"
+                    -DCOMPILER_RT_INTERCEPT_LIBDISPATCH=ON
+                    "${llvm_cmake_options[@]}"
+                )
+
+                if [[ ! -z "${CLANG_TOOLS_EXTRA_SOURCE_DIR}" ]] ; then
+                  cmake_options+=(
+                    -DLLVM_EXTERNAL_CLANG_TOOLS_EXTRA_SOURCE_DIR="${CLANG_TOOLS_EXTRA_SOURCE_DIR}"
+                  )
+                fi
+
+                if [[ "${BUILD_TOOLCHAIN_ONLY}" ]]; then
+                    cmake_options+=(
+                    -DLLVM_BUILD_TOOLS=NO
+                    -DLLVM_INSTALL_TOOLCHAIN_ONLY=YES
+                    -DLLVM_INCLUDE_TESTS=NO
+                    -DCLANG_INCLUDE_TESTS=NO
+                    -DLLVM_INCLUDE_UTILS=NO
+                    -DLLVM_TOOL_LLI_BUILD=NO
+                    -DLLVM_TOOL_LLVM_AR_BUILD=NO
+                    -DCLANG_TOOL_CLANG_CHECK_BUILD=NO
+                    -DCLANG_TOOL_ARCMT_TEST_BUILD=NO
+                    -DCLANG_TOOL_C_ARCMT_TEST_BUILD=NO
+                    -DCLANG_TOOL_C_INDEX_TEST_BUILD=NO
+                    -DCLANG_TOOL_DRIVER_BUILD=$(false_true "${BUILD_RUNTIME_WITH_HOST_COMPILER}")
+                    -DCLANG_TOOL_DIAGTOOL_BUILD=NO
+                    -DCLANG_TOOL_SCAN_BUILD_BUILD=NO
+                    -DCLANG_TOOL_SCAN_VIEW_BUILD=NO
+                    -DCLANG_TOOL_CLANG_FORMAT_BUILD=NO
+                    )
+                fi
+
+                if [[ $(true_false "${LLVM_INCLUDE_TESTS}") == "FALSE" ]]; then
+                    cmake_options+=(
+                        -DLLVM_INCLUDE_TESTS=NO
+                        -DCLANG_INCLUDE_TESTS=NO
+                    )
+                fi
+
+                if [[ $(is_cross_tools_host ${host}) ]] ; then
+                    cmake_options=(
+                        "${cmake_options[@]}"
+                        -DLLVM_TABLEGEN=$(build_directory "${LOCAL_HOST}" llvm)/bin/llvm-tblgen
+                        -DCLANG_TABLEGEN=$(build_directory "${LOCAL_HOST}" llvm)/bin/clang-tblgen
+                        -DLLVM_NATIVE_BUILD=$(build_directory "${LOCAL_HOST}" llvm)
+                    )
+                fi
+
+                ;;
+
+            libcxx)
+                build_targets=(cxx-headers)
+                cmake_options=(
+                    "${cmake_options[@]}"
+                    -DCMAKE_C_FLAGS="$(llvm_c_flags ${host})"
+                    -DCMAKE_CXX_FLAGS="$(llvm_c_flags ${host})"
+                    -DCMAKE_C_FLAGS_RELWITHDEBINFO="-O2 -DNDEBUG"
+                    -DCMAKE_CXX_FLAGS_RELWITHDEBINFO="-O2 -DNDEBUG"
+                    -DCMAKE_BUILD_TYPE:STRING="${LLVM_BUILD_TYPE}"
+                    -DLLVM_INCLUDE_DOCS:BOOL=TRUE
+                    -DLLVM_CONFIG_PATH="$(build_directory "${LOCAL_HOST}" llvm)/bin/llvm-config"
+                    "${llvm_cmake_options[@]}"
+                )
+
+                ;;
+
             swiftpp)
 
                 if [[ ! "${SKIP_BUILD_ANDROID}" ]]; then

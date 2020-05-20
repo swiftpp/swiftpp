@@ -11,9 +11,11 @@
 # ----------------------------------------------------------------------------
 
 from .benchmarks import Benchmarks
+from .llvm import LLVM
 from .swiftpp import SwiftPP
 
 __all__ = [
+    'LLVM',
     'SwiftPP',
     'Benchmarks',
 ]
